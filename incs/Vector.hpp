@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   Vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/03 06:02:40 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/09 11:50:46 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 namespace ft
 {
-	template < class T, class Alloc = allocator<T>>
+	template < class T, class Alloc = std::allocator<T> >
 	class vector
 	{
 
@@ -89,9 +89,9 @@ namespace ft
 			allocator_type	get_allocator() const;
 
 		private:
-			/* data */
+			
 		
-	};
+	}; /* class vector */
 
 	/*
 	** -- Non-member --

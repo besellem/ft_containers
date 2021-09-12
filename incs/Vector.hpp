@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/10 00:56:50 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/12 15:23:00 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #define RED       "\e[1;31m"
 #define CLR_COLOR "\e[0m"
 
-#define ERR std::cout << RED << __FILE__ << ":" << __LINE__ << ":" CLR_COLOR " Here" << std::endl;
+#define LOG std::cout << RED << __FILE__ << ":" << __LINE__ << ":" CLR_COLOR " Here" << std::endl;
 
 namespace ft
 {
@@ -52,20 +52,23 @@ namespace ft
 			explicit vector(const allocator_type &alloc = allocator_type()) :
 				_alloc(alloc),
 				_begin(NULL),
-				_end(NULL)
+				_end(NULL),
+				_capacity(NULL)
 			{}
 			
 			explicit vector(size_type n, const value_type &val = value_type(),
 							const allocator_type &alloc = allocator_type()) :
 				_alloc(alloc),
 				_begin(NULL),
-				_end(NULL)
+				_end(NULL),
+				_capacity(NULL)
 			{
 				// if (n < 0)
 				// 	throw std::length_error();
 				_begin = _alloc.allocate(n);
 				_end = _begin + n;
-				ERR
+				_capacity = _end;
+				LOG
 			}
 			
 			template <class InputIterator>
@@ -116,11 +119,14 @@ namespace ft
 
 			void			resize(size_type n, value_type val = value_type());
 
-			size_type		capacity() const { return size(); }
+			size_type		capacity() const { return _capacity - _begin; }
 
 			bool			empty() const    { return size() == 0; }
 			
-			void			reserve(size_type n);
+			void			reserve(size_type n)
+			{
+				
+			}
 
 			/*
 			** -- Element access --
@@ -166,10 +172,34 @@ namespace ft
 			*/
 			allocator_type	get_allocator() const { return allocator_type(); }
 
+
+
+
+		////////////////////////////////////////////////////////////////////////
+		// TO REMOVE
+		////////////////////////////////////////////////////////////////////////
+		void			_print(void) const
+		{
+			pointer	b = _begin;
+			for (size_t i = 0; i < size(); ++i)
+			{
+				std::cout << *b << std::endl;
+				++b;
+			}
+		}
+		////////////////////////////////////////////////////////////////////////
+		// END - TO REMOVE
+		////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 		private:
 			allocator_type	_alloc;
 			pointer			_begin;
 			pointer			_end;
+			pointer			_capacity;
 		
 	}; /* class vector */
 

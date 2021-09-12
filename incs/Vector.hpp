@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/12 15:23:00 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/12 15:31:21 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ namespace ft
 				this->_alloc = x._alloc;
 				this->_begin = x._begin;
 				this->_end = x._end;
+				this->_capacity = x._capacity;
 				
 				return *this;
 			}
@@ -123,10 +124,7 @@ namespace ft
 
 			bool			empty() const    { return size() == 0; }
 			
-			void			reserve(size_type n)
-			{
-				
-			}
+			void			reserve(size_type n);
 
 			/*
 			** -- Element access --

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/13 19:31:33 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/13 19:35:51 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,6 +334,9 @@ namespace ft
 	bool	operator>=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
 
 	template <class T, class Alloc>
-	void	swap(vector<T,Alloc> &x, vector<T,Alloc> &y);
+	void	swap(vector<T,Alloc> &x, vector<T,Alloc> &y)
+	{
+		x.swap(y);
+	}
 
 } /* namespace ft */

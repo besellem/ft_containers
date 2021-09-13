@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   _test.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/13 15:29:54 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/13 15:58:48 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int	main(int ac, char **av)
 	// mine.pop_back();
 	mine._print();
 	
-
-
+	// std::vector<int>::iterator	is;
 
 	std::allocator<int>		ptr;
 	// int	*p = ptr.allocate(0);

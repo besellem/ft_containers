@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/13 15:45:10 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/13 19:31:33 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ namespace ft
 					_alloc.construct(_end, val);
 				}
 				_capacity = _end;
-				LOG("Contructor")
+				LOG("Contructor #2")
 			}
 			
 			template <class InputIterator>
@@ -94,9 +94,7 @@ namespace ft
 			
 			~vector()
 			{
-				// clear();
-				LOG("Destructor")
-				_alloc.destroy(_begin);
+				clear();
 				_alloc.deallocate(_begin, capacity());
 			}
 			
@@ -130,52 +128,104 @@ namespace ft
 			** -- Capacity --
 			*/
 			size_type		size() const     { return _end - _begin; }
-
 			size_type		max_size() const { return allocator_type().max_size(); }
+			size_type		capacity() const { return _capacity - _begin; }
+			bool			empty() const    { return size() == 0; }
 
 			void			resize(size_type n, value_type val = value_type())
 			{
+				size_type	i;
+
 				if (n > max_size())
 					throw std::length_error("vector::resize");
 				
 				if (n < size())
 				{
-					for (size_type i = size(); i > n; --i)
-					{
+					for (i = size(); i > n; --i)
 						_alloc.destroy(--_end);
-					}
 				}
 				else
 				{
-					// for (size_t i = 0; i < n; ++i, ++_end)
-					// {
-					// 	_alloc.construct(_end, val);
-					// }
+					if (n < capacity())
+					{
+						i = size();
+						reserve(n);
+						for ( ; i < n; ++i, ++_end)
+							_alloc.construct(_end, val);
+					}
+					else
+					{
+						pointer			old_begin = _begin;
+						pointer			tmp_begin = _begin;
+						pointer			old_end = _end;
+						const size_type	old_capacity = capacity();
+
+						_begin = _alloc.allocate(n, old_begin);
+						_capacity = _begin + n;
+						_end = _begin;
+						while (tmp_begin != old_end)
+						{
+							_alloc.construct(_end, *tmp_begin);
+							++_end;
+							++tmp_begin;
+						}
+						while (_end != _capacity)
+							_alloc.construct(_end++, val);
+						_alloc.deallocate(old_begin, old_capacity);
+					}
 				}
 			}
 
-			size_type		capacity() const { return _capacity - _begin; }
-
-			bool			empty() const    { return size() == 0; }
-			
 			void			reserve(size_type n)
 			{
+				pointer			old_begin = _begin;
+				pointer			tmp_begin = _begin;
+				pointer			old_end = _end;
+				const size_type	old_capacity = capacity();
+
 				if (n > max_size())
 					throw std::length_error("vector::reserve");
+				
+				if (n > capacity())
+				{
+					_begin = _alloc.allocate(n, old_begin);
+					_capacity = _begin + n;
+					_end = _begin;
+					
+					while (tmp_begin != old_end)
+					{
+						_alloc.construct(_end, *tmp_begin);
+						++_end;
+						++tmp_begin;
+					}
+					_alloc.deallocate(old_begin, old_capacity);
+				}
 			}
 
 			/*
 			** -- Element access --
 			*/
-			reference		operator[] (size_type n);
-			const_reference	operator[] (size_type n) const;
-			reference		at(size_type n);
-			const_reference	at(size_type n) const;
-			reference 		front()       { return *_begin; }
-			const_reference	front() const { return *_begin; }
-			reference		back()        { return *(_end - 1); }
-			const_reference	back() const  { return *(_end - 1); }
+			reference 		front()                        { return *_begin; }
+			const_reference	front() const                  { return *_begin; }
+			reference		back()                         { return *(_end - 1); }
+			const_reference	back() const                   { return *(_end - 1); }
+			reference		operator[] (size_type n)       { return *(_begin + n); }
+			const_reference	operator[] (size_type n) const { return *(_begin + n); }
+			
+			reference		at(size_type n)
+			{
+				if (n >= size())
+					throw std::out_of_range("vector");
+				return *(_begin + n);
+			}
 
+			const_reference	at(size_type n) const
+			{
+				if (n >= size())
+					throw std::out_of_range("vector");
+				return *(_begin + n);
+			}
+			
 			/*
 			** -- Modifiers --
 			*/
@@ -184,24 +234,17 @@ namespace ft
 			void			assign(size_type n, const value_type &val);
 			
 			void			push_back(const value_type &val)
-			{
-				LOG("Pushing");
-				
+			{	
 				if (_end == _capacity)
-				{
 					reserve(size() > 0 ? size() * 2 : 1);
-					// call resize() or reserve()
-					LOG("Capacity Reached");
-					return ;
-				}
-				
-				// probably call insert() here instead of the following line:
-				*(_end - 1) = val;
+				_alloc.construct(_end, val);
+				++_end;
 			}
 
 			void			pop_back()
 			{
-				_alloc.destroy(_end--);
+				_alloc.destroy(_end);
+				--_end;
 			}
 			
 			// iterator		insert(iterator position, const value_type &val);
@@ -221,7 +264,16 @@ namespace ft
 				x = cpy;
 			}
 			
-			void			clear();
+			void			clear()
+			{
+				const size_type	sz = size();
+
+				for (size_type i = 0; i < sz; ++i)
+				{
+					--_end;
+					_alloc.destroy(_end);
+				}
+			}
 
 			/*
 			** -- Allocator --
@@ -236,10 +288,10 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////
 		void			_print(void) const
 		{
-			pointer		b = _begin;
-			size_type	sz = size();
+			pointer			b = _begin;
+			const size_type	sz = size();
 
-			for (size_t i = 0; i < sz; ++i)
+			for (size_type i = 0; i < sz; ++i)
 			{
 				std::cout << *b++ << std::endl;
 			}

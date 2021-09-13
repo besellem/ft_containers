@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/12 15:31:21 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/13 15:45:10 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # include <tgmath.h>
 
 #define RED       "\e[1;31m"
+#define GREEN     "\e[1;33m"
 #define CLR_COLOR "\e[0m"
 
-#define LOG std::cout << RED << __FILE__ << ":" << __LINE__ << ":" CLR_COLOR " Here" << std::endl;
+#define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
 
 namespace ft
 {
@@ -63,12 +64,22 @@ namespace ft
 				_end(NULL),
 				_capacity(NULL)
 			{
-				// if (n < 0)
-				// 	throw std::length_error();
-				_begin = _alloc.allocate(n);
-				_end = _begin + n;
+				try
+				{
+					_begin = _alloc.allocate(n);
+				}
+				catch (std::exception &e)
+				{
+					throw std::length_error("vector");
+				}
+				
+				_end = _begin;
+				for (size_t i = 0; i < n; ++i, ++_end)
+				{
+					_alloc.construct(_end, val);
+				}
 				_capacity = _end;
-				LOG
+				LOG("Contructor")
 			}
 			
 			template <class InputIterator>
@@ -78,11 +89,14 @@ namespace ft
 			vector(const vector &x)
 			{
 				*this = x;
+				LOG("Copy Constructor")
 			}
 			
 			~vector()
 			{
 				// clear();
+				LOG("Destructor")
+				_alloc.destroy(_begin);
 				_alloc.deallocate(_begin, capacity());
 			}
 			
@@ -95,10 +109,11 @@ namespace ft
 				this->_begin = x._begin;
 				this->_end = x._end;
 				this->_capacity = x._capacity;
+				LOG("Assignment Operator")
 				
 				return *this;
 			}
-		
+			
 			/*
 			** -- Iterators --
 			*/
@@ -118,13 +133,36 @@ namespace ft
 
 			size_type		max_size() const { return allocator_type().max_size(); }
 
-			void			resize(size_type n, value_type val = value_type());
+			void			resize(size_type n, value_type val = value_type())
+			{
+				if (n > max_size())
+					throw std::length_error("vector::resize");
+				
+				if (n < size())
+				{
+					for (size_type i = size(); i > n; --i)
+					{
+						_alloc.destroy(--_end);
+					}
+				}
+				else
+				{
+					// for (size_t i = 0; i < n; ++i, ++_end)
+					// {
+					// 	_alloc.construct(_end, val);
+					// }
+				}
+			}
 
 			size_type		capacity() const { return _capacity - _begin; }
 
 			bool			empty() const    { return size() == 0; }
 			
-			void			reserve(size_type n);
+			void			reserve(size_type n)
+			{
+				if (n > max_size())
+					throw std::length_error("vector::reserve");
+			}
 
 			/*
 			** -- Element access --
@@ -135,8 +173,8 @@ namespace ft
 			const_reference	at(size_type n) const;
 			reference 		front()       { return *_begin; }
 			const_reference	front() const { return *_begin; }
-			reference		back()        { return *_end; }
-			const_reference	back() const  { return *_end; }
+			reference		back()        { return *(_end - 1); }
+			const_reference	back() const  { return *(_end - 1); }
 
 			/*
 			** -- Modifiers --
@@ -144,10 +182,30 @@ namespace ft
 			// template <class InputIterator>
   			// void			assign(InputIterator first, InputIterator last);
 			void			assign(size_type n, const value_type &val);
-			void			push_back(const value_type &val);
-			void			pop_back();
+			
+			void			push_back(const value_type &val)
+			{
+				LOG("Pushing");
+				
+				if (_end == _capacity)
+				{
+					reserve(size() > 0 ? size() * 2 : 1);
+					// call resize() or reserve()
+					LOG("Capacity Reached");
+					return ;
+				}
+				
+				// probably call insert() here instead of the following line:
+				*(_end - 1) = val;
+			}
+
+			void			pop_back()
+			{
+				_alloc.destroy(_end--);
+			}
+			
 			// iterator		insert(iterator position, const value_type &val);
-    		// void			insert(iterator position, size_type n, const value_type &val);
+			// void			insert(iterator position, size_type n, const value_type &val);
 			// template <class InputIterator>
 			// void			insert(iterator position, InputIterator first, InputIterator last);
 			// iterator		erase(iterator position);
@@ -178,11 +236,12 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////
 		void			_print(void) const
 		{
-			pointer	b = _begin;
-			for (size_t i = 0; i < size(); ++i)
+			pointer		b = _begin;
+			size_type	sz = size();
+
+			for (size_t i = 0; i < sz; ++i)
 			{
-				std::cout << *b << std::endl;
-				++b;
+				std::cout << *b++ << std::endl;
 			}
 		}
 		////////////////////////////////////////////////////////////////////////

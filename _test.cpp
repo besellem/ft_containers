@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/13 19:33:53 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:01:59 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,63 +17,67 @@
 
 int	main(__unused int ac, __unused char **av)
 {
-	// {
-	// 	std::vector<int>::size_type	sz;
-	// 	std::vector<int>			foo;
+	/* PUSH_BACK */
+	std::cout << BLUE "PUSH_BACK TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>::size_type	sz;
+		std::vector<int>			foo;
 
-	// 	sz = foo.capacity();
-	// 	std::cout << "making foo grow: " << std::endl;
-	// 	std::cout << "capacity:         [" << sz << "]" << std::endl;
-	// 	for (int i = 0; i < 100; ++i)
-	// 	{
-	// 		// std::cout << "pushing " << i << std::endl;
-	// 		foo.push_back(i);
-	// 		if (sz != foo.capacity())
-	// 		{
-	// 			sz = foo.capacity();
-	// 			std::cout << "capacity changed: [" << sz << "]" << std::endl;
-	// 		}
-	// 	}
-	// 	std::cout << "front: " << foo.front() << std::endl;
-	// 	std::cout << "back:  " << foo.back() << std::endl;
-	// 	std::cout << std::endl;
-	// }
-
-	// {
-	// 	ft::vector<int>::size_type	sz;
-	// 	ft::vector<int>				foo;
-
-	// 	sz = foo.capacity();
-	// 	std::cout << "making foo grow: " << std::endl;
-	// 	std::cout << "capacity:         [" << sz << "]" << std::endl;
-	// 	for (int i = 0; i < 100; ++i)
-	// 	{
-	// 		// std::cout << "pushing " << i << std::endl;
-	// 		foo.push_back(i);
-	// 		if (sz != foo.capacity())
-	// 		{
-	// 			sz = foo.capacity();
-	// 			std::cout << "capacity changed: [" << sz << "]" << std::endl;
-	// 		}
-	// 	}
-	// 	std::cout << "front: " << foo.front() << std::endl;
-	// 	std::cout << "back:  " << foo.back() << std::endl;
-	// 	std::cout << std::endl;
-	// }
+		sz = foo.capacity();
+		std::cout << "making foo grow: " << std::endl;
+		std::cout << "capacity:         [" << sz << "]" << std::endl;
+		for (int i = 0; i < 100; ++i)
+		{
+			// std::cout << "pushing " << i << std::endl;
+			foo.push_back(i);
+			if (sz != foo.capacity())
+			{
+				sz = foo.capacity();
+				std::cout << "capacity changed: [" << sz << "]" << std::endl;
+			}
+		}
+		std::cout << "front: " << foo.front() << std::endl;
+		std::cout << "back:  " << foo.back() << std::endl;
+		std::cout << std::endl;
+	}
 
 	{
-		std::vector<int>		vec;
+		ft::vector<int>::size_type	sz;
+		ft::vector<int>				foo;
 
-		// set some initial content:
-		for (int i = 1; i < 10; ++i)
+		sz = foo.capacity();
+		std::cout << "making foo grow: " << std::endl;
+		std::cout << "capacity:         [" << sz << "]" << std::endl;
+		for (int i = 0; i < 100; ++i)
+		{
+			// std::cout << "pushing " << i << std::endl;
+			foo.push_back(i);
+			if (sz != foo.capacity())
+			{
+				sz = foo.capacity();
+				std::cout << "capacity changed: [" << sz << "]" << std::endl;
+			}
+		}
+		std::cout << "front: " << foo.front() << std::endl;
+		std::cout << "back:  " << foo.back() << std::endl;
+		std::cout << std::endl;
+	}
+
+
+	/* RESIZE && operator[] */
+	std::cout << BLUE "RESIZE TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
 			vec.push_back(i);
 
 		vec.resize(5);
 		vec.resize(8, 100);
 		vec.resize(12);
 
-		std::cout << "vec contains:";
-		for (std::vector<int>::size_type i = 0; i < vec.size(); ++i)
+		std::cout << "std::vector contains:";
+		for (size_t i = 0; i < vec.size(); ++i)
 			std::cout << ' ' << vec[i];
 		std::cout << std::endl;
 	}
@@ -81,22 +85,91 @@ int	main(__unused int ac, __unused char **av)
 	{
 		ft::vector<int>		vec;
 
-		// set some initial content:
-		for (int i = 1; i < 10; ++i)
+		for (int i = 1; i < 10; ++i) // set some initial content:
 			vec.push_back(i);
 
 		vec.resize(5);
 		vec.resize(8, 100);
 		vec.resize(12);
 
-		std::cout << "vec contains:";
-		for (ft::vector<int>::size_type i = 0; i < vec.size(); ++i)
+		std::cout << "ft::vector contains: ";
+		for (size_t i = 0; i < vec.size(); ++i)
 			std::cout << ' ' << vec[i];
 		std::cout << std::endl;
 		std::cout << std::endl;
 	}
 
-	
+	/* COPY CONSTRUCTOR */
+	// std::cout << BLUE "COPY CONSTRUCTOR TEST:" CLR_COLOR << std::endl;
+	// {
+	// 	std::vector<int>	vec;
+
+	// 	for (int i = 1; i < 10; ++i) // set some initial content:
+	// 		vec.push_back(i);
+
+	// 	vec.resize(5);
+	// 	vec.resize(8, 100);
+	// 	vec.resize(12);
+
+	// 	std::vector<int>	cpy(vec);
+
+	// 	std::cout << "std::vector contains:";
+	// 	for (size_t i = 0; i < cpy.size(); ++i)
+	// 		std::cout << ' ' << cpy[i];
+	// 	std::cout << std::endl;
+	// }
+
+	// {
+	// 	ft::vector<int>	vec;
+
+	// 	for (int i = 1; i < 10; ++i) // set some initial content:
+	// 		vec.push_back(i);
+
+	// 	vec.resize(5);
+	// 	vec.resize(8, 100);
+	// 	vec.resize(12);
+
+	// 	ft::vector<int>	cpy(vec);
+
+	// 	std::cout << "std::vector contains:";
+	// 	for (size_t i = 0; i < cpy.size(); ++i)
+	// 		std::cout << ' ' << cpy[i];
+	// 	std::cout << std::endl;
+	// 	std::cout << std::endl;
+	// }
+
+
+	// std::cout << (vec == ft::vector<int>(19)) << std::endl;
+
+
+	/* ASSIGN */
+	std::cout << BLUE "ASSIGN TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec(10);
+		const size_t		cap = vec.capacity();
+		
+		vec.assign(15, 42);
+		std::cout << "std::vector capacity: old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "std::vector contains:";
+		for (size_t i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+	}
+
+	{
+		ft::vector<int>		vec(10);
+		const size_t		cap = vec.capacity();
+		
+		vec.assign(15, 42);
+		std::cout << "ft::vector capacity:  old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "ft::vector contains: ";
+		for (size_t i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
+
 	std::vector<int>			real(2);
 	ft::vector<int>				mine(2);
 

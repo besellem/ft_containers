@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/13 19:35:51 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:03:41 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 #define RED       "\e[1;31m"
 #define GREEN     "\e[1;33m"
+#define BLUE      "\e[1;34m"
 #define CLR_COLOR "\e[0m"
 
 #define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
@@ -43,6 +44,10 @@ namespace ft
 			
 
 			// TO DO : IMPLEMENT ITERATORS
+			class iterator
+			{
+				
+			};
 			// typedef ...	iterator;
 			// typedef ...	const_iterator;
 			// typedef ...	reverse_iterator;
@@ -55,7 +60,9 @@ namespace ft
 				_begin(NULL),
 				_end(NULL),
 				_capacity(NULL)
-			{}
+			{
+				LOG("Contructor #1")
+			}
 			
 			explicit vector(size_type n, const value_type &val = value_type(),
 							const allocator_type &alloc = allocator_type()) :
@@ -64,6 +71,7 @@ namespace ft
 				_end(NULL),
 				_capacity(NULL)
 			{
+				LOG("Contructor #2")
 				try
 				{
 					_begin = _alloc.allocate(n);
@@ -75,21 +83,21 @@ namespace ft
 				
 				_end = _begin;
 				for (size_t i = 0; i < n; ++i, ++_end)
-				{
 					_alloc.construct(_end, val);
-				}
 				_capacity = _end;
-				LOG("Contructor #2")
 			}
 			
 			template <class InputIterator>
 			vector(InputIterator first, InputIterator last,
-					const allocator_type &alloc = allocator_type());
+					const allocator_type &alloc = allocator_type())
+			{
+				LOG("Contructor #3")
+			}
 			
 			vector(const vector &x)
 			{
-				*this = x;
 				LOG("Copy Constructor")
+				*this = x;
 			}
 			
 			~vector()
@@ -100,14 +108,15 @@ namespace ft
 			
 			vector &				operator=(const vector &x)
 			{
+				LOG("Assignment Operator")
 				if (*this == x)
 					return *this;
 
+				this->clear();
 				this->_alloc = x._alloc;
 				this->_begin = x._begin;
 				this->_end = x._end;
 				this->_capacity = x._capacity;
-				LOG("Assignment Operator")
 				
 				return *this;
 			}
@@ -192,12 +201,8 @@ namespace ft
 					_capacity = _begin + n;
 					_end = _begin;
 					
-					while (tmp_begin != old_end)
-					{
+					for (; tmp_begin != old_end; ++_end, ++tmp_begin)
 						_alloc.construct(_end, *tmp_begin);
-						++_end;
-						++tmp_begin;
-					}
 					_alloc.deallocate(old_begin, old_capacity);
 				}
 			}
@@ -230,8 +235,33 @@ namespace ft
 			** -- Modifiers --
 			*/
 			// template <class InputIterator>
-  			// void			assign(InputIterator first, InputIterator last);
-			void			assign(size_type n, const value_type &val);
+			// void			assign(InputIterator first, InputIterator last);
+			
+			void			assign(size_type n, const value_type &val)
+			{
+				pointer			old_begin = _begin;
+				const size_type	old_capacity = capacity();
+
+				if (n > max_size())
+					throw std::length_error("vector");
+
+				clear();
+				if (n < capacity())
+				{	
+					for (size_type i = 0; i < n; ++i)
+						push_back(val);
+				}
+				else
+				{
+					_begin = _alloc.allocate(n, old_begin);
+					_capacity = _begin + n;
+					_end = _begin;
+
+					for (; _end != _capacity; ++_end)
+						_alloc.construct(_end, val);
+					_alloc.deallocate(old_begin, old_capacity);
+				}
+			}
 			
 			void			push_back(const value_type &val)
 			{	
@@ -316,10 +346,26 @@ namespace ft
 	** -- Non-member --
 	*/
 	template <class T, class Alloc>
-	bool	operator==(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator==(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		typename ft::vector<T>::const_iterator	left = lhs.begin();
+		typename ft::vector<T>::const_iterator	left_end = lhs.end();
+		typename ft::vector<T>::const_iterator	right = rhs.begin();
+		typename ft::vector<T>::const_iterator	right_end = rhs.end();
+
+		for ( ; left != left_end ; ++left, ++right)
+		{
+			if (right == right_end || left != right)
+				return false;
+		}
+		return true;
+	}
 	
 	template <class T, class Alloc>
-	bool	operator!=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator!=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		return !(lhs == rhs);
+	}
 	
 	template <class T, class Alloc>
 	bool	operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);

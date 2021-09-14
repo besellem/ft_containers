@@ -6,13 +6,14 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 15:01:59 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:32:43 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include <memory>
 #include <vector>
+// #include <iterator>
 #include <iostream>
 
 int	main(__unused int ac, __unused char **av)
@@ -99,6 +100,33 @@ int	main(__unused int ac, __unused char **av)
 		std::cout << std::endl;
 	}
 
+	/* ASSIGN */
+	std::cout << BLUE "ASSIGN TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec(10);
+		const size_t		cap = vec.capacity();
+		
+		vec.assign(15, 42);
+		std::cout << "std::vector capacity: old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "std::vector contains:";
+		for (size_t i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+	}
+
+	{
+		ft::vector<int>		vec(10);
+		const size_t		cap = vec.capacity();
+		
+		vec.assign(15, 42);
+		std::cout << "ft::vector capacity:  old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "ft::vector contains: ";
+		for (size_t i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
 	/* COPY CONSTRUCTOR */
 	// std::cout << BLUE "COPY CONSTRUCTOR TEST:" CLR_COLOR << std::endl;
 	// {
@@ -138,36 +166,8 @@ int	main(__unused int ac, __unused char **av)
 	// 	std::cout << std::endl;
 	// }
 
-
+	/* operator= */
 	// std::cout << (vec == ft::vector<int>(19)) << std::endl;
-
-
-	/* ASSIGN */
-	std::cout << BLUE "ASSIGN TEST:" CLR_COLOR << std::endl;
-	{
-		std::vector<int>	vec(10);
-		const size_t		cap = vec.capacity();
-		
-		vec.assign(15, 42);
-		std::cout << "std::vector capacity: old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
-		std::cout << "std::vector contains:";
-		for (size_t i = 0; i < vec.size(); ++i)
-			std::cout << ' ' << vec[i];
-		std::cout << std::endl;
-	}
-
-	{
-		ft::vector<int>		vec(10);
-		const size_t		cap = vec.capacity();
-		
-		vec.assign(15, 42);
-		std::cout << "ft::vector capacity:  old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
-		std::cout << "ft::vector contains: ";
-		for (size_t i = 0; i < vec.size(); ++i)
-			std::cout << ' ' << vec[i];
-		std::cout << std::endl;
-		std::cout << std::endl;
-	}
 
 
 	std::vector<int>			real(2);

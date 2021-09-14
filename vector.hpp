@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 15:03:41 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:24:42 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <algorithm>
 # include <cstddef>
 # include <tgmath.h>
+
+# include "_utils/iterator.hpp"
 
 #define RED       "\e[1;31m"
 #define GREEN     "\e[1;33m"
@@ -44,12 +46,8 @@ namespace ft
 			
 
 			// TO DO : IMPLEMENT ITERATORS
-			class iterator
-			{
-				
-			};
-			// typedef ...	iterator;
-			// typedef ...	const_iterator;
+			typedef ft::random_access_iterator<value_type>			iterator;
+			typedef ft::random_access_iterator<const value_type>	const_iterator;
 			// typedef ...	reverse_iterator;
 			// typedef ...	const_reverse_iterator;
 			

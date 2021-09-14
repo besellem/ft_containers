@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 15:24:42 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 17:02:19 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ namespace ft
 			
 
 			// TO DO : IMPLEMENT ITERATORS
-			typedef ft::random_access_iterator<value_type>			iterator;
-			typedef ft::random_access_iterator<const value_type>	const_iterator;
-			// typedef ...	reverse_iterator;
-			// typedef ...	const_reverse_iterator;
+			// typedef ft::random_access_iterator<value_type>			iterator;
+			// typedef ft::random_access_iterator<const value_type>	const_iterator;
+			typedef ft::reverse_iterator<value_type>				reverse_iterator;
+			typedef ft::reverse_iterator<const value_type>			const_reverse_iterator;
 			
 
 		public:
@@ -126,10 +126,14 @@ namespace ft
 			// const_iterator			begin() const;
 			// iterator				end();
 			// const_iterator			end() const;
-			// reverse_iterator		rbegin();
-			// const_reverse_iterator	rbegin() const;
-			// reverse_iterator		rend();
-			// const_reverse_iterator	rend() const;
+			reverse_iterator		rbegin()
+			{
+				pointer	p = _end;
+				return reverse_iterator(p);
+			}
+			const_reverse_iterator	rbegin() const { return reverse_iterator(_end); }
+			reverse_iterator		rend()         { return reverse_iterator(_begin); }
+			const_reverse_iterator	rend() const   { return reverse_iterator(_begin); }
 
 			/*
 			** -- Capacity --

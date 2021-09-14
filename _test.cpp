@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 15:32:43 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 17:08:55 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,38 @@ int	main(__unused int ac, __unused char **av)
 	/* operator= */
 	// std::cout << (vec == ft::vector<int>(19)) << std::endl;
 
+	/* REVERSE ITERATOR */
+	std::cout << BLUE "REVERSE ITERATOR TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+			vec.push_back(i);
+		
+		std::vector<int>::reverse_iterator	it(vec.rbegin());
+		std::vector<int>::reverse_iterator	ite(vec.rend());
+		
+		std::cout << "std::vector contains:";
+		for ( ; it != ite ; ++it)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+	}
+	
+	{
+		ft::vector<int>	vec;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+			vec.push_back(i);
+		
+		ft::vector<int>::reverse_iterator	it(vec.rbegin());
+		ft::vector<int>::reverse_iterator	ite(vec.rend());
+		
+		std::cout << "std::vector contains:";
+		for ( ; it != ite ; ++it)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
 
 	std::vector<int>			real(2);
 	ft::vector<int>				mine(2);

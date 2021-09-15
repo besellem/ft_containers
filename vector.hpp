@@ -6,11 +6,12 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 17:02:19 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 22:12:07 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
 # include <iostream>
 
@@ -89,6 +90,9 @@ namespace ft
 			vector(InputIterator first, InputIterator last,
 					const allocator_type &alloc = allocator_type())
 			{
+				(void)first;
+				(void)last;
+				(void)alloc;
 				LOG("Contructor #3")
 			}
 			
@@ -388,3 +392,5 @@ namespace ft
 	}
 
 } /* namespace ft */
+
+#endif /* define VECTOR_HPP */

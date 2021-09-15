@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 17:08:55 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 22:12:39 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,19 +187,21 @@ int	main(__unused int ac, __unused char **av)
 	}
 	
 	{
-		ft::vector<int>	vec;
+		ft::vector<int>		vec;
 
 		for (int i = 1; i < 10; ++i) // set some initial content:
 			vec.push_back(i);
 		
-		ft::vector<int>::reverse_iterator	it(vec.rbegin());
-		ft::vector<int>::reverse_iterator	ite(vec.rend());
+		// ft::vector<int>::reverse_iterator::difference_type	d;
+
+		ft::vector<int>::reverse_iterator	it;//(vec.rbegin());
+		ft::vector<int>::reverse_iterator	ite;//(vec.rend());
 		
-		std::cout << "std::vector contains:";
-		for ( ; it != ite ; ++it)
-			std::cout << ' ' << *it;
-		std::cout << std::endl;
-		std::cout << std::endl;
+		// std::cout << "std::vector contains:";
+		// for ( ; it != ite ; ++it)
+		// 	std::cout << ' ' << *it;
+		// std::cout << std::endl;
+		// std::cout << std::endl;
 	}
 
 	std::vector<int>			real(2);

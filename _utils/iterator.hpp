@@ -6,19 +6,30 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 17:11:53 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/14 22:24:20 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef ITERATOR_HPP
+# define ITERATOR_HPP
 
 # include <cstddef>
 # include <tgmath.h>
 
 namespace ft
 {
+	
+	/* Iterator Tags */
+	template <class T>
+	struct iterator_traits;
 
-	template<class Iterator>
+	struct input_iterator_tag  {};
+	struct output_iterator_tag {};
+	struct forward_iterator_tag       : public input_iterator_tag         {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag       {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+	
+	template <class Iterator>
 	struct iterator_traits
 	{
 		typedef typename Iterator::difference_type		difference_type;
@@ -28,7 +39,7 @@ namespace ft
 		typedef typename Iterator::iterator_category	iterator_category;
 	};
 
-	template<class T>
+	template <class T>
 	struct iterator_traits<T*>
 	{
 		typedef ptrdiff_t								difference_type;
@@ -37,13 +48,6 @@ namespace ft
 		typedef T&										reference;
 		typedef random_access_iterator_tag				iterator_category;
 	};
-	
-	/* Iterator Tags */
-	struct input_iterator_tag  {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag       : public input_iterator_tag         {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag       {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 	
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
@@ -64,6 +68,9 @@ namespace ft
 						typename iterator_traits<Iterator>::pointer,
 						typename iterator_traits<Iterator>::reference>
 	{
+		protected:
+			Iterator	_cur;
+		
 		public:
 			typedef Iterator											iterator_type;
 			typedef typename iterator_traits<Iterator>::difference_type	difference_type;
@@ -151,8 +158,8 @@ namespace ft
 				return (*(*this + n));
 			}
 		
-		protected:
-			iterator_type	_cur;
+		// protected:
+		// 	iterator_type	_cur;
 	};
 
 	template <class Iterator>
@@ -198,3 +205,5 @@ namespace ft
 	{ return rhs.base() - lhs.base(); }
 
 } /* namespace ft */
+
+#endif /* define ITERATOR_HPP */

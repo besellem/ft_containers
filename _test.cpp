@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 22:12:39 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/20 00:13:51 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,40 @@ int	main(__unused int ac, __unused char **av)
 	/* operator= */
 	// std::cout << (vec == ft::vector<int>(19)) << std::endl;
 
+	/* ITERATOR */
+	std::cout << BLUE "ITERATOR TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+			vec.push_back(i);
+		
+		std::vector<int>::iterator	it(vec.begin());
+		std::vector<int>::iterator	ite(vec.end());
+		
+		std::cout << "std::vector contains:";
+		for ( ; it != ite ; ++it)
+			std::cout << " " << *it;
+		std::cout << std::endl;
+	}
+	
+	{
+		ft::vector<int>		vec;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+			vec.push_back(i);
+
+		ft::vector<int>::iterator	it(vec.begin());
+		ft::vector<int>::iterator	ite(vec.end());
+		
+		std::cout << "std::vector contains:";
+		for ( ; it != ite ; ++it)
+			std::cout << " " << *it;
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
+
 	/* REVERSE ITERATOR */
 	std::cout << BLUE "REVERSE ITERATOR TEST:" CLR_COLOR << std::endl;
 	{
@@ -182,7 +216,7 @@ int	main(__unused int ac, __unused char **av)
 		
 		std::cout << "std::vector contains:";
 		for ( ; it != ite ; ++it)
-			std::cout << ' ' << *it;
+			std::cout << " " << *it;
 		std::cout << std::endl;
 	}
 	
@@ -191,17 +225,64 @@ int	main(__unused int ac, __unused char **av)
 
 		for (int i = 1; i < 10; ++i) // set some initial content:
 			vec.push_back(i);
-		
-		// ft::vector<int>::reverse_iterator::difference_type	d;
 
-		ft::vector<int>::reverse_iterator	it;//(vec.rbegin());
-		ft::vector<int>::reverse_iterator	ite;//(vec.rend());
+		ft::vector<int>::reverse_iterator	it(vec.rbegin());
+		ft::vector<int>::reverse_iterator	ite(vec.rend());
 		
-		// std::cout << "std::vector contains:";
-		// for ( ; it != ite ; ++it)
-		// 	std::cout << ' ' << *it;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
+		std::cout << "std::vector contains:";
+		for ( ; it != ite ; ++it)
+			std::cout << " " << *it;
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
+	/* COMPARISIONS */
+	std::cout << BLUE "COMPARISIONS TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec1;
+		std::vector<int>	vec2;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+		{
+			vec1.push_back(i);
+			vec2.push_back(i);
+		}
+
+		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		vec2.push_back(42);
+		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+	}
+	
+	{
+		ft::vector<int>		vec1;
+		ft::vector<int>		vec2;
+
+		for (int i = 1; i < 10; ++i) // set some initial content:
+		{
+			vec1.push_back(i);
+			vec2.push_back(i);
+		}
+
+		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		vec2.push_back(42);
+		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << std::endl;
 	}
 
 	std::vector<int>			real(2);

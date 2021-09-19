@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/14 22:12:07 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/20 00:12:35 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,22 @@
 
 # include "_utils/iterator.hpp"
 
-#define RED       "\e[1;31m"
-#define GREEN     "\e[1;33m"
-#define BLUE      "\e[1;34m"
-#define CLR_COLOR "\e[0m"
+# define RED       "\e[1;31m"
+# define GREEN     "\e[1;33m"
+# define BLUE      "\e[1;34m"
+# define CLR_COLOR "\e[0m"
 
-#define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
+# include <mach/boolean.h>
+
+#ifndef DEBUG
+# define DEBUG TRUE
+#endif
+
+#if (DEBUG == TRUE)
+# define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
+#else
+# define LOG(m) ;
+#endif
 
 namespace ft
 {
@@ -45,12 +55,10 @@ namespace ft
 			typedef typename allocator_type::size_type			size_type;
 			typedef typename allocator_type::difference_type	difference_type;
 			
-
-			// TO DO : IMPLEMENT ITERATORS
-			// typedef ft::random_access_iterator<value_type>			iterator;
-			// typedef ft::random_access_iterator<const value_type>	const_iterator;
-			typedef ft::reverse_iterator<value_type>				reverse_iterator;
-			typedef ft::reverse_iterator<const value_type>			const_reverse_iterator;
+			typedef ft::random_access_iterator<pointer>			iterator;
+			typedef ft::random_access_iterator<const_pointer>	const_iterator;
+			typedef ft::reverse_iterator<pointer>				reverse_iterator;
+			typedef ft::reverse_iterator<const_pointer>			const_reverse_iterator;
 			
 
 		public:
@@ -126,18 +134,14 @@ namespace ft
 			/*
 			** -- Iterators --
 			*/
-			// iterator				begin();
-			// const_iterator			begin() const;
-			// iterator				end();
-			// const_iterator			end() const;
-			reverse_iterator		rbegin()
-			{
-				pointer	p = _end;
-				return reverse_iterator(p);
-			}
-			const_reverse_iterator	rbegin() const { return reverse_iterator(_end); }
+			iterator				begin()        { return iterator(_begin); }
+			const_iterator			begin() const  { return const_iterator(_begin); }
+			iterator				end()          { return iterator(_end); }
+			const_iterator			end() const    { return const_iterator(_end); }
+			reverse_iterator		rbegin()       { return reverse_iterator(_end); }
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_end); }
 			reverse_iterator		rend()         { return reverse_iterator(_begin); }
-			const_reverse_iterator	rend() const   { return reverse_iterator(_begin); }
+			const_reverse_iterator	rend() const   { return const_reverse_iterator(_begin); }
 
 			/*
 			** -- Capacity --
@@ -289,6 +293,7 @@ namespace ft
 			// void			insert(iterator position, InputIterator first, InputIterator last);
 			// iterator		erase(iterator position);
 			// iterator		erase(iterator first, iterator last);
+			
 			void			swap(vector &x)
 			{
 				if (*this == x)
@@ -355,41 +360,42 @@ namespace ft
 	bool	operator==(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
 	{
 		typename ft::vector<T>::const_iterator	left = lhs.begin();
-		typename ft::vector<T>::const_iterator	left_end = lhs.end();
 		typename ft::vector<T>::const_iterator	right = rhs.begin();
-		typename ft::vector<T>::const_iterator	right_end = rhs.end();
 
-		for ( ; left != left_end ; ++left, ++right)
+		if (lhs.size() != rhs.size())
+			return false;
+
+		for ( ; left != lhs.end() ; ++left, ++right)
 		{
-			if (right == right_end || left != right)
+			if (right == rhs.end() || *left != *right)
 				return false;
 		}
 		return true;
 	}
 	
 	template <class T, class Alloc>
-	bool	operator!=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
-	{
-		return !(lhs == rhs);
-	}
+	bool	operator!=(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+	{ return !(x == y); }
 	
 	template <class T, class Alloc>
-	bool	operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator<(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+	{ return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 	
 	template <class T, class Alloc>
-	bool	operator<=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator<=(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+	{ return !(y < x); }
 	
 	template <class T, class Alloc>
-	bool	operator>(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator>(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+	{ return y < x; }
 	
 	template <class T, class Alloc>
-	bool	operator>=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs);
+	bool	operator>=(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+	{ return !(x < y); }
 
 	template <class T, class Alloc>
 	void	swap(vector<T,Alloc> &x, vector<T,Alloc> &y)
-	{
-		x.swap(y);
-	}
+	{ x.swap(y); }
 
 } /* namespace ft */
 

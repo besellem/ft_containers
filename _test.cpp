@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/20 00:13:51 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/24 02:01:25 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,11 @@ int	main(__unused int ac, __unused char **av)
 	{
 		std::vector<int>	vec(10);
 		const size_t		cap = vec.capacity();
+		const size_t		sz = vec.size();
 		
 		vec.assign(15, 42);
 		std::cout << "std::vector capacity: old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "std::vector size:     old[" << sz << "] new[" << vec.size() << "]" << std::endl;
 		std::cout << "std::vector contains:";
 		for (size_t i = 0; i < vec.size(); ++i)
 			std::cout << ' ' << vec[i];
@@ -117,9 +119,11 @@ int	main(__unused int ac, __unused char **av)
 	{
 		ft::vector<int>		vec(10);
 		const size_t		cap = vec.capacity();
+		const size_t		sz = vec.size();
 		
 		vec.assign(15, 42);
 		std::cout << "ft::vector capacity:  old[" << cap << "] new[" << vec.capacity() << "]" << std::endl;
+		std::cout << "ft::vector size:      old[" << sz << "] new[" << vec.size() << "]" << std::endl;
 		std::cout << "ft::vector contains: ";
 		for (size_t i = 0; i < vec.size(); ++i)
 			std::cout << ' ' << vec[i];
@@ -195,7 +199,7 @@ int	main(__unused int ac, __unused char **av)
 		ft::vector<int>::iterator	it(vec.begin());
 		ft::vector<int>::iterator	ite(vec.end());
 		
-		std::cout << "std::vector contains:";
+		std::cout << "ft::vector contains: ";
 		for ( ; it != ite ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
@@ -229,12 +233,54 @@ int	main(__unused int ac, __unused char **av)
 		ft::vector<int>::reverse_iterator	it(vec.rbegin());
 		ft::vector<int>::reverse_iterator	ite(vec.rend());
 		
-		std::cout << "std::vector contains:";
+		std::cout << "ft::vector contains: ";
 		for ( ; it != ite ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 		std::cout << std::endl;
 	}
+
+	/* ERASE */
+	std::cout << BLUE "ERASE TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	vec;
+
+		// set some values (from 1 to 10)
+		for (int i = 1; i <= 10; ++i)
+			vec.push_back(i);
+
+		// erase the 6th element
+		vec.erase(vec.begin() + 5);
+
+		// erase the first 3 elements:
+		// vec.erase(vec.begin(), vec.begin() + 3);
+
+		std::cout << "std::vector contains:";
+		for (unsigned i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+	}
+
+	{
+		ft::vector<int>		vec;
+
+		// set some values (from 1 to 10)
+		for (int i = 1; i <= 10; ++i)
+			vec.push_back(i);
+
+		// erase the 6th element
+		vec.erase(vec.begin() + 5);
+
+		// erase the first 3 elements:
+		// vec.erase(vec.begin(), vec.begin() + 3);
+
+		std::cout << "ft::vector contains: ";
+		for (unsigned i = 0; i < vec.size(); ++i)
+			std::cout << ' ' << vec[i];
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
 
 	/* COMPARISIONS */
 	std::cout << BLUE "COMPARISIONS TEST:" CLR_COLOR << std::endl;
@@ -288,9 +334,10 @@ int	main(__unused int ac, __unused char **av)
 	std::vector<int>			real(2);
 	ft::vector<int>				mine(2);
 
-
 	std::vector<int>::iterator	real_it;
 	std::vector<int>::iterator	real_ite;
+	ft::vector<int>::iterator	mine_it;
+	ft::vector<int>::iterator	mine_ite;
 
 	std::cout << "/////////////////////////////////////// " GREEN "REAL" CLR_COLOR << std::endl;
 	std::cout << "real size ->            [" << real.size() << "]" << std::endl;
@@ -308,11 +355,12 @@ int	main(__unused int ac, __unused char **av)
 	std::cout << "mine cpty ->            [" << mine.capacity() << "]" << std::endl;
 	mine.push_back(10);
 	std::cout << "mine cpty after push -> [" << mine.capacity() << "]" << std::endl;
-	mine._print();
-	
-	// std::vector<int>::iterator	is;
+	for (mine_it = mine.begin(), mine_ite = mine.end(); mine_it != mine_ite ; ++mine_it)
+		std::cout << *mine_it << std::endl;
+	std::cout << std::endl;
 
-	std::allocator<int>		ptr;
+	
+	// std::allocator<int>		ptr;
 	// int	*p = ptr.allocate(0);
 	// std::cout << "max_size: " << ptr.max_size() << std::endl;
 	

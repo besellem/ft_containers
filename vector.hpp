@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/20 00:12:35 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/24 02:00:59 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define DEBUG TRUE
 #endif
 
-#if (DEBUG == TRUE)
+#if (DEBUG == FALSE)
 # define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
 #else
 # define LOG(m) ;
@@ -112,8 +112,11 @@ namespace ft
 			
 			~vector()
 			{
-				clear();
-				_alloc.deallocate(_begin, capacity());
+				if (_begin != NULL)
+				{
+					clear();
+					_alloc.deallocate(_begin, capacity());
+				}
 			}
 			
 			vector &				operator=(const vector &x)
@@ -146,9 +149,9 @@ namespace ft
 			/*
 			** -- Capacity --
 			*/
-			size_type		size() const     { return _end - _begin; }
+			size_type		size() const     { return static_cast<size_type>(_end - _begin); }
 			size_type		max_size() const { return allocator_type().max_size(); }
-			size_type		capacity() const { return _capacity - _begin; }
+			size_type		capacity() const { return static_cast<size_type>(_capacity - _begin); }
 			bool			empty() const    { return size() == 0; }
 
 			void			resize(size_type n, value_type val = value_type())
@@ -211,7 +214,7 @@ namespace ft
 					_capacity = _begin + n;
 					_end = _begin;
 					
-					for (; tmp_begin != old_end; ++_end, ++tmp_begin)
+					for ( ; tmp_begin != old_end; ++_end, ++tmp_begin)
 						_alloc.construct(_end, *tmp_begin);
 					_alloc.deallocate(old_begin, old_capacity);
 				}
@@ -245,7 +248,39 @@ namespace ft
 			** -- Modifiers --
 			*/
 			// template <class InputIterator>
-			// void			assign(InputIterator first, InputIterator last);
+			// void			assign(InputIterator first, InputIterator last)
+			// {
+			// 	pointer			old_begin = _begin;
+			// 	const size_type	old_capacity = capacity();
+
+			// 	// if (n > max_size())
+			// 	// 	throw std::length_error("vector");
+
+			// 	std::cout << GREEN "DIFF => " << (last - first) << CLR_COLOR << std::endl;
+
+			// 	// clear();
+			// 	// if (n < capacity())
+			// 	// {	
+			// 	// 	for (size_type i = 0; i < n; ++i)
+			// 	// 		push_back(val);
+			// 	// }
+			// 	// else
+			// 	// {
+			// 	// 	_begin = _alloc.allocate(n, old_begin);
+			// 	// 	_capacity = _begin + n;
+			// 	// 	_end = _begin;
+
+			// 	// 	for ( ; _end != _capacity; ++_end)
+			// 	// 		_alloc.construct(_end, val);
+			// 	// 	_alloc.deallocate(old_begin, old_capacity);
+			// 	// }
+
+
+			// 	// for (; first != last; ++first)
+			// 	// {
+					
+			// 	// }
+			// }
 			
 			void			assign(size_type n, const value_type &val)
 			{
@@ -267,7 +302,7 @@ namespace ft
 					_capacity = _begin + n;
 					_end = _begin;
 
-					for (; _end != _capacity; ++_end)
+					for ( ; _end != _capacity; ++_end)
 						_alloc.construct(_end, val);
 					_alloc.deallocate(old_begin, old_capacity);
 				}
@@ -291,7 +326,19 @@ namespace ft
 			// void			insert(iterator position, size_type n, const value_type &val);
 			// template <class InputIterator>
 			// void			insert(iterator position, InputIterator first, InputIterator last);
-			// iterator		erase(iterator position);
+			
+			// iterator		erase(iterator position)
+			// {
+			// 	// ft::random_access_iterator<pointer>	it = position;
+			// 	_alloc.destroy(&*position);
+
+			// 	// for ( ; position != end(); ++position)
+			// 	// {
+			// 	// 	// _alloc.construct(position + 1, *(position));
+			// 	// }
+			// 	--_end;
+			// }
+			
 			// iterator		erase(iterator first, iterator last);
 			
 			void			swap(vector &x)
@@ -322,29 +369,6 @@ namespace ft
 			allocator_type	get_allocator() const { return allocator_type(); }
 
 
-
-
-		////////////////////////////////////////////////////////////////////////
-		// TO REMOVE
-		////////////////////////////////////////////////////////////////////////
-		void			_print(void) const
-		{
-			pointer			b = _begin;
-			const size_type	sz = size();
-
-			for (size_type i = 0; i < sz; ++i)
-			{
-				std::cout << *b++ << std::endl;
-			}
-		}
-		////////////////////////////////////////////////////////////////////////
-		// END - TO REMOVE
-		////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 		private:
 			allocator_type	_alloc;
 			pointer			_begin;
@@ -365,7 +389,7 @@ namespace ft
 		if (lhs.size() != rhs.size())
 			return false;
 
-		for ( ; left != lhs.end() ; ++left, ++right)
+		for ( ; left != lhs.end(); ++left, ++right)
 		{
 			if (right == rhs.end() || *left != *right)
 				return false;

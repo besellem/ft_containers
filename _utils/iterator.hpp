@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/19 23:53:42 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/24 01:22:53 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,20 @@
 namespace ft
 {
 	
-	/* Iterator Tags */
-	template <class T>
-	struct iterator_traits;
+	/* Enable if */
+	template<bool Cond, class T = void> struct enable_if {};
+	template<class T> struct enable_if<true, T> { typedef T type; };
 
+	/* Iterator Tags */
 	struct input_iterator_tag  {};
 	struct output_iterator_tag {};
 	struct forward_iterator_tag       : public input_iterator_tag         {};
 	struct bidirectional_iterator_tag : public forward_iterator_tag       {};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+	
+	/* Iterator Traits */
+	template <class T>
+	struct iterator_traits;
 	
 	template <class Iterator>
 	struct iterator_traits
@@ -49,6 +54,7 @@ namespace ft
 		typedef random_access_iterator_tag				iterator_category;
 	};
 	
+	/* Iterator */
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
 	struct iterator {
@@ -60,7 +66,7 @@ namespace ft
 	};
 
 
-	/* random_access_iterator */
+	/* Random Access Iterator */
 	template <class Iterator>
 	class random_access_iterator
 		: public iterator<typename iterator_traits<Iterator>::iterator_category,
@@ -203,7 +209,7 @@ namespace ft
 	{ return rhs.base() - lhs.base(); }
 
 
-	/* reverse_iterator */
+	/* Reverse Iterator */
 	template <class Iterator>
 	class reverse_iterator
 		: public iterator<typename iterator_traits<Iterator>::iterator_category,
@@ -346,6 +352,7 @@ namespace ft
 	{ return rhs.base() - lhs.base(); }
 
 
+	/* Lexicographical Compare */
 	template <class InputIterator1, class InputIterator2>
 	bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 								InputIterator2 first2, InputIterator2 last2)

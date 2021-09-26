@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/24 02:01:25 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/26 15:42:56 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,14 +250,17 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 
 		// erase the 6th element
-		vec.erase(vec.begin() + 5);
+		std::cout << "ptr returned: " << *vec.erase(vec.begin() + 5) << std::endl;
 
 		// erase the first 3 elements:
-		// vec.erase(vec.begin(), vec.begin() + 3);
+		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
+		std::vector<int>::iterator	it(vec.begin());
+		std::vector<int>::iterator	ite(vec.end());
+		
 		std::cout << "std::vector contains:";
-		for (unsigned i = 0; i < vec.size(); ++i)
-			std::cout << ' ' << vec[i];
+		for ( ; it != ite ; ++it)
+			std::cout << " " << *it;
 		std::cout << std::endl;
 	}
 
@@ -269,14 +272,17 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 
 		// erase the 6th element
-		vec.erase(vec.begin() + 5);
+		std::cout << "ptr returned: " << *vec.erase(vec.begin() + 5) << std::endl;
 
 		// erase the first 3 elements:
-		// vec.erase(vec.begin(), vec.begin() + 3);
+		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
+		ft::vector<int>::iterator	it(vec.begin());
+		ft::vector<int>::iterator	ite(vec.end());
+		
 		std::cout << "ft::vector contains: ";
-		for (unsigned i = 0; i < vec.size(); ++i)
-			std::cout << ' ' << vec[i];
+		for ( ; it != ite ; ++it)
+			std::cout << " " << *it;
 		std::cout << std::endl;
 		std::cout << std::endl;
 	}

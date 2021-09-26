@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/24 02:00:59 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/26 15:50:14 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,19 +327,36 @@ namespace ft
 			// template <class InputIterator>
 			// void			insert(iterator position, InputIterator first, InputIterator last);
 			
-			// iterator		erase(iterator position)
-			// {
-			// 	// ft::random_access_iterator<pointer>	it = position;
-			// 	_alloc.destroy(&*position);
+			iterator		erase(iterator position)
+			{
+				iterator	ret = position;
 
-			// 	// for ( ; position != end(); ++position)
-			// 	// {
-			// 	// 	// _alloc.construct(position + 1, *(position));
-			// 	// }
-			// 	--_end;
-			// }
+				for ( ; position != end(); ++position)
+				{
+					_alloc.destroy(&*position);
+					_alloc.construct(&*position, *(position + 1));
+				}
+				--_end;
+				return ret;
+			}
 			
-			// iterator		erase(iterator first, iterator last);
+			iterator		erase(iterator first, iterator last)
+			{
+				iterator				it = first;
+				iterator				ret = first;
+				const difference_type	diff = std::abs(last - first);
+
+				for ( ; first != last; ++first)
+					_alloc.destroy(&*first);
+				
+				for ( ; last != end(); ++last, ++it)
+				{
+					_alloc.construct(&*it, *last);
+					_alloc.destroy(&*last);
+				}
+				_end -= diff;
+				return ret;
+			}
 			
 			void			swap(vector &x)
 			{

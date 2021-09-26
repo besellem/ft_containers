@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/26 15:42:56 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/26 17:28:02 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,61 @@
 // #include <iterator>
 #include <iostream>
 
+template <class U>
+static U&		_wraper_push_back_test01(U& vec)
+{
+	
+	return vec;
+}
+
+template <class T, class Alloc>
+bool	operator==(std::vector<T,Alloc>& real, ft::vector<T,Alloc>& mine)
+{
+	bool	check = true;
+
+	if (real.capacity() != mine.capacity())
+	{
+		std::cout << "capacity -> [" << real.capacity() << "] [" << mine.capacity() << "]\n";
+		check = false;
+	}
+
+	if (real.size() != mine.size())
+	{
+		std::cout << "size -> [" << real.size() << "] [" << mine.size() << "]\n";
+		check = false;
+	}
+
+	if (real.size() != mine.size())
+	{
+		std::cout << "size -> [" << real.size() << "] [" << mine.size() << "]\n";
+		check = false;
+	}
+	
+	if (check)
+		std::cout << "✅" << std::endl;
+	else
+		std::cout << "❌" << std::endl;
+
+	std::cout << "HERE" << std::endl;
+
+	return check;
+}
+
+void	test_vector_push_back(void)
+{
+	std::cout << "push_back: " << std::endl;
+	std::vector<int>	real(10);
+	std::vector<int>	mine(10);
+
+	operator==(_wraper_push_back_test01(real), _wraper_push_back_test01(mine));
+}
+
+
 int	main(__unused int ac, __unused char **av)
 {
 	/* PUSH_BACK */
+	test_vector_push_back();
+
 	std::cout << BLUE "PUSH_BACK TEST:" CLR_COLOR << std::endl;
 	{
 		std::vector<int>::size_type	sz;
@@ -182,10 +234,9 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 		
 		std::vector<int>::iterator	it(vec.begin());
-		std::vector<int>::iterator	ite(vec.end());
 		
 		std::cout << "std::vector contains:";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.end() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 	}
@@ -197,10 +248,9 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 
 		ft::vector<int>::iterator	it(vec.begin());
-		ft::vector<int>::iterator	ite(vec.end());
 		
 		std::cout << "ft::vector contains: ";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.end() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 		std::cout << std::endl;
@@ -216,10 +266,9 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 		
 		std::vector<int>::reverse_iterator	it(vec.rbegin());
-		std::vector<int>::reverse_iterator	ite(vec.rend());
 		
 		std::cout << "std::vector contains:";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.rend() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 	}
@@ -231,10 +280,9 @@ int	main(__unused int ac, __unused char **av)
 			vec.push_back(i);
 
 		ft::vector<int>::reverse_iterator	it(vec.rbegin());
-		ft::vector<int>::reverse_iterator	ite(vec.rend());
 		
 		std::cout << "ft::vector contains: ";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.rend() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 		std::cout << std::endl;
@@ -256,10 +304,9 @@ int	main(__unused int ac, __unused char **av)
 		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
 		std::vector<int>::iterator	it(vec.begin());
-		std::vector<int>::iterator	ite(vec.end());
 		
 		std::cout << "std::vector contains:";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.end() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 	}
@@ -278,10 +325,9 @@ int	main(__unused int ac, __unused char **av)
 		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
 		ft::vector<int>::iterator	it(vec.begin());
-		ft::vector<int>::iterator	ite(vec.end());
 		
 		std::cout << "ft::vector contains: ";
-		for ( ; it != ite ; ++it)
+		for ( ; it != vec.end() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
 		std::cout << std::endl;
@@ -294,76 +340,85 @@ int	main(__unused int ac, __unused char **av)
 		std::vector<int>	vec1;
 		std::vector<int>	vec2;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 0; i < 10; ++i)
 		{
 			vec1.push_back(i);
 			vec2.push_back(i);
 		}
 
-		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
-		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
-		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
-		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
-		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << "real before -> (vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "real before -> (vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "real before -> (vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "real before -> (vec1 >  vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "real before -> (vec1 <  vec2): " << (vec1 < vec2) << std::endl;
 		vec2.push_back(42);
-		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
-		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
-		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
-		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
-		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << "real after  -> (vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "real after  -> (vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "real after  -> (vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "real after  -> (vec1 >  vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "real after  -> (vec1 <  vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << std::endl;
 	}
 	
 	{
 		ft::vector<int>		vec1;
 		ft::vector<int>		vec2;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 0; i < 10; ++i)
 		{
 			vec1.push_back(i);
 			vec2.push_back(i);
 		}
 
-		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
-		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
-		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
-		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
-		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << "mine before -> (vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "mine before -> (vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "mine before -> (vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "mine before -> (vec1 >  vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "mine before -> (vec1 <  vec2): " << (vec1 < vec2) << std::endl;
 		vec2.push_back(42);
-		std::cout << "(vec1 == vec2): " << (vec1 == vec2) << std::endl;
-		std::cout << "(vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
-		std::cout << "(vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
-		std::cout << "(vec1 > vec2): " << (vec1 > vec2) << std::endl;
-		std::cout << "(vec1 < vec2): " << (vec1 < vec2) << std::endl;
+		std::cout << "mine after  -> (vec1 == vec2): " << (vec1 == vec2) << std::endl;
+		std::cout << "mine after  -> (vec1 >= vec2): " << (vec1 >= vec2) << std::endl;
+		std::cout << "mine after  -> (vec1 <= vec2): " << (vec1 <= vec2) << std::endl;
+		std::cout << "mine after  -> (vec1 >  vec2): " << (vec1 > vec2) << std::endl;
+		std::cout << "mine after  -> (vec1 <  vec2): " << (vec1 < vec2) << std::endl;
 		std::cout << std::endl;
 	}
 
-	std::vector<int>			real(2);
-	ft::vector<int>				mine(2);
 
-	std::vector<int>::iterator	real_it;
-	std::vector<int>::iterator	real_ite;
-	ft::vector<int>::iterator	mine_it;
-	ft::vector<int>::iterator	mine_ite;
+	/* MISC */
+	std::cout << BLUE "MISC TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int>	real(2);
 
-	std::cout << "/////////////////////////////////////// " GREEN "REAL" CLR_COLOR << std::endl;
-	std::cout << "real size ->            [" << real.size() << "]" << std::endl;
-	std::cout << "real cpty ->            [" << real.capacity() << "]" << std::endl;
-	real.push_back(10);
-	std::cout << "real cpty after push -> [" << real.capacity() << "]" << std::endl;
+		std::cout << "real size ->            [" << real.size() << "]" << std::endl;
+		std::cout << "real cpty ->            [" << real.capacity() << "]" << std::endl;
+		real.push_back(10);
+		std::cout << "real cpty after push -> [" << real.capacity() << "]" << std::endl;
 
-	for (real_it = real.begin(), real_ite = real.end(); real_it != real_ite ; ++real_it)
-		std::cout << *real_it << std::endl;
-	std::cout << std::endl;
+		std::vector<int>::iterator	real_it(real.begin());
+		
+		std::cout << "std::vector contains:";
+		for ( ; real_it != real.end() ; ++real_it)
+			std::cout << " " << *real_it;
+		std::cout << std::endl;
+		std::cout << std::endl;
+	}
 
+	{
+		ft::vector<int>		mine(2);
+		
+		std::cout << "mine size ->            [" << mine.size() << "]" << std::endl;
+		std::cout << "mine cpty ->            [" << mine.capacity() << "]" << std::endl;
+		mine.push_back(10);
+		std::cout << "mine cpty after push -> [" << mine.capacity() << "]" << std::endl;
 
-	std::cout << "/////////////////////////////////////// " GREEN "MINE" CLR_COLOR << std::endl;
-	std::cout << "mine size ->            [" << mine.size() << "]" << std::endl;
-	std::cout << "mine cpty ->            [" << mine.capacity() << "]" << std::endl;
-	mine.push_back(10);
-	std::cout << "mine cpty after push -> [" << mine.capacity() << "]" << std::endl;
-	for (mine_it = mine.begin(), mine_ite = mine.end(); mine_it != mine_ite ; ++mine_it)
-		std::cout << *mine_it << std::endl;
-	std::cout << std::endl;
+		ft::vector<int>::iterator	mine_it(mine.begin());
+		
+		std::cout << "ft::vector contains: ";
+		for ( ; mine_it != mine.end() ; ++mine_it)
+			std::cout << " " << *mine_it;
+		std::cout << std::endl;
+	}
 
 	
 	// std::allocator<int>		ptr;

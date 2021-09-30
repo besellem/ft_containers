@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/30 17:40:51 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:10:29 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,19 +391,10 @@ class vector
 		
 		iterator		erase(iterator first, iterator last)
 		{
-			iterator				it = first;
-			iterator				ret = first;
-			const difference_type	diff = std::abs(last - first);
-
-			for ( ; first != last; ++first)
-				_alloc.destroy(&*first);
+			iterator	ret = first;
 			
-			for ( ; last != end(); ++last, ++it)
-			{
-				_alloc.construct(&*it, *last);
-				_alloc.destroy(&*last);
-			}
-			_end -= diff;
+			for ( ; first != last; --last)
+				erase(first);
 			return ret;
 		}
 		

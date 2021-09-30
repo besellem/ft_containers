@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/30 16:39:06 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/30 17:40:51 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,15 @@ class vector
 		vector(const vector &x)
 		{
 			LOG("Copy Constructor")
-			
-			size_type	n = x.size();
+			// size_type	n = x.size();
 
-			_begin = x._alloc.allocate(n);
-			_end_cap = _begin + n;
-			_end = _begin;
+			// _begin = x._alloc.allocate(n);
+			// _end_cap = _begin + n;
+			// _end = _begin;
 
-			for (iterator it = x.begin(); n > 0; --n, ++_end)
-				_alloc.construct(_end, *it++);
+			// for (iterator it = x.begin(); n > 0; --n, ++_end)
+			// 	_alloc.construct(_end, *it++);
+			insert(begin(), x.begin(), x.end());
 		}
 		
 		~vector()
@@ -143,11 +143,8 @@ class vector
 			if (*this == x)
 				return *this;
 			
-			// this->clear();
-			// this->_alloc = x._alloc;
-			// this->_begin = x._begin;
-			// this->_end = x._end;
-			// this->_end_cap = x._end_cap;
+			clear();
+			insert(end(), x.begin(), x.end());
 			
 			return *this;
 		}
@@ -340,10 +337,44 @@ class vector
 			--_end;
 		}
 		
-		// iterator		insert(iterator position, const value_type &val);
-		// void			insert(iterator position, size_type n, const value_type &val);
-		// template <class _InputIte>
-		// void			insert(iterator position, _InputIte first, _InputIte last);
+		iterator		insert(iterator position, const value_type &val)
+		{
+			insert(position, 1, val);
+		}
+
+		void			insert(iterator position, size_type n, const value_type &val)
+		{
+			const difference_type	sz = ft::distance(begin(), position);
+			
+			resize(size() + n);
+			position = begin() + sz;
+			
+			size_type	rhs = ft::distance(position, end() - n);
+			pointer		old_end = _end - n - 1;
+			for (size_type i = 0; i < rhs; ++i, --old_end)
+				*(_end - i - 1) = *old_end;
+			
+			for (size_type i = 0; i < n; ++i)
+				position[i] = val;
+		}
+		
+		template <class _InputIte>
+		void			insert(iterator position, _InputIte first, _InputIte last)
+		{
+			const difference_type	sz = ft::distance(begin(), position);
+			const size_type			n = ft::distance(first, last);
+			
+			resize(size() + n);
+			position = begin() + sz;
+			
+			size_type	rhs = ft::distance(position, end() - n);
+			pointer		old_end = _end - n - 1;
+			for (size_type i = 0; i < rhs; ++i, --old_end)
+				*(_end - i - 1) = *old_end;
+			
+			for (size_type i = 0; i < n && first != last; ++i, ++first)
+				position[i] = *first;
+		}
 		
 		iterator		erase(iterator position)
 		{
@@ -381,10 +412,20 @@ class vector
 			if (*this == x)
 				return ;
 			
-			vector<T>	cpy(*this);
-			
-			*this = x;
-			x = cpy;
+			allocator_type	tmp_alloc = _alloc;
+			pointer			tmp_begin = _begin;
+			pointer			tmp_end = _end;
+			pointer			tmp_end_cap = _end_cap;
+
+			_alloc = x._alloc;
+			_begin = x._begin;
+			_end = x._end;
+			_end_cap = x._end_cap;
+
+			x._alloc = tmp_alloc;
+			x._begin = tmp_begin;
+			x._end = tmp_end;
+			x._end_cap = tmp_end_cap;
 		}
 		
 		void			clear()

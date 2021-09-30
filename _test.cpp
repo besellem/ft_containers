@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/26 17:28:02 by besellem         ###   ########.fr       */
+/*   Updated: 2021/09/30 15:19:48 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,151 @@
 #include <vector>
 // #include <iterator>
 #include <iostream>
+#include <iomanip>
 
-template <class U>
-static U&		_wraper_push_back_test01(U& vec)
-{
-	
-	return vec;
-}
+// template <class U>
+// static U&		_wraper_push_back_test01(U& vec)
+// {
+// 	return vec;
+// }
 
 template <class T, class Alloc>
 bool	operator==(std::vector<T,Alloc>& real, ft::vector<T,Alloc>& mine)
 {
-	bool	check = true;
+	bool										check = true;
+	typename std::vector<T, Alloc>::iterator	real_it(real.begin());
+	typename ft::vector<T, Alloc>::iterator		my_it(mine.begin());
 
+	// compare size
+	if (real.size() != mine.size())
+	{
+		std::cerr << "size ->     [" << real.size() << "] [" << mine.size() << "]\n";
+		check = false;
+	}
+
+	// compare capacity
 	if (real.capacity() != mine.capacity())
 	{
-		std::cout << "capacity -> [" << real.capacity() << "] [" << mine.capacity() << "]\n";
+		std::cerr << "capacity -> [" << real.capacity() << "] [" << mine.capacity() << "]\n";
 		check = false;
 	}
 
-	if (real.size() != mine.size())
+	// compare max_size
+	if (real.max_size() != mine.max_size())
 	{
-		std::cout << "size -> [" << real.size() << "] [" << mine.size() << "]\n";
+		std::cerr << "max_size -> [" << real.max_size() << "] [" << mine.max_size() << "]\n";
 		check = false;
 	}
 
-	if (real.size() != mine.size())
+	// compare emptiness
+	if (real.empty() != mine.empty())
 	{
-		std::cout << "size -> [" << real.size() << "] [" << mine.size() << "]\n";
+		std::cerr << "empty ->    [" << real.empty() << "] [" << mine.empty() << "]\n";
 		check = false;
+	}
+
+	// compare content
+	for ( ; real_it != real.end(); ++real_it, ++my_it)
+	{
+		if (my_it == mine.end() || *real_it != *my_it)
+		{
+			std::cerr << "iterator -> [" << *real_it << "] [" << *my_it << "]\n";
+			check = false;
+			break ;
+		}
 	}
 	
-	if (check)
-		std::cout << "✅" << std::endl;
-	else
-		std::cout << "❌" << std::endl;
-
-	std::cout << "HERE" << std::endl;
+	
+	if (check) std::cout << "✅" << std::endl;
+	else       std::cout << "❌" << std::endl;
 
 	return check;
 }
 
-void	test_vector_push_back(void)
+void	test_vector(void)
 {
-	std::cout << "push_back: " << std::endl;
-	std::vector<int>	real(10);
-	std::vector<int>	mine(10);
+	std::cout << GREEN "VECTOR" CLR_COLOR << std::endl;
+	std::vector<int>	real;
+	ft::vector<int>		mine;
+	size_t				count = 0;
 
-	operator==(_wraper_push_back_test01(real), _wraper_push_back_test01(mine));
+
+	printf("%02zu: ", count++);
+	operator==(real, mine);
+	
+	printf("%02zu: ", count++);
+	real.resize(1340);
+	mine.resize(1340);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.resize(5);
+	mine.resize(5);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.push_back(42);
+	mine.push_back(42);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.resize(0);
+	mine.resize(0);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.reserve(358);
+	mine.reserve(358);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.reserve(358);
+	mine.reserve(358);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.assign(100, 42);
+	mine.assign(100, 42);
+	operator==(real, mine);
+	
+	printf("%02zu: ", count++);
+	real.assign(14, 345);
+	mine.assign(14, 345);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.begin());
+	mine.erase(mine.begin());
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.end() - 1);
+	mine.erase(mine.end() - 1);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.begin(), real.end());
+	mine.erase(mine.begin(), mine.end());
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.clear();
+	mine.clear();
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real = std::vector<int>(10);
+	mine = ft::vector<int>(10);
+	// real.assign(15, 42);
+	// mine.assign(15, 42);
+	operator==(real, mine);
 }
 
 
-int	main(__unused int ac, __unused char **av)
+int	main(void)
 {
 	/* PUSH_BACK */
-	test_vector_push_back();
+	test_vector();
 
 	std::cout << BLUE "PUSH_BACK TEST:" CLR_COLOR << std::endl;
 	{

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:33 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 21:07:16 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 22:11:07 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class stack
 		typedef typename Container::size_type		size_type;
 		typedef typename Container::reference		reference;
 		typedef typename Container::const_reference	const_reference;
+
 
 	public:
 		explicit stack(container_type const &cont = Container()) : _c(cont)
@@ -77,6 +78,7 @@ class stack
 		friend bool		operator>=(const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
 		{ return lhs._c >= rhs._c; }
+	
 	
 	protected:
 		container_type	_c;

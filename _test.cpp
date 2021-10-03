@@ -6,28 +6,33 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 20:48:44 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 21:59:12 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include "stack.hpp"
+// #include "map.hpp"
 
-#include <memory>
 #include <vector>
 #include <stack>
+#include <map>
+
+#include <memory>
 #include <iostream>
 #include <iomanip>
+#include <mach/boolean.h>
 
 
 # define RED       "\e[1;31m"
 # define GREEN     "\e[1;33m"
 # define BLUE      "\e[1;34m"
 # define CLR_COLOR "\e[0m"
-# include <mach/boolean.h>
+
 #ifndef DEBUG
 # define DEBUG TRUE
 #endif
+
 #if (DEBUG == FALSE)
 # define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
 #else
@@ -88,91 +93,8 @@ bool	operator==(std::vector<T,Alloc>& real, ft::vector<T,Alloc>& mine)
 	return check;
 }
 
-void	test_vector(void)
+void	other_vector_tests(void)
 {
-	std::cout << GREEN "VECTOR" CLR_COLOR << std::endl;
-	std::vector<int>	real;
-	ft::vector<int>		mine;
-	size_t				count = 0;
-
-
-	printf("%02zu: ", count++);
-	operator==(real, mine);
-	
-	printf("%02zu: ", count++);
-	real.resize(1340);
-	mine.resize(1340);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.resize(5);
-	mine.resize(5);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.push_back(42);
-	mine.push_back(42);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.resize(0);
-	mine.resize(0);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.reserve(358);
-	mine.reserve(358);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.reserve(358);
-	mine.reserve(358);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.assign(100, 42);
-	mine.assign(100, 42);
-	operator==(real, mine);
-	
-	printf("%02zu: ", count++);
-	real.assign(14, 345);
-	mine.assign(14, 345);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.erase(real.begin());
-	mine.erase(mine.begin());
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.erase(real.end() - 1);
-	mine.erase(mine.end() - 1);
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.erase(real.begin(), real.end());
-	mine.erase(mine.begin(), mine.end());
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real.clear();
-	mine.clear();
-	operator==(real, mine);
-
-	printf("%02zu: ", count++);
-	real = std::vector<int>(10);
-	mine = ft::vector<int>(10);
-	// real.assign(15, 42);
-	// mine.assign(15, 42);
-	operator==(real, mine);
-}
-
-
-int	main(void)
-{
-	/* PUSH_BACK */
-	test_vector();
-
 	std::cout << BLUE "PUSH_BACK TEST:" CLR_COLOR << std::endl;
 	{
 		std::vector<int>::size_type	sz;
@@ -183,7 +105,6 @@ int	main(void)
 		std::cout << "capacity:         [" << sz << "]" << std::endl;
 		for (int i = 0; i < 100; ++i)
 		{
-			// std::cout << "pushing " << i << std::endl;
 			foo.push_back(i);
 			if (sz != foo.capacity())
 			{
@@ -205,7 +126,6 @@ int	main(void)
 		std::cout << "capacity:         [" << sz << "]" << std::endl;
 		for (int i = 0; i < 100; ++i)
 		{
-			// std::cout << "pushing " << i << std::endl;
 			foo.push_back(i);
 			if (sz != foo.capacity())
 			{
@@ -224,7 +144,7 @@ int	main(void)
 	{
 		std::vector<int>	vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 
 		vec.resize(5);
@@ -240,7 +160,7 @@ int	main(void)
 	{
 		ft::vector<int>		vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 
 		vec.resize(5);
@@ -285,54 +205,12 @@ int	main(void)
 		std::cout << std::endl;
 	}
 
-	/* COPY CONSTRUCTOR */
-	// std::cout << BLUE "COPY CONSTRUCTOR TEST:" CLR_COLOR << std::endl;
-	// {
-	// 	std::vector<int>	vec;
-
-	// 	for (int i = 1; i < 10; ++i) // set some initial content:
-	// 		vec.push_back(i);
-
-	// 	vec.resize(5);
-	// 	vec.resize(8, 100);
-	// 	vec.resize(12);
-
-	// 	std::vector<int>	cpy(vec);
-
-	// 	std::cout << "std::vector contains:";
-	// 	for (size_t i = 0; i < cpy.size(); ++i)
-	// 		std::cout << ' ' << cpy[i];
-	// 	std::cout << std::endl;
-	// }
-
-	// {
-	// 	ft::vector<int>	vec;
-
-	// 	for (int i = 1; i < 10; ++i) // set some initial content:
-	// 		vec.push_back(i);
-
-	// 	vec.resize(5);
-	// 	vec.resize(8, 100);
-	// 	vec.resize(12);
-
-	// 	ft::vector<int>	cpy(vec);
-
-	// 	std::cout << "std::vector contains:";
-	// 	for (size_t i = 0; i < cpy.size(); ++i)
-	// 		std::cout << ' ' << cpy[i];
-	// 	std::cout << std::endl;
-	// 	std::cout << std::endl;
-	// }
-
-	/* operator= */
-	// std::cout << (vec == ft::vector<int>(19)) << std::endl;
-
 	/* ITERATOR */
 	std::cout << BLUE "ITERATOR TEST:" CLR_COLOR << std::endl;
 	{
 		std::vector<int>	vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 		
 		std::vector<int>::iterator	it(vec.begin());
@@ -346,7 +224,7 @@ int	main(void)
 	{
 		ft::vector<int>		vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 
 		ft::vector<int>::iterator	it(vec.begin());
@@ -363,7 +241,7 @@ int	main(void)
 	{
 		std::vector<int>	vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 		
 		std::vector<int>::reverse_iterator	it(vec.rbegin());
@@ -377,7 +255,7 @@ int	main(void)
 	{
 		ft::vector<int>		vec;
 
-		for (int i = 1; i < 10; ++i) // set some initial content:
+		for (int i = 1; i < 10; ++i)
 			vec.push_back(i);
 
 		ft::vector<int>::reverse_iterator	it(vec.rbegin());
@@ -400,7 +278,6 @@ int	main(void)
 			std::cout << "vct.at(): " << vct.at(i) << " | ";
 			std::cout << "vct[]: " << vct[i] << std::endl;
 		}
-		// printSize(vct);
 
 		std::vector<int> const vct_c(vct);
 
@@ -427,7 +304,6 @@ int	main(void)
 			std::cout << "vct.at(): " << vct.at(i) << " | ";
 			std::cout << "vct[]: " << vct[i] << std::endl;
 		}
-		// printSize(vct);
 
 		ft::vector<int> const vct_c(vct);
 
@@ -451,14 +327,10 @@ int	main(void)
 	{
 		std::vector<int>	vec;
 
-		// set some values (from 1 to 10)
 		for (int i = 1; i <= 10; ++i)
 			vec.push_back(i);
 
-		// erase the 6th element
 		std::cout << "ptr returned: " << *vec.erase(vec.begin() + 5) << std::endl;
-
-		// erase the first 3 elements:
 		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
 		std::vector<int>::iterator	it(vec.begin());
@@ -472,14 +344,10 @@ int	main(void)
 	{
 		ft::vector<int>		vec;
 
-		// set some values (from 1 to 10)
 		for (int i = 1; i <= 10; ++i)
 			vec.push_back(i);
 
-		// erase the 6th element
 		std::cout << "ptr returned: " << *vec.erase(vec.begin() + 5) << std::endl;
-
-		// erase the first 3 elements:
 		std::cout << "ptr returned: " << *vec.erase(vec.begin(), vec.begin() + 3) << std::endl;
 
 		ft::vector<int>::iterator	it(vec.begin());
@@ -577,13 +445,94 @@ int	main(void)
 			std::cout << " " << *mine_it;
 		std::cout << std::endl;
 	}
+}
 
-	std::stack<int>	_st;
+void	test_vector(void)
+{
+	std::cout << GREEN "VECTOR" CLR_COLOR << std::endl;
+	std::vector<int>	real;
+	ft::vector<int>		mine;
+	size_t				count = 0;
 
+
+	printf("%02zu: ", count++);
+	operator==(real, mine);
 	
-	// std::allocator<int>		ptr;
-	// int	*p = ptr.allocate(0);
-	// std::cout << "max_size: " << ptr.max_size() << std::endl;
+	printf("%02zu: ", count++);
+	real.resize(1340);
+	mine.resize(1340);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.resize(5);
+	mine.resize(5);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.push_back(42);
+	mine.push_back(42);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.resize(0);
+	mine.resize(0);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.reserve(358);
+	mine.reserve(358);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.reserve(358);
+	mine.reserve(358);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.assign(100, 42);
+	mine.assign(100, 42);
+	operator==(real, mine);
 	
+	printf("%02zu: ", count++);
+	real.assign(14, 345);
+	mine.assign(14, 345);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.begin());
+	mine.erase(mine.begin());
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.end() - 1);
+	mine.erase(mine.end() - 1);
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.erase(real.begin(), real.end());
+	mine.erase(mine.begin(), mine.end());
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real.clear();
+	mine.clear();
+	operator==(real, mine);
+
+	printf("%02zu: ", count++);
+	real = std::vector<int>(10);
+	mine = ft::vector<int>(10);
+	real.assign(15, 42);
+	mine.assign(15, 42);
+	operator==(real, mine);
+
+
+	// other_vector_tests();
+}
+
+
+int		main(void)
+{
+	test_vector();
+
 	return 0;
 }

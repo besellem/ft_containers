@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/30 23:10:29 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 20:42:36 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,6 @@
 # include <tgmath.h>
 
 # include "_utils/iterator.hpp"
-
-# define RED       "\e[1;31m"
-# define GREEN     "\e[1;33m"
-# define BLUE      "\e[1;34m"
-# define CLR_COLOR "\e[0m"
-
-# include <mach/boolean.h>
-
-#ifndef DEBUG
-# define DEBUG TRUE
-#endif
-
-#if (DEBUG == FALSE)
-# define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
-#else
-# define LOG(m) ;
-#endif
 
 
 _BEGIN_NAMESPACE_FT
@@ -56,10 +39,10 @@ class vector
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 		
-		typedef ft::random_access_iterator<pointer>			iterator;
-		typedef ft::random_access_iterator<const_pointer>	const_iterator;
-		typedef ft::reverse_iterator<pointer>				reverse_iterator;
-		typedef ft::reverse_iterator<const_pointer>			const_reverse_iterator;
+		typedef ft::random_access_iterator<value_type>			iterator;
+		typedef ft::random_access_iterator<const value_type>	const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		
 
 	public:
@@ -68,9 +51,7 @@ class vector
 			_begin(nullptr_),
 			_end(nullptr_),
 			_end_cap(nullptr_)
-		{
-			LOG("Contructor #1")
-		}
+		{}
 		
 		explicit vector(size_type n, const value_type &val = value_type(),
 						const allocator_type &alloc = allocator_type()) :
@@ -79,7 +60,6 @@ class vector
 			_end(nullptr_),
 			_end_cap(nullptr_)
 		{
-			LOG("Contructor #2")
 			try
 			{
 				_begin = _alloc.allocate(n);
@@ -104,7 +84,6 @@ class vector
 			_end(nullptr_),
 			_end_cap(nullptr_)
 		{
-			LOG("Contructor #3")
 			difference_type		n = ft::distance(first, last);
 			
 			_begin = _alloc.allocate(n);
@@ -114,17 +93,12 @@ class vector
 				_alloc.construct(_end, *first);
 		}
 		
-		vector(const vector &x)
+		vector(const vector &x) :
+			_alloc(x._alloc),
+			_begin(nullptr_),
+			_end(nullptr_),
+			_end_cap(nullptr_)
 		{
-			LOG("Copy Constructor")
-			// size_type	n = x.size();
-
-			// _begin = x._alloc.allocate(n);
-			// _end_cap = _begin + n;
-			// _end = _begin;
-
-			// for (iterator it = x.begin(); n > 0; --n, ++_end)
-			// 	_alloc.construct(_end, *it++);
 			insert(begin(), x.begin(), x.end());
 		}
 		
@@ -139,13 +113,11 @@ class vector
 		
 		vector &				operator=(const vector &x)
 		{
-			LOG("Assignment Operator")
 			if (*this == x)
 				return *this;
 			
 			clear();
 			insert(end(), x.begin(), x.end());
-			
 			return *this;
 		}
 		
@@ -156,10 +128,10 @@ class vector
 		const_iterator			begin() const  { return const_iterator(_begin); }
 		iterator				end()          { return iterator(_end); }
 		const_iterator			end() const    { return const_iterator(_end); }
-		reverse_iterator		rbegin()       { return reverse_iterator(_end); }
-		const_reverse_iterator	rbegin() const { return const_reverse_iterator(_end); }
-		reverse_iterator		rend()         { return reverse_iterator(_begin); }
-		const_reverse_iterator	rend() const   { return const_reverse_iterator(_begin); }
+		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
+		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
+		reverse_iterator		rend()         { return reverse_iterator(begin()); }
+		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
 
 		/*
 		** -- Capacity --
@@ -171,45 +143,31 @@ class vector
 
 		void			resize(size_type n, value_type val = value_type())
 		{
-			size_type	i;
+			size_type	old_size = size();
+			size_type	old_cap = capacity();
 
 			if (n > max_size())
 				throw std::length_error("vector::resize");
 			
 			if (n < size())
 			{
-				for (i = size(); i > n; --i)
+				while (size() > n)
 					_alloc.destroy(--_end);
 			}
 			else
 			{
-				if (n < capacity())
+				if (n > capacity())
 				{
-					i = size();
-					reserve(n);
-					for ( ; i < n; ++i, ++_end)
-						_alloc.construct(_end, val);
-				}
-				else
-				{
-					pointer			old_begin = _begin;
-					pointer			tmp_begin = _begin;
-					pointer			old_end = _end;
-					const size_type	old_capacity = capacity();
-
-					_begin = _alloc.allocate(n, old_begin);
-					_end_cap = _begin + n;
-					_end = _begin;
-					while (tmp_begin != old_end)
+					if (n > old_cap)
 					{
-						_alloc.construct(_end, *tmp_begin);
-						++_end;
-						++tmp_begin;
+						if ((old_cap * 2) >= n)
+							reserve(old_cap * 2);
+						else
+							reserve(n);
 					}
-					while (_end != _end_cap)
-						_alloc.construct(_end++, val);
-					_alloc.deallocate(old_begin, old_capacity);
 				}
+				for ( ; old_size < n; ++old_size, ++_end)
+					_alloc.construct(_end, val);
 			}
 		}
 
@@ -262,65 +220,23 @@ class vector
 		/*
 		** -- Modifiers --
 		*/
-		// template <class _InputIte>
-		// void			assign(_InputIte first, _InputIte last)
-		// {
-		// 	pointer			old_begin = _begin;
-		// 	const size_type	old_capacity = capacity();
-
-		// 	// if (n > max_size())
-		// 	// 	throw std::length_error("vector");
-
-		// 	std::cout << GREEN "DIFF => " << (last - first) << CLR_COLOR << std::endl;
-
-		// 	// clear();
-		// 	// if (n < capacity())
-		// 	// {	
-		// 	// 	for (size_type i = 0; i < n; ++i)
-		// 	// 		push_back(val);
-		// 	// }
-		// 	// else
-		// 	// {
-		// 	// 	_begin = _alloc.allocate(n, old_begin);
-		// 	// 	_end_cap = _begin + n;
-		// 	// 	_end = _begin;
-
-		// 	// 	for ( ; _end != _end_cap; ++_end)
-		// 	// 		_alloc.construct(_end, val);
-		// 	// 	_alloc.deallocate(old_begin, old_capacity);
-		// 	// }
-
-
-		// 	// for (; first != last; ++first)
-		// 	// {
-				
-		// 	// }
-		// }
-		
-		void			assign(size_type n, const value_type &val)
+		template <class _InputIte>
+		void			assign(_InputIte first,
+			_InputIte last,
+			typename ft::enable_if<!ft::is_integral<_InputIte>::value, _InputIte>::type* = nullptr_)
 		{
-			pointer			old_begin = _begin;
-			const size_type	old_capacity = capacity();
-
-			if (n > max_size())
-				throw std::length_error("vector");
-
 			clear();
-			if (n < capacity())
-			{	
-				for (size_type i = 0; i < n; ++i)
-					push_back(val);
-			}
-			else
-			{
-				_begin = _alloc.allocate(n, old_begin);
-				_end_cap = _begin + n;
-				_end = _begin;
+			reserve(ft::distance(first, last));
+			for ( ; first != last; ++first, ++_end)
+				_alloc.construct(_end, *first);
+		}
 
-				for ( ; _end != _end_cap; ++_end)
-					_alloc.construct(_end, val);
-				_alloc.deallocate(old_begin, old_capacity);
-			}
+		void			assign(size_type n, const value_type & val)
+		{
+			clear();
+			reserve(n);
+			for ( ; n > 0; --n, ++_end)
+				_alloc.construct(_end, val);
 		}
 		
 		void			push_back(const value_type &val)
@@ -340,6 +256,7 @@ class vector
 		iterator		insert(iterator position, const value_type &val)
 		{
 			insert(position, 1, val);
+			return iterator(position);
 		}
 
 		void			insert(iterator position, size_type n, const value_type &val)
@@ -359,7 +276,10 @@ class vector
 		}
 		
 		template <class _InputIte>
-		void			insert(iterator position, _InputIte first, _InputIte last)
+		void			insert(iterator position,
+			_InputIte first,
+			_InputIte last,
+			typename ft::enable_if<!ft::is_integral<_InputIte>::value, _InputIte>::type* = nullptr_)
 		{
 			const difference_type	sz = ft::distance(begin(), position);
 			const size_type			n = ft::distance(first, last);

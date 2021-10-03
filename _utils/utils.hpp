@@ -6,13 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/30 16:27:42 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 17:17:42 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* for namespace declaration */
-#define _BEGIN_NAMESPACE_FT   namespace ft {
-#define _END_NAMESPACE_FT      }
+#define _BEGIN_NAMESPACE_FT  namespace ft {
+#define _END_NAMESPACE_FT    }
 
 
 _BEGIN_NAMESPACE_FT
@@ -40,6 +40,6 @@ struct nullptr_t
 };
 
 /* nullptr_ is equivalent to nullptr */
-#define nullptr_ nullptr_t(0)
+#define nullptr_  nullptr_t(0)
 
 _END_NAMESPACE_FT

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/30 17:27:57 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:09:20 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,21 @@
 #include <iostream>
 #include <iomanip>
 
-// template <class U>
-// static U&		_wraper_push_back_test01(U& vec)
-// {
-// 	return vec;
-// }
+
+# define RED       "\e[1;31m"
+# define GREEN     "\e[1;33m"
+# define BLUE      "\e[1;34m"
+# define CLR_COLOR "\e[0m"
+# include <mach/boolean.h>
+#ifndef DEBUG
+# define DEBUG TRUE
+#endif
+#if (DEBUG == FALSE)
+# define LOG(m) std::cout << RED << __FILE__ << ":" << __LINE__ << ": " CLR_COLOR << m << std::endl;
+#else
+# define LOG(m) ;
+#endif
+
 
 template <class T, class Alloc>
 bool	operator==(std::vector<T,Alloc>& real, ft::vector<T,Alloc>& mine)
@@ -346,7 +356,6 @@ int	main(void)
 		std::cout << std::endl;
 	}
 
-
 	/* REVERSE ITERATOR */
 	std::cout << BLUE "REVERSE ITERATOR TEST:" CLR_COLOR << std::endl;
 	{
@@ -375,6 +384,63 @@ int	main(void)
 		for ( ; it != vec.rend() ; ++it)
 			std::cout << " " << *it;
 		std::cout << std::endl;
+		std::cout << std::endl;
+	}
+
+	/* AT */
+	std::cout << BLUE "AT TEST:" CLR_COLOR << std::endl;
+	{
+		std::vector<int> vct(7);
+
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+		{
+			vct.at(i) = (vct.size() - i) * 3;
+			std::cout << "vct.at(): " << vct.at(i) << " | ";
+			std::cout << "vct[]: " << vct[i] << std::endl;
+		}
+		// printSize(vct);
+
+		std::vector<int> const vct_c(vct);
+
+		std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
+		std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+
+		try {
+			vct.at(10) = 42;
+		}
+		catch (std::out_of_range &e) {
+			std::cout << "Catch out_of_range exception!" << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << "Catch exception: " << e.what() << std::endl;
+		}
+	}
+	
+	{
+		ft::vector<int> vct(7);
+
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+		{
+			vct.at(i) = (vct.size() - i) * 3;
+			std::cout << "vct.at(): " << vct.at(i) << " | ";
+			std::cout << "vct[]: " << vct[i] << std::endl;
+		}
+		// printSize(vct);
+
+		ft::vector<int> const vct_c(vct);
+
+		std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
+		std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+
+		try {
+			vct.at(10) = 42;
+		}
+		catch (std::out_of_range &e) {
+			std::cout << "Catch out_of_range exception!" << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << "Catch exception: " << e.what() << std::endl;
+		}
 		std::cout << std::endl;
 	}
 

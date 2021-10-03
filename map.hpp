@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 22:22:39 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 22:28:43 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class map
 		typedef ft::reverse_iterator<iterator>               reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>         const_reverse_iterator;
 
-		class value_compare : public binary_function<value_type, value_type, bool>
+		class value_compare : public ft::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
 			
@@ -130,7 +130,10 @@ class map
 		key_compare		key_comp()      const;
 		value_compare	value_comp()    const;
 
-		// map operations:
+
+		/*
+		** -- Operations --
+		*/
 		iterator		find(const key_type& k);
 		const_iterator	find(const key_type& k) const;
 		size_type		count(const key_type& k) const;
@@ -141,6 +144,7 @@ class map
 		pair<iterator, iterator>				equal_range(const key_type& k);
 		pair<const_iterator, const_iterator>	equal_range(const key_type& k) const;
 		
+		
 		/*
 		** -- Allocator --
 		*/
@@ -149,9 +153,9 @@ class map
 
 		private:
 			allocator_type	_alloc;
-			pointer			_begin;
-			pointer			_end;
-			pointer			_end_cap;
+			// pointer			_begin;
+			// pointer			_end;
+			// pointer			_end_cap;
 		
 };
 

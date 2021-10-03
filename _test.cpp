@@ -6,14 +6,16 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 18:09:20 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 20:48:44 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
+#include "stack.hpp"
+
 #include <memory>
 #include <vector>
-// #include <iterator>
+#include <stack>
 #include <iostream>
 #include <iomanip>
 
@@ -575,6 +577,8 @@ int	main(void)
 			std::cout << " " << *mine_it;
 		std::cout << std::endl;
 	}
+
+	std::stack<int>	_st;
 
 	
 	// std::allocator<int>		ptr;

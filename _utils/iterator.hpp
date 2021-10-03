@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 19:55:28 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 20:43:41 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 
 _BEGIN_NAMESPACE_FT
-	
+
 /* Iterator Tags */
 struct input_iterator_tag  {};
 struct output_iterator_tag {};

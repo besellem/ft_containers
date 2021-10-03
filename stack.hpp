@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:33 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 21:06:33 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/03 21:07:16 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "vector.hpp"
 
-_BEGIN_NAMESPACE_FT
 
+_BEGIN_NAMESPACE_FT
 
 template< class T, class Container = ft::vector<T> >
 class stack
@@ -82,6 +82,7 @@ class stack
 		container_type	_c;
 	
 }; /* class stack */
+
 
 _END_NAMESPACE_FT
 

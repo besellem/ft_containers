@@ -6,13 +6,14 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 21:59:12 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:22:08 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include "stack.hpp"
 // #include "map.hpp"
+#include "_utils/RedBlackTree.hpp"
 
 #include <vector>
 #include <stack>
@@ -533,6 +534,19 @@ void	test_vector(void)
 int		main(void)
 {
 	test_vector();
+
+	ft::RedBlackTree<int, int>	bst;
+	bst.insert(34);
+	bst.insert(18);
+	bst.insert(5);
+	// bst.insert(5);
+	bst.insert(15);
+	bst.insert(17);
+	bst.insert(25);
+	bst.insert(40);
+	bst.insert(80);
+	// bst.deleteNode(25);
+	bst.prettyPrint();
 
 	return 0;
 }

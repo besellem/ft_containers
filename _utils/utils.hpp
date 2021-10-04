@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 22:32:37 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:46:45 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,25 @@ struct nullptr_t
 #define nullptr_  nullptr_t(0)
 
 
-/* pair */
+/* Pair */
 template <class T1, class T2>
 struct pair
 {
-	/*
-	** -- Types --
-	*/
+	/* -- Types -- */
 	typedef T1		first_type;
 	typedef T2		second_type;
 
 
-	/*
-	** -- Construction --
-	*/
+	/* -- Construction -- */
 	pair() : first(), second() {}
 	pair(const first_type& a, const second_type& b) : first(a), second(b) {}
-	~pair() {}
 	
 	template<class U, class V>
 	pair(const pair<U,V>& pr) : first(pr.first), second(pr.second) {}
 
+	~pair() {}
 
-	/*
-	** -- Operators --
-	*/
+	/* -- Operators -- */
 	pair&	operator=(const pair& pr)
 	{
 		this->first = pr.first;
@@ -103,13 +97,12 @@ struct pair
 	{ return !(lhs < rhs); }
 
 
-	/*
-	** -- Public Variables --
-	*/
+	/* -- Public Variables -- */
 	first_type		first;
 	second_type		second;
 };
 
+/* make_pair */
 template <class T1, class T2>
 pair<T1, T2>	make_pair(T1 x, T2 y) { return pair<T1, T2>(x, y); }
 
@@ -118,9 +111,9 @@ pair<T1, T2>	make_pair(T1 x, T2 y) { return pair<T1, T2>(x, y); }
 template <class Arg1, class Arg2, class Result>
 struct binary_function
 {
-	typedef Arg1		first_argument_type;
-	typedef Arg2		second_argument_type;
-	typedef Result		result_type;
+	typedef Arg1        first_argument_type;
+	typedef Arg2        second_argument_type;
+	typedef Result      result_type;
 };
 
 template <class T>

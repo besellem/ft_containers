@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 20:42:36 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/04 10:01:27 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ class vector
 				return *this;
 			
 			clear();
+			reserve(x.size());
 			insert(end(), x.begin(), x.end());
 			return *this;
 		}
@@ -143,28 +144,25 @@ class vector
 
 		void			resize(size_type n, value_type val = value_type())
 		{
-			size_type	old_size = size();
-			size_type	old_cap = capacity();
+			const size_type	cap = capacity();
+			size_type		old_size = size();
 
 			if (n > max_size())
 				throw std::length_error("vector::resize");
 			
-			if (n < size())
+			if (n < old_size)
 			{
 				while (size() > n)
 					_alloc.destroy(--_end);
 			}
 			else
 			{
-				if (n > capacity())
+				if (n > cap)
 				{
-					if (n > old_cap)
-					{
-						if ((old_cap * 2) >= n)
-							reserve(old_cap * 2);
-						else
-							reserve(n);
-					}
+					if ((cap * 2) >= n)
+						reserve(cap * 2);
+					else
+						reserve(n);
 				}
 				for ( ; old_size < n; ++old_size, ++_end)
 					_alloc.construct(_end, val);

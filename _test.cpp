@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/04 14:22:08 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/05 16:01:03 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,20 +533,48 @@ void	test_vector(void)
 
 int		main(void)
 {
-	test_vector();
+	// test_vector();
 
 	ft::RedBlackTree<int, int>	bst;
-	bst.insert(34);
-	bst.insert(18);
-	bst.insert(5);
-	// bst.insert(5);
-	bst.insert(15);
-	bst.insert(17);
-	bst.insert(25);
+	bst.insert(10);
+	bst.insert(20);
+	bst.insert(30);
 	bst.insert(40);
-	bst.insert(80);
-	// bst.deleteNode(25);
+	bst.insert(50);
+	bst.insert(60);
 	bst.prettyPrint();
 
+	std::map<char,int> mymap;
+	std::map<char,int>::iterator it;
+
+	// insert some values:
+	mymap['a'] = 10;
+	mymap['b'] = 20;
+	mymap['c'] = 30;
+	mymap['d'] = 40;
+	mymap['e'] = 50;
+	mymap['f'] = 60;
+	
+	for (it = mymap.begin() ; it != mymap.end() ; ++it)
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+		mymap.erase(it);
+	}
+
+
+	std::cout << std::endl;
+
+	/*
+	  b 
+	a   d
+       c  e
+            f
+	*/
+
+	for (it = mymap.begin() ; it != mymap.end() ; ++it)
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+	}
+  
 	return 0;
 }

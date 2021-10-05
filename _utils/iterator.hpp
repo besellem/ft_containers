@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/04 10:22:10 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/05 17:15:03 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,8 +215,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, _Ite>
 		
 		private:
 			pointer		_cur;
-		
-};
+}; /* random_access_iterator */
 
 /* Reverse Iterator */
 template <class Iterator>
@@ -363,7 +362,7 @@ class reverse_iterator
 						const reverse_iterator<IteratorL>& lhs,
 						const reverse_iterator<IteratorR>& rhs)
 		{ return rhs.base() - lhs.base(); }
-};
+}; /* reverse_iterator */
 
 /* Lexicographical Compare */
 template <class InputIte1, class InputIte2>

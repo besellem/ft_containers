@@ -6,13 +6,14 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/05 16:01:03 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 16:21:31 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include "stack.hpp"
-// #include "map.hpp"
+#include "_utils/utils.hpp"
+#include "map.hpp"
 #include "_utils/RedBlackTree.hpp"
 
 #include <vector>
@@ -536,16 +537,17 @@ int		main(void)
 	// test_vector();
 
 	ft::RedBlackTree<int, int>	bst;
-	bst.insert(10);
-	bst.insert(20);
-	bst.insert(30);
-	bst.insert(40);
-	bst.insert(50);
-	bst.insert(60);
-	bst.prettyPrint();
 
-	std::map<char,int> mymap;
-	std::map<char,int>::iterator it;
+	bst.insert( ft::make_pair<int, int>(1, 10) );
+	// bst.insert( ft::make_pair<int, int>(2, 20) );
+	// bst.insert( ft::make_pair<int, int>(3, 30) );
+	// bst.insert( ft::make_pair<int, int>(4, 40) );
+	// bst.insert( ft::make_pair<int, int>(5, 50) );
+	// bst.insert( ft::make_pair<int, int>(6, 60) );
+	// bst.print();
+
+	std::map<char, int, std::greater<int> > mymap;
+	std::map<char, int>::iterator it;
 
 	// insert some values:
 	mymap['a'] = 10;
@@ -558,7 +560,7 @@ int		main(void)
 	for (it = mymap.begin() ; it != mymap.end() ; ++it)
 	{
 		std::cout << it->first << " " << it->second << std::endl;
-		mymap.erase(it);
+		// mymap.erase(it);
 	}
 
 
@@ -571,10 +573,10 @@ int		main(void)
             f
 	*/
 
-	for (it = mymap.begin() ; it != mymap.end() ; ++it)
-	{
-		std::cout << it->first << " " << it->second << std::endl;
-	}
+	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
+	// {
+	// 	std::cout << it->first << " " << it->second << std::endl;
+	// }
   
 	return 0;
 }

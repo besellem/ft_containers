@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/05 17:15:03 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 14:57:57 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ struct iterator {
 };
 
 /* Random Access Iterator */
-template <class _Ite>
-class random_access_iterator : public iterator<random_access_iterator_tag, _Ite>
+template <class Ite>
+class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 {
 	public:
-		typedef typename ft::iterator<random_access_iterator_tag, _Ite>::value_type         value_type;
-		typedef typename ft::iterator<random_access_iterator_tag, _Ite>::difference_type    difference_type;
-		typedef typename ft::iterator<random_access_iterator_tag, _Ite>::pointer            pointer;
-		typedef typename ft::iterator<random_access_iterator_tag, _Ite>::reference          reference;
-		typedef typename ft::iterator<random_access_iterator_tag, _Ite>::iterator_category  iterator_category;
+		typedef typename ft::iterator<random_access_iterator_tag, Ite>::value_type         value_type;
+		typedef typename ft::iterator<random_access_iterator_tag, Ite>::difference_type    difference_type;
+		typedef typename ft::iterator<random_access_iterator_tag, Ite>::pointer            pointer;
+		typedef typename ft::iterator<random_access_iterator_tag, Ite>::reference          reference;
+		typedef typename ft::iterator<random_access_iterator_tag, Ite>::iterator_category  iterator_category;
 	
 		random_access_iterator()                   : _cur(nullptr_) {}
 		explicit random_access_iterator(pointer x) : _cur(x) {}
@@ -165,9 +165,9 @@ class random_access_iterator : public iterator<random_access_iterator_tag, _Ite>
 			return *(_cur + n);
 		}
 
-		operator random_access_iterator<const _Ite>(void)
+		operator random_access_iterator<const Ite>(void)
 		{
-			return static_cast< random_access_iterator<const _Ite> >(_cur);
+			return static_cast< random_access_iterator<const Ite> >(_cur);
 		}
 
 		/* -- Non-member functions -- */
@@ -218,25 +218,25 @@ class random_access_iterator : public iterator<random_access_iterator_tag, _Ite>
 }; /* random_access_iterator */
 
 /* Reverse Iterator */
-template <class Iterator>
+template <class Ite>
 class reverse_iterator
-	: public iterator<typename iterator_traits<Iterator>::iterator_category,
-					typename iterator_traits<Iterator>::value_type,
-					typename iterator_traits<Iterator>::difference_type,
-					typename iterator_traits<Iterator>::pointer,
-					typename iterator_traits<Iterator>::reference>
+	: public iterator<typename iterator_traits<Ite>::iterator_category,
+					typename iterator_traits<Ite>::value_type,
+					typename iterator_traits<Ite>::difference_type,
+					typename iterator_traits<Ite>::pointer,
+					typename iterator_traits<Ite>::reference>
 {
 	protected:
-		Iterator	_cur;
+		Ite		_cur;
 	
 	public:
-		typedef Iterator                                             iterator_type;
-		typedef typename iterator_traits<Iterator>::difference_type  difference_type;
-		typedef typename iterator_traits<Iterator>::reference        reference;
-		typedef typename iterator_traits<Iterator>::pointer          pointer;
+		typedef Ite                                             iterator_type;
+		typedef typename iterator_traits<Ite>::difference_type  difference_type;
+		typedef typename iterator_traits<Ite>::reference        reference;
+		typedef typename iterator_traits<Ite>::pointer          pointer;
 
 		reverse_iterator()                    : _cur() {}
-		explicit reverse_iterator(Iterator x) : _cur(x) {}
+		explicit reverse_iterator(Ite x) : _cur(x) {}
 
 		template <class U>
 		reverse_iterator(const reverse_iterator<U>& u) : _cur(u.base()) {}
@@ -251,7 +251,7 @@ class reverse_iterator
 			return *this;
 		}
 		
-		Iterator			base() const
+		Ite			base() const
 		{
 			return _cur;
 		}

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 22:28:43 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 16:23:08 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,20 @@
 # include <tgmath.h>
 
 # include "_utils/iterator.hpp"
+# include "_utils/map_iterator.hpp"
 # include "_utils/utils.hpp"
+# include "_utils/RedBlackTree.hpp"
+
 
 
 _BEGIN_NAMESPACE_FT
+
+template <class Key,
+		  class T,
+		  class Compare,
+		  class Node,
+		  class AllocNode>
+class RedBlackTree;
 
 template <class Key,
 		  class T,
@@ -46,10 +56,10 @@ class map
 		typedef typename allocator_type::size_type           size_type;
 		typedef typename allocator_type::difference_type     difference_type;
 
-		typedef ft::random_access_iterator<value_type>       iterator;
-		typedef ft::random_access_iterator<const value_type> const_iterator;
-		typedef ft::reverse_iterator<iterator>               reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>         const_reverse_iterator;
+		typedef ft::map_iterator<value_type>                 iterator;
+		typedef ft::map_iterator<const value_type>           const_iterator;
+		// typedef ft::reverse_iterator<iterator>               reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator>         const_reverse_iterator;
 
 		class value_compare : public ft::binary_function<value_type, value_type, bool>
 		{
@@ -66,8 +76,12 @@ class map
 
 
 	public:
-		explicit map(const key_compare& comp = key_compare(),
-					const allocator_type& alloc = allocator_type());
+		explicit map(__unused const key_compare& comp = key_compare(),
+					const allocator_type& alloc = allocator_type()) :
+			_alloc(alloc), _rbt()
+		{
+			// _rbt = RedBlackTree<key_type, mapped_type, comp, _alloc>();
+		}
 		
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last,
@@ -84,20 +98,20 @@ class map
 		/*
 		** -- Iterators --
 		*/
-		iterator				begin()        { return iterator(_begin); }
-		const_iterator			begin() const  { return const_iterator(_begin); }
-		iterator				end()          { return iterator(_end); }
-		const_iterator			end() const    { return const_iterator(_end); }
-		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
-		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
-		reverse_iterator		rend()         { return reverse_iterator(begin()); }
-		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
+		iterator				begin()        { return iterator(_rbt.get_root_node()); }
+		const_iterator			begin() const  { return const_iterator(_rbt.get_root_node()); }
+		iterator				end()          { return iterator(_rbt.get_last_node()); }
+		const_iterator			end() const    { return const_iterator(_rbt.get_last_node()); }
+		// reverse_iterator		rbegin()       { return reverse_iterator(end()); }
+		// const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
+		// reverse_iterator		rend()         { return reverse_iterator(begin()); }
+		// const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
 
 
 		/*
 		** -- Capacity --
 		*/
-		bool			empty()    const;
+		bool			empty()    const { return size() == 0; }
 		size_type		size()     const;
 		size_type		max_size() const;
 
@@ -106,7 +120,6 @@ class map
 		** -- Element access --
 		*/
 		mapped_type&	operator[](const key_type& k);
-		mapped_type&	operator[](key_type&& k);
 
 		
 		/*
@@ -127,8 +140,8 @@ class map
 		/*
 		** -- Observers --
 		*/
-		key_compare		key_comp()      const;
-		value_compare	value_comp()    const;
+		key_compare		key_comp()      const { return key_compare(); }
+		value_compare	value_comp()    const { return value_compare(); }
 
 
 		/*
@@ -152,12 +165,10 @@ class map
 
 
 		private:
-			allocator_type	_alloc;
-			// pointer			_begin;
-			// pointer			_end;
-			// pointer			_end_cap;
+			allocator_type										_alloc;
+			RedBlackTree<key_type, mapped_type, key_compare>	_rbt;
 		
-};
+}; /* class map */
 
 
 _END_NAMESPACE_FT

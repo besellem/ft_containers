@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/05 17:16:56 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 16:22:33 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,31 @@ struct Node
 	
 };
 
-template <class T,
-		  class Compare = ft::less<T>,
-		  class Node = Node<T>,
+
+template <class Key,
+		  class T,
+		  class Compare = ft::less<Key>,
+		  class Node = Node<ft::pair<const Key, T> >,
 		  class AllocNode = std::allocator<Node> >
 class RedBlackTree
 {
 	
 	public:
-		typedef T                                           value_type;
-		typedef Node                                        node_type;
+		typedef Key                                         key_type;
+		typedef T                                           mapped_type;
+		typedef ft::pair<const key_type, mapped_type>       value_type;
+		typedef Compare                                     key_compare;
 		typedef AllocNode                                   allocator_type;
+		typedef Node                                        node_type;
 		typedef typename allocator_type::reference          reference;
 		typedef typename allocator_type::const_reference    const_reference;
 		typedef typename allocator_type::pointer            pointer;
 		typedef typename allocator_type::const_pointer      const_pointer;
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename allocator_type::size_type          size_type;
+		
 		typedef ft::map_iterator<Node>                      iterator;
+
 
 	public:
 		RedBlackTree(allocator_type const & alloc = allocator_type()) : _alloc(alloc)
@@ -168,7 +175,7 @@ class RedBlackTree
 
 		// insert the key to the tree in its appropriate position
 		// and fix the tree
-		pair<iterator, bool>	insert(value_type const & key)
+		pair<iterator, bool>	insert(value_type const& key)
 		{
 			pointer	y = nullptr_;
 			pointer	x = _root;
@@ -178,16 +185,31 @@ class RedBlackTree
 			while (x != _last)
 			{
 				y = x;
-				if (s->val.first < x->val.first)
+				if (key_compare()(s->val, x->val))
+				{
 					x = x->left;
-				else if (s->val.first > x->val.first)
+				}
+				else if (key_compare()(x->val, s->val))
+				{
 					x = x->right;
+				}
 				else
 				{
 					_alloc.destroy(s);
 					_alloc.deallocate(s, 1);
 					return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), false);
 				}
+
+				// if (s->val.first < x->val.first)
+				// 	x = x->left;
+				// else if (s->val.first > x->val.first)
+				// 	x = x->right;
+				// else
+				// {
+				// 	_alloc.destroy(s);
+				// 	_alloc.deallocate(s, 1);
+				// 	return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), false);
+				// }
 			}
 
 			// y is parent of x
@@ -219,7 +241,7 @@ class RedBlackTree
 		pointer		get_last_node() { return _last; }
 
 		// delete the node from the tree
-		size_type	delete_node(value_type const & key)
+		bool	delete_node(value_type const & key)
 		{ return __delete_node_wrapper(_root, key); }
 
 		void		destroy()
@@ -441,7 +463,7 @@ class RedBlackTree
 			v->parent = u->parent;
 		}
 
-		size_type	__delete_node_wrapper(pointer node, value_type const & key)
+		bool	__delete_node_wrapper(pointer node, value_type const& key)
 		{
 			// find the node containing key
 			pointer	z = _last;

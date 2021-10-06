@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 22:59:22 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 23:52:45 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,6 @@ class map
 		typedef typename allocator_type::size_type           size_type;
 		typedef typename allocator_type::difference_type     difference_type;
 
-		typedef ft::map_iterator<value_type>                 iterator;
-		typedef ft::map_iterator<const value_type>           const_iterator;
-		typedef ft::reverse_iterator<iterator>               reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>         const_reverse_iterator;
-
 		class value_compare : public ft::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
@@ -72,6 +67,11 @@ class map
 				bool	operator()(const value_type& x, const value_type& y) const
 				{ return comp(x.first, y.first); }
 		};
+		
+		typedef typename RedBlackTree<value_type, value_compare>::iterator       iterator;
+		typedef typename RedBlackTree<const value_type, value_compare>::const_iterator const_iterator;
+		typedef typename ft::reverse_iterator<iterator>                    reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>              const_reverse_iterator;
 
 
 	public:
@@ -81,14 +81,14 @@ class map
 			_rbt()
 		{}
 		
-		template <class InputIterator>
-		map(InputIterator first, InputIterator last,
+		template <class InputIte>
+		map(InputIte first, InputIte last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type());
 		
 		map(const map& m);
 		
-		~map() {}
+		~map() { clear(); }
 
 		map&	operator=(const map& m);
 
@@ -96,10 +96,10 @@ class map
 		/*
 		** -- Iterators --
 		*/
-		iterator				begin()        { return iterator(_rbt.get_root_node()); }
-		const_iterator			begin() const  { return const_iterator(_rbt.get_root_node()); }
-		iterator				end()          { return iterator(_rbt.get_last_node()); }
-		const_iterator			end() const    { return const_iterator(_rbt.get_last_node()); }
+		iterator				begin()        { return iterator(_rbt.get_root()); }
+		const_iterator			begin() const  { return const_iterator(_rbt.get_root()); }
+		iterator				end()          { return iterator(_rbt.get_last()); }
+		const_iterator			end() const    { return const_iterator(_rbt.get_last()); }
 		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
 		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
 		reverse_iterator		rend()         { return reverse_iterator(begin()); }
@@ -145,10 +145,8 @@ class map
 		size_type		erase(const key_type& k);
 		iterator		erase(const_iterator first, const_iterator last);
 		
-		void			swap(map& m)
-		{ _rbt.swap(m._rbt); }
-
-		void			clear();
+		void			swap(map& m) { _rbt.swap(m._rbt); }
+		void			clear()      { return _rbt.destroy(); }
 
 		
 		/*
@@ -163,9 +161,11 @@ class map
 		*/
 		iterator		find(const key_type& k)
 		{
-			return iterator(_rbt.get_root_node(),
-					ft::make_pair(k, mapped_type()),
-					_rbt.get_last_node());
+			return iterator(_rbt.get_root(),
+							_rbt.search(ft::make_pair(k,
+							mapped_type())),
+							_rbt.get_last()
+						);
 		}
 		
 		const_iterator	find(const key_type& k) const;
@@ -185,7 +185,7 @@ class map
 
 
 		private:
-			allocator_type										_alloc;
+			allocator_type							_alloc;
 			RedBlackTree<value_type, key_compare>	_rbt;
 		
 }; /* class map */

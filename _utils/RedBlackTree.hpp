@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 23:02:02 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 23:45:06 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,18 +119,30 @@ class RedBlackTree
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename allocator_type::size_type          size_type;
 		
-		typedef ft::map_iterator<Node>                      iterator;
+		typedef ft::map_iterator<Node, Compare>             iterator;
+		typedef ft::map_iterator<Node, Compare>             const_iterator;
 
 
 	public:
 		RedBlackTree(key_compare const& cmp = key_compare(),
-					allocator_type const& alloc = allocator_type()) :
-			_cmp(cmp), _alloc(alloc)
+					 allocator_type const& alloc = allocator_type()) :
+			_cmp(cmp),
+			_alloc(alloc),
+			_root(nullptr_),
+			_last(nullptr_)
 		{
 			_last = _alloc.allocate(1);
 			_alloc.construct(_last, node_type(BLACK_NODE, nullptr_, nullptr_, nullptr_));
 			_root = _last;
 		}
+
+		// RedBlackTree(RedBlackTree const& u)
+		// {
+		// 	_alloc = u._alloc;
+		// 	_cmp = u._cmp;
+		// 	_last = u._last;
+		// 	_root = u._root;
+		// }
 
 		~RedBlackTree() {}
 
@@ -199,11 +211,11 @@ class RedBlackTree
 			while (x != _last)
 			{
 				y = x;
-				if (key_compare()(s->val, x->val))
+				if (s->val < x->val)
 				{
 					x = x->left;
 				}
-				else if (key_compare()(x->val, s->val))
+				else if (x->val < s->val)
 				{
 					x = x->right;
 				}
@@ -211,14 +223,14 @@ class RedBlackTree
 				{
 					_alloc.destroy(s);
 					_alloc.deallocate(s, 1);
-					return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), false);
+					return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), false);
 				}
 			}
 
 			s->parent = y;
 			if (y == nullptr_)
 				_root = s;
-			else if (key_compare()(s->val, y->val))
+			else if (s->val < y->val)
 				y->left = s;
 			else
 				y->right = s;
@@ -226,18 +238,18 @@ class RedBlackTree
 			if (s->parent == nullptr_)
 			{
 				s->color = BLACK_NODE;
-				return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), true);
+				return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 			}
 
 			if (s->parent->parent == nullptr_)
-				return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), true);
+				return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 
 			_fix_insertion(s);
-			return make_pair<iterator, bool>(iterator(get_root_node(), y, get_last_node()), true);
+			return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 		}
 
-		pointer		get_root_node() { return _root; }
-		pointer		get_last_node() { return _last; }
+		pointer		get_root() { return _root; }
+		pointer		get_last() { return _last; }
 
 		bool	delete_node(const value_type& key)
 		{ return __delete_node_wrapper(_root, key); }
@@ -247,8 +259,8 @@ class RedBlackTree
 			pointer			tmp_root = _root;
 			pointer			tmp_last = _last;
 
-			_root = ref.get_root_node();
-			_last = ref.get_last_node();
+			_root = ref.get_root();
+			_last = ref.get_last();
 			ref._root = tmp_root;
 			ref._last = tmp_last;
 		}
@@ -256,7 +268,6 @@ class RedBlackTree
 		void		destroy()
 		{
 			_destroy(_root);
-
 			_alloc.destroy(_last);
 			_alloc.deallocate(_last, 1);
 		}
@@ -546,7 +557,6 @@ class RedBlackTree
 		{
 			if (root == _last)
 				return ;
-
 			_destroy(root->left);
 			_destroy(root->right);
 			_alloc.destroy(root);

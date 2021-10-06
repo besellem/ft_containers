@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 22:22:13 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 23:54:23 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,16 @@
 
 _BEGIN_NAMESPACE_FT
 
-template <class T>
+template <class T, class Compare>
 class map_iterator : public iterator<bidirectional_iterator_tag, T>
 {
 
 	public:
-		typedef T                                                value_type;
-		typedef bidirectional_iterator_tag                       iterator_category;
-		
-		typedef iterator<iterator_category, value_type>          iterator_type;
-		
 		typedef T                                                node_type;
 		typedef T*                                               node_pointer;
+		
+		typedef bidirectional_iterator_tag                       iterator_category;
+		typedef iterator<iterator_category, node_type>           iterator_type;
 		typedef typename iterator_type::difference_type          difference_type;
 		typedef typename iterator_type::pointer                  pointer;
 		typedef typename iterator_type::reference                reference;
@@ -116,6 +114,12 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return tmp;
 		}
 
+		bool	operator==(map_iterator const& x)
+		{ return _cur == x._cur; }
+
+		bool	operator!=(map_iterator const& x)
+		{ return !(_cur == x._cur); }
+
 
 	private:
 		node_pointer	min(node_pointer s)
@@ -128,6 +132,34 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 		{
 			for ( ; s->right != _end; s = s->right);
 			return s;
+		}
+
+		node_pointer	successor(node_pointer s)
+		{
+			if (s->right != _end)
+				return min(s->right);
+
+			node_pointer	y = s->parent;
+			while (y != _end && s == y->right)
+			{
+				s = y;
+				y = y->parent;
+			}
+			return y;
+		}
+
+		node_pointer	predecessor(node_pointer s)
+		{
+			if (s->left != _end)
+				return max(s->left);
+
+			node_pointer	tmp = s->parent;
+			while (tmp != _end && s == tmp->left)
+			{
+				s = tmp;
+				tmp = tmp->parent;
+			}
+			return tmp;
 		}
 
 

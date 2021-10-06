@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 23:00:54 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 23:54:44 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -544,11 +544,18 @@ int		main(void)
 	bst.insert( ft::make_pair<int, int>(4, 40) );
 	bst.insert( ft::make_pair<int, int>(5, 50) );
 	bst.insert( ft::make_pair<int, int>(6, 60) );
+	// bst.insert( ft::make_pair<int, int>(1, 10) );
+	// bst.insert( ft::make_pair<int, int>(2, 20) );
+	// bst.insert( ft::make_pair<int, int>(3, 30) );
+	// bst.insert( ft::make_pair<int, int>(4, 40) );
+	// bst.insert( ft::make_pair<int, int>(5, 50) );
+	// bst.insert( ft::make_pair<int, int>(6, 60) );
 	bst.print();
+
 
 	ft::map<char, int>		mymap;
 
-	std::cout << "size: " << mymap.max_size() << std::endl;
+	// std::cout << "size: " << mymap.max_size() << std::endl;
 	// std::map<char, int>::iterator			it;
 
 	// insert some values:

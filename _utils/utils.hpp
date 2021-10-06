@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/04 14:46:45 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 21:33:05 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,14 @@ struct pair
 	template <class _T1, class _T2>
 	friend bool	operator>=(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
 	{ return !(lhs < rhs); }
-
+	
+	// Used to print the key from a pair
+	template <class _T1, class _T2>
+	friend std::ostream &	operator<<(std::ostream &out, const pair<_T1,_T2>& x)
+	{
+		out << x.first;
+		return out;
+	}
 
 	/* -- Public Variables -- */
 	first_type		first;

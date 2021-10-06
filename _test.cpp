@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 16:21:31 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 23:00:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -536,35 +536,36 @@ int		main(void)
 {
 	// test_vector();
 
-	ft::RedBlackTree<int, int>	bst;
+	ft::RedBlackTree<ft::pair<int, int> >	bst;
 
 	bst.insert( ft::make_pair<int, int>(1, 10) );
-	// bst.insert( ft::make_pair<int, int>(2, 20) );
-	// bst.insert( ft::make_pair<int, int>(3, 30) );
-	// bst.insert( ft::make_pair<int, int>(4, 40) );
-	// bst.insert( ft::make_pair<int, int>(5, 50) );
-	// bst.insert( ft::make_pair<int, int>(6, 60) );
-	// bst.print();
+	bst.insert( ft::make_pair<int, int>(2, 20) );
+	bst.insert( ft::make_pair<int, int>(3, 30) );
+	bst.insert( ft::make_pair<int, int>(4, 40) );
+	bst.insert( ft::make_pair<int, int>(5, 50) );
+	bst.insert( ft::make_pair<int, int>(6, 60) );
+	bst.print();
 
-	std::map<char, int, std::greater<int> > mymap;
-	std::map<char, int>::iterator it;
+	ft::map<char, int>		mymap;
+
+	std::cout << "size: " << mymap.max_size() << std::endl;
+	// std::map<char, int>::iterator			it;
 
 	// insert some values:
-	mymap['a'] = 10;
-	mymap['b'] = 20;
-	mymap['c'] = 30;
-	mymap['d'] = 40;
-	mymap['e'] = 50;
-	mymap['f'] = 60;
+	// mymap.insert( ft::make_pair<char, int>('a', 10) );
+	// mymap['a'] = 10;
+	// mymap['b'] = 20;
+	// mymap['c'] = 30;
+	// mymap['d'] = 40;
+	// mymap['e'] = 50;
+	// mymap['f'] = 60;
 	
-	for (it = mymap.begin() ; it != mymap.end() ; ++it)
-	{
-		std::cout << it->first << " " << it->second << std::endl;
-		// mymap.erase(it);
-	}
+	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
+	// {
+	// 	std::cout << it->first << " " << it->second << std::endl;
+	// 	// mymap.erase(it);
+	// }
 
-
-	std::cout << std::endl;
 
 	/*
 	  b 

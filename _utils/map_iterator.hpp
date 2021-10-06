@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 15:59:33 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/06 22:22:13 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iostream>
 
-// # include "../map.hpp"
 # include "iterator.hpp"
 # include "utils.hpp"
 
@@ -25,20 +24,18 @@ _BEGIN_NAMESPACE_FT
 template <class T>
 class map_iterator : public iterator<bidirectional_iterator_tag, T>
 {
-	
-	// friend class map;
 
 	public:
-		typedef typename T::value_type                           value_type;
+		typedef T                                                value_type;
+		typedef bidirectional_iterator_tag                       iterator_category;
 		
-		typedef iterator<bidirectional_iterator_tag, value_type> iterator_type;
+		typedef iterator<iterator_category, value_type>          iterator_type;
 		
 		typedef T                                                node_type;
 		typedef T*                                               node_pointer;
 		typedef typename iterator_type::difference_type          difference_type;
 		typedef typename iterator_type::pointer                  pointer;
 		typedef typename iterator_type::reference                reference;
-		typedef typename iterator_type::iterator_category        iterator_category;
 
 
 	public:
@@ -57,7 +54,7 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 
 		map_iterator&		operator=(const map_iterator& u)
 		{
-			if (*this == u)
+			if (this == &u)
 				return *this;
 			
 			_begin = u._begin;
@@ -97,20 +94,25 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 		map_iterator		operator++(int)
 		{
 			map_iterator	tmp(*this);
-			++_cur;
+			operator++();
 			return tmp;
 		}
 		
 		map_iterator&		operator--()
 		{
-			--_cur;
+			if (_cur == _end)
+			{
+				_cur = max(_begin);
+				return *this;
+			}
+			_cur = predecessor(_cur);
 			return *this;
 		}
 		
 		map_iterator		operator--(int)
 		{
 			map_iterator	tmp(*this);
-			--_cur;
+			operator--();
 			return tmp;
 		}
 

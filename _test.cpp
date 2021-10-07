@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 15:36:30 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:46:26 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -547,7 +547,7 @@ int		main(void)
 	// bst.print();
 
 
-	ft::map<char, int>		mymap;
+	ft::map<char, int >		mymap;
 
 	// std::cout << "size: " << mymap.max_size() << std::endl;
 
@@ -560,22 +560,23 @@ int		main(void)
 	
 	// mymap.erase('a');
 
-	// mymap['a'] = 10;
-	// mymap['b'] = 20;
-	// mymap['c'] = 30;
-	// mymap['d'] = 40;
-	// mymap['e'] = 50;
-	// mymap['f'] = 60;
-
-
-	mymap['d'] = 40;
 	mymap['a'] = 10;
-	mymap['e'] = 50;
+	mymap['a'] = 42;
 	mymap['b'] = 20;
 	mymap['c'] = 30;
+	mymap['d'] = 40;
+	mymap['e'] = 50;
 	mymap['f'] = 60;
 
-	mymap.print();
+
+	// mymap['d'] = 40;
+	// mymap['a'] = 42;
+	// mymap['e'] = 50;
+	// mymap['b'] = 20;
+	// mymap['c'] = 30;
+	// mymap['f'] = 60;
+
+	mymap.__print();
 	
 	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
 	// {
@@ -591,12 +592,16 @@ int		main(void)
             f
 	*/
 
-	ft::map<char, int>::iterator	it = mymap.begin();
+	ft::map<char, int >::const_iterator	it = mymap.begin();
 	
 	for ( ; it != mymap.end() ; ++it)
 	{
 		std::cout << it->first << " " << it->second << std::endl;
 	}
+
+	// ft::map<char, int >::iterator	tmp = mymap.upper_bound('g');
+
+	// std::cout << "lower_bound: " << tmp->first << " " << tmp->second << std::endl;
 
 	return 0;
 }

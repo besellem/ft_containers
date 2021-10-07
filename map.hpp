@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 15:33:45 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:06:07 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class map
 		};
 		
 		typedef typename RedBlackTree<value_type, key_compare>::iterator             iterator;
-		typedef typename RedBlackTree<const value_type, key_compare>::const_iterator const_iterator;
+		typedef typename RedBlackTree<value_type, key_compare>::const_iterator const_iterator;
 		typedef typename ft::reverse_iterator<iterator>                              reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
 
@@ -104,20 +104,14 @@ class map
 		/*
 		** -- Iterators --
 		*/
-		// iterator		begin()       { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
-		// const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
-		// iterator		end()         { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.max()); }
-		// const_iterator	end() const   { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.max()); }
-
-		iterator		begin()       { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_root()); }
-		const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_root()); }
-		iterator		end()         { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
+		iterator		begin()       { return       iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
+		const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
+		iterator		end()         { return       iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
 		const_iterator	end() const   { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
 
-		
-		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
+		reverse_iterator		rbegin()       { return       reverse_iterator(end()); }
 		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
-		reverse_iterator		rend()         { return reverse_iterator(begin()); }
+		reverse_iterator		rend()         { return       reverse_iterator(begin()); }
 		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
 		
 
@@ -137,7 +131,7 @@ class map
 			insert(ft::make_pair(k, mapped_type()));
 
 			iterator	it = find(k);
-			return (*it).second;
+			return it->second;
 		}
 
 		
@@ -147,14 +141,14 @@ class map
 		pair<iterator, bool>	insert(const value_type& v)
 		{ return _rbt.insert(v); }
 
-		iterator 				insert(__unused const_iterator position, const value_type& v)
+		iterator 		insert(__unused const_iterator position, const value_type& v)
 		{
 			insert(v);
-			return find(v);
+			return find(v.first);
 		}
 
 		template <class InputIte>
-		void					insert(InputIte first, InputIte last)
+		void			insert(InputIte first, InputIte last)
 		{
 			for ( ; first != last; ++first)
 				insert(*first);
@@ -190,18 +184,49 @@ class map
 		{
 			return iterator(_rbt.get_root(),
 							_rbt.get_last(),
-							_rbt.search(ft::make_pair(k, mapped_type()))
-						);
+							_rbt.search( ft::make_pair(k, mapped_type()) )
+							);
 		}
 		
-		const_iterator	find(const key_type& k) const;
+		const_iterator	find(const key_type& k) const
+		{
+			return const_iterator(_rbt.get_root(),
+								 _rbt.get_last(),
+								 _rbt.search( ft::make_pair(k, mapped_type()) )
+								);
+		}
 		
 		size_type		count(const key_type& k) const
 		{ return find(k) != end(); }
 
-		iterator		lower_bound(const key_type& k);
+		iterator		lower_bound(const key_type& k)
+		{
+			iterator		it = begin();
+			const iterator	ite = end();
+			
+			for ( ; it != ite; ++it)
+			{
+				if (!key_comp()(it->first, k))
+					break ;
+			}
+			return it;
+		}
+
 		const_iterator	lower_bound(const key_type& k) const;
-		iterator		upper_bound(const key_type& k);
+		
+		iterator		upper_bound(const key_type& k)
+		{
+			iterator		it = begin();
+			const iterator	ite = end();
+			
+			for ( ; it != ite; ++it)
+			{
+				if (key_comp()(k, it->first))
+					break ;
+			}
+			return it;
+		}
+		
 		const_iterator	upper_bound(const key_type& k) const;
 		pair<iterator, iterator>				equal_range(const key_type& k);
 		pair<const_iterator, const_iterator>	equal_range(const key_type& k) const;
@@ -219,7 +244,7 @@ class map
 		// TO REMOVE
 		////////////////////////////////////////////////////////////////////////
 
-		void	print() const
+		void	__print() const
 		{ _rbt.print(); }
 
 		////////////////////////////////////////////////////////////////////////

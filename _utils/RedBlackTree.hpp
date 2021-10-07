@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 15:30:11 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:03:33 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,9 @@ class RedBlackTree
 			return size(s->right) + size(s->left) + 1;
 		}
 		
-		size_type	max_size() const              { return allocator_type().max_size(); }
-		size_type	size() const                  { return size(_root); }
-		pointer		search(const value_type& key) { return __search_wrapper(_root, key); }
+		size_type	max_size() const                    { return allocator_type().max_size(); }
+		size_type	size() const                        { return size(_root); }
+		pointer		search(const value_type& key) const { return __search_wrapper(_root, key); }
 
 		pointer		successor(pointer s)
 		{
@@ -203,6 +203,8 @@ class RedBlackTree
 
 		pair<iterator, bool>	insert(const value_type& key)
 		{
+			delete_node(key); // avoid duplicates
+
 			pointer	y = nullptr_;
 			pointer	x = _root;
 			pointer	s = _alloc.allocate(1);
@@ -223,7 +225,7 @@ class RedBlackTree
 				{
 					_alloc.destroy(s);
 					_alloc.deallocate(s, 1);
-					return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), false);
+					return ft::make_pair<iterator, bool>(iterator(get_root(), y, get_last()), false);
 				}
 			}
 
@@ -238,14 +240,14 @@ class RedBlackTree
 			if (s->parent == nullptr_)
 			{
 				s->color = BLACK_NODE;
-				return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
+				return ft::make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 			}
 
 			if (s->parent->parent == nullptr_)
-				return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
+				return ft::make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 
 			_fix_insertion(s);
-			return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
+			return ft::make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 		}
 
 		pointer		get_root() const { return _root; }
@@ -254,7 +256,7 @@ class RedBlackTree
 		bool	delete_node(const value_type& key)
 		{ return __delete_node_wrapper(_root, key); }
 
-		void		swap(const RedBlackTree& ref)
+		void		swap(RedBlackTree& ref)
 		{
 			pointer			tmp_root = _root;
 			pointer			tmp_last = _last;
@@ -280,7 +282,7 @@ class RedBlackTree
 
 
 	private:
-		pointer		__search_wrapper(pointer node, const value_type& key)
+		pointer		__search_wrapper(pointer node, const value_type& key) const
 		{
 			if (node == _last || key.first == node->val.first)
 				return node;
@@ -484,11 +486,8 @@ class RedBlackTree
 					node = node->left;
 			}
 
-			if (z == _last)
-			{
-				std::cout << "Couldn't find key in the tree" << std::endl;
+			if (z == _last) // the key doesn't exist
 				return false;
-			} 
 
 			y = z;
 			int	y_original_color = y->color;

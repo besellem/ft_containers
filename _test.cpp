@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 23:54:44 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:36:30 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -536,36 +536,46 @@ int		main(void)
 {
 	// test_vector();
 
-	ft::RedBlackTree<ft::pair<int, int> >	bst;
+	// ft::RedBlackTree<ft::pair<char, int> >	bst;
 
-	bst.insert( ft::make_pair<int, int>(1, 10) );
-	bst.insert( ft::make_pair<int, int>(2, 20) );
-	bst.insert( ft::make_pair<int, int>(3, 30) );
-	bst.insert( ft::make_pair<int, int>(4, 40) );
-	bst.insert( ft::make_pair<int, int>(5, 50) );
-	bst.insert( ft::make_pair<int, int>(6, 60) );
-	// bst.insert( ft::make_pair<int, int>(1, 10) );
-	// bst.insert( ft::make_pair<int, int>(2, 20) );
-	// bst.insert( ft::make_pair<int, int>(3, 30) );
-	// bst.insert( ft::make_pair<int, int>(4, 40) );
-	// bst.insert( ft::make_pair<int, int>(5, 50) );
-	// bst.insert( ft::make_pair<int, int>(6, 60) );
-	bst.print();
+	// bst.insert( ft::make_pair<char, int>('a', 10) );
+	// bst.insert( ft::make_pair<char, int>('b', 20) );
+	// bst.insert( ft::make_pair<char, int>('c', 30) );
+	// bst.insert( ft::make_pair<char, int>('d', 40) );
+	// bst.insert( ft::make_pair<char, int>('e', 50) );
+	// bst.insert( ft::make_pair<char, int>('f', 60) );
+	// bst.print();
 
 
 	ft::map<char, int>		mymap;
 
 	// std::cout << "size: " << mymap.max_size() << std::endl;
-	// std::map<char, int>::iterator			it;
 
-	// insert some values:
 	// mymap.insert( ft::make_pair<char, int>('a', 10) );
+	// mymap.insert( ft::make_pair<char, int>('b', 20) );
+	// mymap.insert( ft::make_pair<char, int>('c', 30) );
+	// mymap.insert( ft::make_pair<char, int>('d', 40) );
+	// mymap.insert( ft::make_pair<char, int>('e', 50) );
+	// mymap.insert( ft::make_pair<char, int>('f', 60) );
+	
+	// mymap.erase('a');
+
 	// mymap['a'] = 10;
 	// mymap['b'] = 20;
 	// mymap['c'] = 30;
 	// mymap['d'] = 40;
 	// mymap['e'] = 50;
 	// mymap['f'] = 60;
+
+
+	mymap['d'] = 40;
+	mymap['a'] = 10;
+	mymap['e'] = 50;
+	mymap['b'] = 20;
+	mymap['c'] = 30;
+	mymap['f'] = 60;
+
+	mymap.print();
 	
 	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
 	// {
@@ -575,16 +585,18 @@ int		main(void)
 
 
 	/*
-	  b 
-	a   d
+      b 
+    a   d
        c  e
             f
 	*/
 
-	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
-	// {
-	// 	std::cout << it->first << " " << it->second << std::endl;
-	// }
-  
+	ft::map<char, int>::iterator	it = mymap.begin();
+	
+	for ( ; it != mymap.end() ; ++it)
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+	}
+
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 23:52:45 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:33:45 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,7 @@
 # include "_utils/RedBlackTree.hpp"
 
 
-
 _BEGIN_NAMESPACE_FT
-
-template <class T,
-		  class Compare,
-		  class Node,
-		  class AllocNode>
-class RedBlackTree;
 
 template <class Key,
 		  class T,
@@ -68,43 +61,65 @@ class map
 				{ return comp(x.first, y.first); }
 		};
 		
-		typedef typename RedBlackTree<value_type, value_compare>::iterator       iterator;
-		typedef typename RedBlackTree<const value_type, value_compare>::const_iterator const_iterator;
-		typedef typename ft::reverse_iterator<iterator>                    reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator>              const_reverse_iterator;
+		typedef typename RedBlackTree<value_type, key_compare>::iterator             iterator;
+		typedef typename RedBlackTree<const value_type, key_compare>::const_iterator const_iterator;
+		typedef typename ft::reverse_iterator<iterator>                              reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
 
 
 	public:
 		explicit map(__unused const key_compare& comp = key_compare(),
-					const allocator_type& alloc = allocator_type()) :
+					 const allocator_type& alloc = allocator_type()) :
 			_alloc(alloc),
 			_rbt()
 		{}
 		
 		template <class InputIte>
 		map(InputIte first, InputIte last,
-			const key_compare& comp = key_compare(),
-			const allocator_type& alloc = allocator_type());
+			__unused const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type()) :
+				_alloc(alloc),
+				_rbt()
+		{
+			insert(first, last);
+		}
 		
-		map(const map& m);
+		map(const map& m)
+		{
+			insert(m.begin(), m.end());
+		}
 		
 		~map() { clear(); }
 
-		map&	operator=(const map& m);
+		map&	operator=(const map& m)
+		{
+			if (this == &m)
+				return *this;
+			clear();
+			insert(m.begin(), m.end());
+			return *this;
+		}
 
 
 		/*
 		** -- Iterators --
 		*/
-		iterator				begin()        { return iterator(_rbt.get_root()); }
-		const_iterator			begin() const  { return const_iterator(_rbt.get_root()); }
-		iterator				end()          { return iterator(_rbt.get_last()); }
-		const_iterator			end() const    { return const_iterator(_rbt.get_last()); }
+		// iterator		begin()       { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
+		// const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
+		// iterator		end()         { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.max()); }
+		// const_iterator	end() const   { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.max()); }
+
+		iterator		begin()       { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_root()); }
+		const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_root()); }
+		iterator		end()         { return iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
+		const_iterator	end() const   { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
+
+		
 		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
 		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
 		reverse_iterator		rend()         { return reverse_iterator(begin()); }
 		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
-
+		
 
 		/*
 		** -- Capacity --
@@ -132,7 +147,11 @@ class map
 		pair<iterator, bool>	insert(const value_type& v)
 		{ return _rbt.insert(v); }
 
-		// iterator 				insert(const_iterator position, const value_type& v);
+		iterator 				insert(__unused const_iterator position, const value_type& v)
+		{
+			insert(v);
+			return find(v);
+		}
 
 		template <class InputIte>
 		void					insert(InputIte first, InputIte last)
@@ -142,7 +161,15 @@ class map
 		}
 
 		iterator		erase(const_iterator position);
-		size_type		erase(const key_type& k);
+		
+		size_type		erase(const key_type& k)
+		{
+			size_type	n = count(k);
+			
+			_rbt.delete_node(ft::make_pair(k, mapped_type()));
+			return n;
+		}
+
 		iterator		erase(const_iterator first, const_iterator last);
 		
 		void			swap(map& m) { _rbt.swap(m._rbt); }
@@ -162,14 +189,16 @@ class map
 		iterator		find(const key_type& k)
 		{
 			return iterator(_rbt.get_root(),
-							_rbt.search(ft::make_pair(k,
-							mapped_type())),
-							_rbt.get_last()
+							_rbt.get_last(),
+							_rbt.search(ft::make_pair(k, mapped_type()))
 						);
 		}
 		
 		const_iterator	find(const key_type& k) const;
-		size_type		count(const key_type& k) const;
+		
+		size_type		count(const key_type& k) const
+		{ return find(k) != end(); }
+
 		iterator		lower_bound(const key_type& k);
 		const_iterator	lower_bound(const key_type& k) const;
 		iterator		upper_bound(const key_type& k);
@@ -182,6 +211,24 @@ class map
 		** -- Allocator --
 		*/
 		allocator_type	get_allocator() const { return allocator_type(); }
+
+
+
+
+		////////////////////////////////////////////////////////////////////////
+		// TO REMOVE
+		////////////////////////////////////////////////////////////////////////
+
+		void	print() const
+		{ _rbt.print(); }
+
+		////////////////////////////////////////////////////////////////////////
+		// [END] TO REMOVE
+		////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 		private:

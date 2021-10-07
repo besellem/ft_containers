@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 23:54:23 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:22:34 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,19 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 {
 
 	public:
-		typedef T                                                node_type;
-		typedef T*                                               node_pointer;
+		typedef typename T::value_type                        value_type;
+		typedef T                                             node_type;
+		typedef T*                                            node_pointer;
 		
-		typedef bidirectional_iterator_tag                       iterator_category;
-		typedef iterator<iterator_category, node_type>           iterator_type;
-		typedef typename iterator_type::difference_type          difference_type;
-		typedef typename iterator_type::pointer                  pointer;
-		typedef typename iterator_type::reference                reference;
+		typedef bidirectional_iterator_tag                    iterator_category;
+		typedef iterator<iterator_category, value_type>       iterator_type;
+		typedef typename iterator_type::difference_type       difference_type;
+		typedef typename iterator_type::pointer               pointer;
+		typedef typename iterator_type::reference             reference;
 
 
 	public:
-		map_iterator(void) : _begin(nullptr_), _cur(nullptr_), _end(nullptr_) {}
+		map_iterator(void) : _begin(nullptr_), _end(nullptr_), _cur(nullptr_) {}
 		
 		map_iterator(node_pointer const& begin, node_pointer const& end, node_pointer const& current) :
 			_begin(begin),
@@ -113,6 +114,31 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			operator--();
 			return tmp;
 		}
+
+		// NOT TESTED
+		map_iterator	operator-(difference_type n) const
+		{
+			map_iterator	tmp(*this);
+			
+			while (n-- > 0)
+				tmp._cur = tmp.predecessor(tmp._cur);
+			return tmp;
+		}
+
+		// NOT TESTED
+		map_iterator	operator+(difference_type n) const
+		{
+			map_iterator	tmp(*this);
+			
+			while (n-- > 0)
+				tmp._cur = tmp.successor(tmp._cur);
+			return tmp;
+		}
+
+		// operator map_iterator<const T, class _Compare> ()
+		// {
+		// 	return static_cast<map_iterator<const T, _Compare> >(_begin, _end, _cur);
+		// }
 
 		bool	operator==(map_iterator const& x)
 		{ return _cur == x._cur; }

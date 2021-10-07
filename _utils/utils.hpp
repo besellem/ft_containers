@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 21:33:05 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:00:37 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ struct pair
 	/* -- Operators -- */
 	pair&	operator=(const pair& pr)
 	{
-		this->first = pr.first;
-		this->second = pr.second;
+		first = pr.first;
+		second = pr.second;
 		return *this;
 	}
 	
@@ -96,7 +96,7 @@ struct pair
 	friend bool	operator>=(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
 	{ return !(lhs < rhs); }
 	
-	// Used to print the key from a pair
+	// Used to print the key from a pair (TO REMOVE)
 	template <class _T1, class _T2>
 	friend std::ostream &	operator<<(std::ostream &out, const pair<_T1,_T2>& x)
 	{

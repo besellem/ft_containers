@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 23:45:06 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:30:11 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ class RedBlackTree
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename allocator_type::size_type          size_type;
 		
-		typedef ft::map_iterator<Node, Compare>             iterator;
-		typedef ft::map_iterator<Node, Compare>             const_iterator;
+		typedef ft::map_iterator<node_type, key_compare>    iterator;
+		typedef ft::map_iterator<node_type, key_compare>    const_iterator;
 
 
 	public:
@@ -248,8 +248,8 @@ class RedBlackTree
 			return make_pair<iterator, bool>(iterator(get_root(), y, get_last()), true);
 		}
 
-		pointer		get_root() { return _root; }
-		pointer		get_last() { return _last; }
+		pointer		get_root() const { return _root; }
+		pointer		get_last() const { return _last; }
 
 		bool	delete_node(const value_type& key)
 		{ return __delete_node_wrapper(_root, key); }
@@ -272,7 +272,7 @@ class RedBlackTree
 			_alloc.deallocate(_last, 1);
 		}
 
-		void		print()
+		void		print() const
 		{
 			if (_root)
 				__print_wrapper(_root, "", true);
@@ -530,7 +530,7 @@ class RedBlackTree
 			return true;
 		}
 
-		void		__print_wrapper(pointer root, std::string indent, bool last)
+		void		__print_wrapper(pointer root, std::string indent, bool last) const
 		{
 			if (root != _last)
 			{

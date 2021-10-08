@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 17:06:07 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:27:56 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,9 @@ class map
 		}
 
 		template <class InputIte>
-		void			insert(InputIte first, InputIte last)
+		void			insert(InputIte first,
+							  InputIte last,
+							  typename ft::enable_if<!ft::is_integral<InputIte>::value, InputIte>::type* = nullptr_)
 		{
 			for ( ; first != last; ++first)
 				insert(*first);
@@ -261,6 +263,49 @@ class map
 			RedBlackTree<value_type, key_compare>	_rbt;
 		
 }; /* class map */
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator==(const map<Key,T,Compare,Alloc>& lhs,
+				   const map<Key,T,Compare,Alloc>& rhs)
+{
+	typename ft::map<Key,T,Compare,Alloc>::const_iterator	left = lhs.begin();
+	typename ft::map<Key,T,Compare,Alloc>::const_iterator	right = rhs.begin();
+
+	if (lhs.size() != rhs.size())
+		return false;
+
+	for ( ; left != lhs.end(); ++left, ++right)
+	{
+		if (right == rhs.end() || *left != *right)
+			return false;
+	}
+	return true;
+}
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator!=(const map<Key,T,Compare,Alloc>& x,
+				   const map<Key,T,Compare,Alloc>& y)
+{ return !(x == y); }
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator< (const map<Key,T,Compare,Alloc>& x,
+				   const map<Key,T,Compare,Alloc>& y)
+{ return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator<=(const map<Key,T,Compare,Alloc>& x,
+				   const map<Key,T,Compare,Alloc>& y)
+{ return !(y < x); }
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator> (const map<Key,T,Compare,Alloc>& x,
+				   const map<Key,T,Compare,Alloc>& y)
+{ return y < x; }
+
+template<class Key, class T, class Compare, class Alloc>
+bool	operator>=(const map<Key,T,Compare,Alloc>& x,
+				   const map<Key,T,Compare,Alloc>& y)
+{ return !(x < y); }
 
 
 _END_NAMESPACE_FT

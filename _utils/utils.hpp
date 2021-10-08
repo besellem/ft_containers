@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 15:00:37 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:07:51 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,43 +71,46 @@ struct pair
 		second = pr.second;
 		return *this;
 	}
-	
-	template <class _T1, class _T2>
-	friend bool	operator==(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return lhs.first == rhs.first && lhs.second == rhs.second; }
-
-	template <class _T1, class _T2>
-	friend bool	operator!=(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return !(lhs == rhs); }
-
-	template <class _T1, class _T2>
-	friend bool	operator< (const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second); }
-
-	template <class _T1, class _T2>
-	friend bool	operator<=(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return !(rhs < lhs); }
-
-	template <class _T1, class _T2>
-	friend bool	operator> (const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return rhs < lhs; }
-
-	template <class _T1, class _T2>
-	friend bool	operator>=(const pair<_T1,_T2>& lhs, const pair<_T1,_T2>& rhs)
-	{ return !(lhs < rhs); }
-	
-	// Used to print the key from a pair (TO REMOVE)
-	template <class _T1, class _T2>
-	friend std::ostream &	operator<<(std::ostream &out, const pair<_T1,_T2>& x)
-	{
-		out << x.first;
-		return out;
-	}
 
 	/* -- Public Variables -- */
 	first_type		first;
 	second_type		second;
-};
+}; /* struct pair */
+
+/* -- pair non-member functions -- */
+template <class T1, class T2>
+bool	operator==(const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return x.first == y.first && x.second == y.second; }
+
+template <class T1, class T2>
+bool	operator!=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return !(x == y); }
+
+template <class T1, class T2>
+bool	operator< (const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return x.first < y.first || (!(y.first < x.first) && x.second < y.second); }
+
+template <class T1, class T2>
+bool	operator<=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return !(y < x); }
+
+template <class T1, class T2>
+bool	operator> (const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return y < x; }
+
+template <class T1, class T2>
+bool	operator>=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+{ return !(x < y); }
+
+// Used to print the key from a pair (TO REMOVE)
+template <class T1, class T2>
+std::ostream &	operator<<(std::ostream &out, const pair<T1,T2>& x)
+{
+	out << x.first;
+	return out;
+}
+/* -- [END] pair non-member functions -- */
+
 
 /* make_pair */
 template <class T1, class T2>

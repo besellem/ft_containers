@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 17:03:33 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:32:26 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,9 @@ class RedBlackTree
 
 		pair<iterator, bool>	insert(const value_type& key)
 		{
-			delete_node(key); // avoid duplicates
+			if (search(key) != _last)
+				return ft::make_pair<iterator, bool>(iterator(get_root(), nullptr_, get_last()), true);
+			// delete_node(key); // avoid duplicates
 
 			pointer	y = nullptr_;
 			pointer	x = _root;

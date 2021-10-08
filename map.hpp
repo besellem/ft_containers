@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/08 12:27:56 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:16:45 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class map
 			
 			protected:
 				key_compare	comp;
+				// value_compare(void) : comp() {}
 				value_compare(key_compare c) : comp(c) {}
 				
 			public:
@@ -61,10 +62,10 @@ class map
 				{ return comp(x.first, y.first); }
 		};
 		
-		typedef typename RedBlackTree<value_type, key_compare>::iterator             iterator;
+		typedef typename RedBlackTree<value_type, key_compare>::iterator       iterator;
 		typedef typename RedBlackTree<value_type, key_compare>::const_iterator const_iterator;
-		typedef typename ft::reverse_iterator<iterator>                              reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
+		typedef typename ft::reverse_iterator<iterator>                        reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>                  const_reverse_iterator;
 
 
 	public:
@@ -141,24 +142,24 @@ class map
 		pair<iterator, bool>	insert(const value_type& v)
 		{ return _rbt.insert(v); }
 
-		iterator 		insert(__unused const_iterator position, const value_type& v)
+		iterator 	insert(__unused const_iterator position, const value_type& v)
 		{
 			insert(v);
 			return find(v.first);
 		}
 
 		template <class InputIte>
-		void			insert(InputIte first,
-							  InputIte last,
-							  typename ft::enable_if<!ft::is_integral<InputIte>::value, InputIte>::type* = nullptr_)
+		void		insert(InputIte first,
+						   InputIte last,
+						   typename ft::enable_if<!ft::is_integral<InputIte>::value, InputIte>::type* = nullptr_)
 		{
 			for ( ; first != last; ++first)
 				insert(*first);
 		}
 
-		iterator		erase(const_iterator position);
+		void		erase(iterator position) { erase((*position).first); }
 		
-		size_type		erase(const key_type& k)
+		size_type	erase(const key_type& k)
 		{
 			size_type	n = count(k);
 			
@@ -166,10 +167,14 @@ class map
 			return n;
 		}
 
-		iterator		erase(const_iterator first, const_iterator last);
+		void		erase(iterator first, iterator last)
+		{
+			for ( ; first != last; ++first)
+				erase(first);
+		}
 		
-		void			swap(map& m) { _rbt.swap(m._rbt); }
-		void			clear()      { return _rbt.destroy(); }
+		void		swap(map& m) { _rbt.swap(m._rbt); }
+		void		clear()      { return _rbt.destroy(); }
 
 		
 		/*
@@ -186,15 +191,15 @@ class map
 		{
 			return iterator(_rbt.get_root(),
 							_rbt.get_last(),
-							_rbt.search( ft::make_pair(k, mapped_type()) )
+							_rbt.search(ft::make_pair(k, mapped_type()))
 							);
 		}
 		
 		const_iterator	find(const key_type& k) const
 		{
 			return const_iterator(_rbt.get_root(),
-								 _rbt.get_last(),
-								 _rbt.search( ft::make_pair(k, mapped_type()) )
+								  _rbt.get_last(),
+								  _rbt.search(ft::make_pair(k, mapped_type()))
 								);
 		}
 		
@@ -214,7 +219,18 @@ class map
 			return it;
 		}
 
-		const_iterator	lower_bound(const key_type& k) const;
+		const_iterator	lower_bound(const key_type& k) const
+		{
+			const_iterator			it = begin();
+			const const_iterator	ite = end();
+			
+			for ( ; it != ite; ++it)
+			{
+				if (!key_comp()(it->first, k))
+					break ;
+			}
+			return it;
+		}
 		
 		iterator		upper_bound(const key_type& k)
 		{
@@ -229,9 +245,24 @@ class map
 			return it;
 		}
 		
-		const_iterator	upper_bound(const key_type& k) const;
-		pair<iterator, iterator>				equal_range(const key_type& k);
-		pair<const_iterator, const_iterator>	equal_range(const key_type& k) const;
+		const_iterator	upper_bound(const key_type& k) const
+		{
+			const_iterator			it = begin();
+			const const_iterator	ite = end();
+			
+			for ( ; it != ite; ++it)
+			{
+				if (key_comp()(k, it->first))
+					break ;
+			}
+			return it;
+		}
+		
+		pair<iterator, iterator>				equal_range(const key_type& k)
+		{ return (ft::make_pair(lower_bound(k), upper_bound(k))); }
+		
+		pair<const_iterator, const_iterator>	equal_range(const key_type& k) const
+		{ return (ft::make_pair(lower_bound(k), upper_bound(k))); }
 		
 		
 		/*
@@ -246,8 +277,7 @@ class map
 		// TO REMOVE
 		////////////////////////////////////////////////////////////////////////
 
-		void	__print() const
-		{ _rbt.print(); }
+		void	__print() const { _rbt.print(); }
 
 		////////////////////////////////////////////////////////////////////////
 		// [END] TO REMOVE

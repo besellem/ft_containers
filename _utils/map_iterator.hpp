@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 16:34:27 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/10 17:24:32 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 _BEGIN_NAMESPACE_FT
 
-template <class T, class Compare>
+template <class T>
 class map_iterator : public iterator<bidirectional_iterator_tag, T>
 {
 
@@ -115,36 +115,20 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return tmp;
 		}
 
-		// NOT TESTED
-		map_iterator	operator-(difference_type n) const
-		{
-			map_iterator	tmp(*this);
-			
-			while (n-- > 0)
-				tmp._cur = tmp.predecessor(tmp._cur);
-			return tmp;
-		}
-
-		// NOT TESTED
-		map_iterator	operator+(difference_type n) const
-		{
-			map_iterator	tmp(*this);
-			
-			while (n-- > 0)
-				tmp._cur = tmp.successor(tmp._cur);
-			return tmp;
-		}
-
-		// operator map_iterator<const T, class _Compare> ()
+		// operator map_iterator<const T> (void)
 		// {
-		// 	return static_cast<map_iterator<const T, _Compare> >(_begin, _end, _cur);
+		// 	return map_iterator<const T>(_begin, _cur, _end);
 		// }
 
-		bool	operator==(map_iterator const& x)
-		{ return _cur == x._cur; }
+		template <class IteratorL, class IteratorR>
+		friend bool		operator==(map_iterator<IteratorL> const& x,
+								   map_iterator<IteratorR> const& y)
+		{ return x._cur == y._cur; }
 
-		bool	operator!=(map_iterator const& x)
-		{ return !(_cur == x._cur); }
+		template <class IteratorL, class IteratorR>
+		friend bool		operator!=(map_iterator<IteratorL> const& x,
+								   map_iterator<IteratorR> const& y)
+		{ return x._cur != y._cur; }
 
 
 	private:

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/07 16:46:26 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/10 18:13:15 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -576,7 +576,6 @@ int		main(void)
 	// mymap['c'] = 30;
 	// mymap['f'] = 60;
 
-	mymap.__print();
 	
 	// for (it = mymap.begin() ; it != mymap.end() ; ++it)
 	// {
@@ -598,6 +597,11 @@ int		main(void)
 	{
 		std::cout << it->first << " " << it->second << std::endl;
 	}
+
+	std::cout << "sizeof(std::map): " << sizeof(std::map<int, int>) << std::endl;
+	std::cout << "sizeof(ft::map): " << sizeof(ft::map<int, int>) << std::endl;
+	std::cout << "sizeof(RBT): " << sizeof(ft::RedBlackTree<ft::pair<int, int> >) << std::endl;
+	
 
 	// ft::map<char, int >::iterator	tmp = mymap.upper_bound('g');
 

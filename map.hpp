@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/10 18:19:10 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/10 22:21:18 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <cstddef>
 # include <tgmath.h>
 
-# include "_utils/iterator.hpp"
-# include "_utils/map_iterator.hpp"
-# include "_utils/utils.hpp"
 # include "_utils/RedBlackTree.hpp"
+# include "_utils/map_iterator.hpp"
+# include "_utils/iterator.hpp"
+# include "_utils/utils.hpp"
 
 
 _BEGIN_NAMESPACE_FT
@@ -61,8 +61,6 @@ class map
 				{ return comp(x.first, y.first); }
 		};
 		
-		// typedef typename ft::map_iterator<value_type, value_compare>       iterator;
-		// typedef typename ft::map_iterator<const value_type, value_compare> const_iterator;
 		typedef typename RedBlackTree<value_type, value_compare>::iterator       iterator;
 		typedef typename RedBlackTree<value_type, value_compare>::const_iterator const_iterator;
 		typedef typename ft::reverse_iterator<iterator>                          reverse_iterator;
@@ -76,7 +74,8 @@ class map
 		{}
 		
 		template <class InputIte>
-		map(InputIte first, InputIte last,
+		map(InputIte first,
+			InputIte last,
 			const key_compare& comp = key_compare(),
 			__unused const allocator_type& alloc = allocator_type()) :
 				_rbt(value_compare(comp))
@@ -112,12 +111,12 @@ class map
 		iterator		begin()       { return       iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
 		const_iterator	begin() const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.min()); }
 		iterator		end()         { return       iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
-		const_iterator	end() const   { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
+		const_iterator	end()   const { return const_iterator(_rbt.get_root(), _rbt.get_last(), _rbt.get_last()); }
 
 		reverse_iterator		rbegin()       { return       reverse_iterator(end()); }
 		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
 		reverse_iterator		rend()         { return       reverse_iterator(begin()); }
-		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
+		const_reverse_iterator	rend()   const { return const_reverse_iterator(begin()); }
 		
 
 		/*
@@ -177,8 +176,8 @@ class map
 		/*
 		** -- Observers --
 		*/
-		key_compare		key_comp()      const { return key_compare(); }
-		value_compare	value_comp()    const { return value_compare(key_comp()); }
+		key_compare		key_comp()   const { return key_compare(); }
+		value_compare	value_comp() const { return value_compare(key_comp()); }
 
 
 		/*

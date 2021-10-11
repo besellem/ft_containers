@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 21:37:37 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/10 22:21:06 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/11 15:26:22 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,22 +185,9 @@ class set
 }; /* class set */
 
 template <class Key, class Compare, class Allocator>
-bool	operator==(const set<Key, Compare, Allocator>& lhs,
-				   const set<Key, Compare, Allocator>& rhs)
-{
-	typename ft::set<Key,Compare,Allocator>::const_iterator	left = lhs.begin();
-	typename ft::set<Key,Compare,Allocator>::const_iterator	right = rhs.begin();
-
-	if (lhs.size() != rhs.size())
-		return false;
-
-	for ( ; left != lhs.end(); ++left, ++right)
-	{
-		if (right == rhs.end() || *left != *right)
-			return false;
-	}
-	return true;
-}
+bool	operator==(const set<Key,Compare,Allocator>& x,
+				   const set<Key,Compare,Allocator>& y)
+{ return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
 
 template <class Key, class Compare, class Allocator>
 bool	operator!=(const set<Key,Compare,Allocator>& x,

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/10 22:25:58 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/11 15:20:36 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,8 +600,19 @@ int		main(void)
 		std::cout << it->first << " " << it->second << std::endl;
 	}
 
-	std::cout << "sizeof(std::map): " << sizeof(std::map<int, int>) << std::endl;
-	std::cout << "sizeof(ft::map): " << sizeof(ft::map<int, int>) << std::endl;
+	std::map<char, char> p1;
+
+
+	ft::map<char, char> p2;
+
+
+	ft::RedBlackTree<ft::pair<char, char> >	f1;
+
+	std::cout << "sizeof(std::map): " << sizeof(p1) << std::endl;
+	std::cout << "sizeof(ft::map): " << sizeof(p2) << std::endl;
+	std::cout << "max_size(std::map): " << p1.max_size() << std::endl;
+	std::cout << "max_size(ft::map): " << p2.max_size() << std::endl;
+	std::cout << "max_size(ft::RBTREE): " << f1.max_size() << std::endl;
 	std::cout << "sizeof(RBT): " << sizeof(ft::RedBlackTree<ft::pair<int, int> >) << std::endl;
 	
 

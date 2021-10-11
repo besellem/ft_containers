@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/10 22:21:18 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/11 15:29:23 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <tgmath.h>
 
 # include "_utils/RedBlackTree.hpp"
-# include "_utils/map_iterator.hpp"
+# include "_utils/tree_iterator.hpp"
 # include "_utils/iterator.hpp"
 # include "_utils/utils.hpp"
 
@@ -61,6 +61,8 @@ class map
 				{ return comp(x.first, y.first); }
 		};
 		
+		// typedef typename ft::tree_iterator<value_type, ft::RedBlackTree<value_type> >  iterator;
+		// typedef typename ft::tree_iterator<value_type, ft::RedBlackTree<value_type> >  const_iterator;
 		typedef typename RedBlackTree<value_type, value_compare>::iterator       iterator;
 		typedef typename RedBlackTree<value_type, value_compare>::const_iterator const_iterator;
 		typedef typename ft::reverse_iterator<iterator>                          reverse_iterator;
@@ -248,48 +250,40 @@ class map
 		
 }; /* class map */
 
-template<class Key, class T, class Compare, class Alloc>
-bool	operator==(const map<Key,T,Compare,Alloc>& lhs,
-				   const map<Key,T,Compare,Alloc>& rhs)
-{
-	typename ft::map<Key,T,Compare,Alloc>::const_iterator	left = lhs.begin();
-	typename ft::map<Key,T,Compare,Alloc>::const_iterator	right = rhs.begin();
+template <class Key, class T, class Compare, class Allocator>
+bool	operator==(const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
+{ return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
 
-	if (lhs.size() != rhs.size())
-		return false;
-
-	for ( ; left != lhs.end(); ++left, ++right)
-	{
-		if (right == rhs.end() || *left != *right)
-			return false;
-	}
-	return true;
-}
-
-template<class Key, class T, class Compare, class Alloc>
-bool	operator!=(const map<Key,T,Compare,Alloc>& x,
-				   const map<Key,T,Compare,Alloc>& y)
+template <class Key, class T, class Compare, class Allocator>
+bool	operator!=(const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
 { return !(x == y); }
 
-template<class Key, class T, class Compare, class Alloc>
-bool	operator< (const map<Key,T,Compare,Alloc>& x,
-				   const map<Key,T,Compare,Alloc>& y)
+template <class Key, class T, class Compare, class Allocator>
+bool	operator< (const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
 { return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 
-template<class Key, class T, class Compare, class Alloc>
-bool	operator<=(const map<Key,T,Compare,Alloc>& x,
-				   const map<Key,T,Compare,Alloc>& y)
+template <class Key, class T, class Compare, class Allocator>
+bool	operator<=(const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
 { return !(y < x); }
 
-template<class Key, class T, class Compare, class Alloc>
-bool	operator> (const map<Key,T,Compare,Alloc>& x,
-				   const map<Key,T,Compare,Alloc>& y)
+template <class Key, class T, class Compare, class Allocator>
+bool	operator> (const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
 { return y < x; }
 
-template<class Key, class T, class Compare, class Alloc>
-bool	operator>=(const map<Key,T,Compare,Alloc>& x,
-				   const map<Key,T,Compare,Alloc>& y)
+template <class Key, class T, class Compare, class Allocator>
+bool	operator>=(const map<Key,T,Compare,Allocator>& x,
+				   const map<Key,T,Compare,Allocator>& y)
 { return !(x < y); }
+
+template <class Key, class T, class Compare, class Allocator>
+void	swap(map<Key,T,Compare,Allocator>& x,
+			 map<Key,T,Compare,Allocator>& y)
+{ x.swap(y); }
 
 
 _END_NAMESPACE_FT

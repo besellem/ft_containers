@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/10 18:13:48 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/11 15:50:07 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # include <memory>
 # include "utils.hpp"
-# include "map_iterator.hpp"
+# include "tree_iterator.hpp"
 
 # define BLACK_NODE 0
 # define RED_NODE	1
@@ -31,7 +31,7 @@ struct Node
 {
 	public:
 		typedef T              value_type;
-		typedef size_t         size_type;
+		typedef bool           size_type;
 	
 	public:
 		Node(void) :
@@ -42,17 +42,6 @@ struct Node
 			right(nullptr_)
 		{}
 
-		Node(size_type color = BLACK_NODE,
-			Node *parent = nullptr_,
-			Node *left = nullptr_,
-			Node *right = nullptr_) :
-				val(),
-				color(color),
-				parent(parent),
-				left(left),
-				right(right)
-		{}
-		
 		Node(value_type val,
 			size_type color = BLACK_NODE,
 			Node *parent = nullptr_,
@@ -119,18 +108,16 @@ class RedBlackTree
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename allocator_type::size_type          size_type;
 		
-		typedef ft::map_iterator<node_type>                 iterator;
-		typedef ft::map_iterator<node_type>                 const_iterator;
+		typedef typename ft::tree_iterator<node_type>       iterator;
+		typedef typename ft::tree_iterator<node_type>       const_iterator;
 
 
 	public:
 		RedBlackTree(value_compare const& cmp = value_compare()) :
-			_cmp(cmp),
-			_root(nullptr_),
-			_last(nullptr_)
+			_cmp(cmp)
 		{
 			_last = allocator_type().allocate(1);
-			allocator_type().construct(_last, node_type(BLACK_NODE, nullptr_, nullptr_, nullptr_));
+			allocator_type().construct(_last, node_type());
 			_root = _last;
 		}
 
@@ -170,8 +157,8 @@ class RedBlackTree
 			return size(s->right) + size(s->left) + 1;
 		}
 		
-		size_type	max_size() const                    { return allocator_type().max_size(); }
-		size_type	size() const                        { return size(_root); }
+		size_type	max_size()                    const { return allocator_type().max_size(); }
+		size_type	size()                        const { return size(_root); }
 		pointer		search(const value_type& key) const { return __search_wrapper(_root, key); }
 
 		pointer		successor(pointer s) const
@@ -274,7 +261,7 @@ class RedBlackTree
 
 			for ( ; p != _last; p = successor(p))
 			{
-				if (!_cmp(v, p->val))
+				if (_cmp(v, p->val))
 					break ;
 			}
 			return p;

@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_iterator.hpp                                   :+:      :+:    :+:   */
+/*   tree_iterator.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/10 17:24:32 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/11 14:50:44 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_ITERATOR_HPP
-# define MAP_ITERATOR_HPP
+#ifndef TREE_ITERATOR_HPP
+# define TREE_ITERATOR_HPP
 
 # include <iostream>
 
 # include "iterator.hpp"
+# include "RedBlackTree.hpp"
 # include "utils.hpp"
 
 
 _BEGIN_NAMESPACE_FT
 
 template <class T>
-class map_iterator : public iterator<bidirectional_iterator_tag, T>
+class tree_iterator : public iterator<bidirectional_iterator_tag, T>
 {
 
 	public:
@@ -38,20 +39,20 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 
 
 	public:
-		map_iterator(void) : _begin(nullptr_), _end(nullptr_), _cur(nullptr_) {}
+		tree_iterator(void) : _begin(nullptr_), _end(nullptr_), _cur(nullptr_) {}
 		
-		map_iterator(node_pointer const& begin, node_pointer const& end, node_pointer const& current) :
+		tree_iterator(node_pointer const& begin, node_pointer const& end, node_pointer const& current) :
 			_begin(begin),
 			_end(end),
 			_cur(current)
 		{}
 
-		map_iterator(map_iterator const& u)
+		tree_iterator(tree_iterator const& u)
 		{
 			*this = u;
 		}
 
-		map_iterator&		operator=(const map_iterator& u)
+		tree_iterator&		operator=(const tree_iterator& u)
 		{
 			if (this == &u)
 				return *this;
@@ -62,7 +63,7 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return *this;
 		}
 		
-		~map_iterator() {}
+		~tree_iterator() {}
 
 		reference			operator*() const
 		{
@@ -74,7 +75,7 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return &(operator*());
 		}
 
-		map_iterator&		operator++()
+		tree_iterator&		operator++()
 		{
 			if (_cur == max(_begin))
 			{
@@ -90,14 +91,14 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return *this;
 		}
 		
-		map_iterator		operator++(int)
+		tree_iterator		operator++(int)
 		{
-			map_iterator	tmp(*this);
+			tree_iterator	tmp(*this);
 			operator++();
 			return tmp;
 		}
 		
-		map_iterator&		operator--()
+		tree_iterator&		operator--()
 		{
 			if (_cur == _end)
 			{
@@ -108,26 +109,21 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 			return *this;
 		}
 		
-		map_iterator		operator--(int)
+		tree_iterator		operator--(int)
 		{
-			map_iterator	tmp(*this);
+			tree_iterator	tmp(*this);
 			operator--();
 			return tmp;
 		}
-
-		// operator map_iterator<const T> (void)
-		// {
-		// 	return map_iterator<const T>(_begin, _cur, _end);
-		// }
-
+		
 		template <class IteratorL, class IteratorR>
-		friend bool		operator==(map_iterator<IteratorL> const& x,
-								   map_iterator<IteratorR> const& y)
+		friend bool		operator==(tree_iterator<IteratorL> const& x,
+								   tree_iterator<IteratorR> const& y)
 		{ return x._cur == y._cur; }
 
 		template <class IteratorL, class IteratorR>
-		friend bool		operator!=(map_iterator<IteratorL> const& x,
-								   map_iterator<IteratorR> const& y)
+		friend bool		operator!=(tree_iterator<IteratorL> const& x,
+								   tree_iterator<IteratorR> const& y)
 		{ return x._cur != y._cur; }
 
 
@@ -178,9 +174,9 @@ class map_iterator : public iterator<bidirectional_iterator_tag, T>
 		node_pointer	_end;
 		node_pointer	_cur;
 
-}; /* map_iterator */
+}; /* tree_iterator */
 
 
 _END_NAMESPACE_FT
 
-#endif /* define MAP_ITERATOR_HPP */
+#endif /* define TREE_ITERATOR_HPP */

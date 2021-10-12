@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 17:07:19 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/11 14:50:44 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:41:25 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,13 @@ class tree_iterator : public iterator<bidirectional_iterator_tag, T>
 			if (s->right != _end)
 				return min(s->right);
 
-			node_pointer	y = s->parent;
-			while (y != _end && s == y->right)
+			node_pointer	tmp = s->parent;
+			while (tmp != _end && s == tmp->right)
 			{
-				s = y;
-				y = y->parent;
+				s = tmp;
+				tmp = tmp->parent;
 			}
-			return y;
+			return tmp;
 		}
 
 		node_pointer	predecessor(node_pointer s)

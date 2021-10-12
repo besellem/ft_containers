@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/11 15:29:23 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:14:43 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ class map
 		~map()
 		{
 			clear();
-			// _rbt.destroy_last();
+			_rbt.destroy_last();
 		}
 
 		map&	operator=(const map& m)
@@ -102,6 +102,7 @@ class map
 				return *this;
 			
 			this->~map();
+			_rbt = ft::RedBlackTree<value_type, value_compare>(value_compare(key_compare()));
 			insert(m.begin(), m.end());
 			return *this;
 		}
@@ -143,7 +144,10 @@ class map
 		** -- Modifiers --
 		*/
 		ft::pair<iterator, bool>	insert(const value_type& v)
-		{ return _rbt.insert(v); }
+		{
+			const bool	r = _rbt.insert(v);
+			return ft::make_pair(find(v.first), r);
+		}
 
 		iterator 	insert(__unused const_iterator position, const value_type& v)
 		{
@@ -158,12 +162,11 @@ class map
 				insert(*first);
 		}
 
-		void		erase(iterator position) { erase(position->first); }
+		void		erase(iterator position)
+		{ erase(position->first); }
 		
 		size_type	erase(const key_type& k)
-		{
-			return _rbt.delete_node(ft::make_pair(k, mapped_type()));
-		}
+		{ return _rbt.delete_node(ft::make_pair(k, mapped_type())); }
 
 		void		erase(iterator first, iterator last)
 		{

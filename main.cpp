@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:04:12 by besellem          #+#    #+#             */
-/*   Updated: 2021/09/09 11:52:36 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:54:15 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 #include <string>
 #include <deque>
 
-#if 1 // CREATE A REAL STL EXAMPLE
+#if 0 // CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
+	#include <set>
 	namespace ft = std;
 #else
-	#include <map.hpp>
-	#include <stack.hpp>
-	#include <vector.hpp>
+	#include "map.hpp"
+	#include "stack.hpp"
+	#include "vector.hpp"
+	#include "set.hpp"
 #endif
 
 #include <stdlib.h>
@@ -31,8 +33,8 @@
 #define BUFFER_SIZE 4096
 struct Buffer
 {
-	int idx;
-	char buff[BUFFER_SIZE];
+	int		idx;
+	char	buff[BUFFER_SIZE];
 };
 
 
@@ -68,12 +70,12 @@ int main(int argc, char** argv) {
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
-	ft::vector<std::string> vector_str;
-	ft::vector<int> vector_int;
-	ft::stack<int> stack_int;
-	ft::vector<Buffer> vector_buffer;
-	ft::stack<Buffer, std::deque<int> > stack_deq_buffer;
-	ft::map<int, int> map_int;
+	ft::vector<std::string>	vector_str;
+	ft::vector<int>			vector_int;
+	ft::stack<int>			stack_int;
+	ft::vector<Buffer>		vector_buffer;
+	ft::stack<Buffer>		stack_deq_buffer;
+	ft::map<int, int>		map_int;
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -85,7 +87,8 @@ int main(int argc, char** argv) {
 		const int idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
-	ft::vector<Buffer>().swap(vector_buffer);
+	ft::vector<Buffer>	__er;
+	__er.swap(vector_buffer);
 
 	try
 	{

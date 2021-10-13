@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/06 14:57:57 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:52:33 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ struct iterator {
 template <class Ite>
 class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 {
+	
 	public:
 		typedef typename ft::iterator<random_access_iterator_tag, Ite>::value_type         value_type;
 		typedef typename ft::iterator<random_access_iterator_tag, Ite>::difference_type    difference_type;
@@ -90,7 +91,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 
 		random_access_iterator&	operator=(const random_access_iterator& u)
 		{
-			if (*this == u)
+			if (this == &u)
 				return *this;
 			
 			_cur = u.base();
@@ -165,9 +166,10 @@ class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 			return *(_cur + n);
 		}
 
-		operator random_access_iterator<const Ite>(void)
+		// needed for conversion to a const_iterator
+		operator				random_access_iterator<const Ite>(void)
 		{
-			return static_cast< random_access_iterator<const Ite> >(_cur);
+			return random_access_iterator<const Ite>(_cur);
 		}
 
 		/* -- Non-member functions -- */
@@ -215,6 +217,7 @@ class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 		
 		private:
 			pointer		_cur;
+		
 }; /* random_access_iterator */
 
 /* Reverse Iterator */
@@ -226,6 +229,7 @@ class reverse_iterator
 					typename iterator_traits<Ite>::pointer,
 					typename iterator_traits<Ite>::reference>
 {
+
 	protected:
 		Ite		_cur;
 	
@@ -320,6 +324,12 @@ class reverse_iterator
 			return (*(*this + n));
 		}
 
+		// needed for conversion to a const_iterator
+		operator			reverse_iterator<const Ite>(void)
+		{
+			return reverse_iterator<const Ite>(_cur);
+		}
+
 		/* -- Non-member functions -- */
 		template <class IteratorL, class IteratorR>
 		friend bool		operator==(const reverse_iterator<IteratorL>& lhs,
@@ -362,6 +372,7 @@ class reverse_iterator
 						const reverse_iterator<IteratorL>& lhs,
 						const reverse_iterator<IteratorR>& rhs)
 		{ return rhs.base() - lhs.base(); }
+		
 }; /* reverse_iterator */
 
 /* Lexicographical Compare */
@@ -392,10 +403,10 @@ bool	equal(InputIte1 first1, InputIte1 last1, InputIte2 first2)
 }
 
 /* Enable if */
-template<bool Cond, class T = void>
+template <bool Cond, class T = void>
 struct enable_if {};
 
-template<class T>
+template <class T>
 struct enable_if<true, T> { typedef T type; };
 
 /* Integral Constant */
@@ -409,8 +420,8 @@ struct integral_constant
 	operator value_type() const { return value; }
 };
 
-typedef integral_constant<bool, true>  true_type;
-typedef integral_constant<bool, false> false_type;
+typedef integral_constant<bool, true>   true_type;
+typedef integral_constant<bool, false>  false_type;
 
 /* Is Integral */
 template <class T> struct is_integral                     : public false_type {};

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 23:51:47 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/12 16:25:34 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 11:50:48 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -543,14 +543,14 @@ int		main(void)
 	std::map<char, char> p1;
 	ft::map<char, char> p2;
 
-	ft::RedBlackTree<ft::pair<char, char> >	f1;
+	ft::RedBlackTree<ft::pair<char, char>, ft::less<char> >	f1;
 
 	std::cout << "sizeof(std::map): " << sizeof(p1) << std::endl;
 	std::cout << "sizeof(ft::map): " << sizeof(p2) << std::endl;
 	std::cout << "max_size(std::map): " << p1.max_size() << std::endl;
 	std::cout << "max_size(ft::map): " << p2.max_size() << std::endl;
 	std::cout << "max_size(ft::RBTREE): " << f1.max_size() << std::endl;
-	std::cout << "sizeof(RBT): " << sizeof(ft::RedBlackTree<ft::pair<int, int> >) << std::endl;
+	std::cout << "sizeof(RBT): " << sizeof(ft::RedBlackTree<ft::pair<int, int>, ft::less<int> >) << std::endl;
 
 
 	return 0;

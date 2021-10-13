@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 16:29:46 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ struct Node
 			right(nullptr_)
 		{}
 
-		Node(value_type val,
-			size_type color = BLACK_NODE,
-			Node *parent = nullptr_,
-			Node *left = nullptr_,
-			Node *right = nullptr_) :
+		Node(value_type const& val,
+			 size_type color = BLACK_NODE,
+			 Node* parent = nullptr_,
+			 Node* left = nullptr_,
+			 Node* right = nullptr_) :
 				val(val),
 				color(color),
 				parent(parent),
@@ -54,19 +54,19 @@ struct Node
 				right(right)
 		{}
 
-		Node(Node const & src) :
-			val(src.val),
-			color(src.color),
-			parent(src.parent),
-			left(src.left),
-			right(src.right)
+		Node(Node const& src) :
+			 val(src.val),
+			 color(src.color),
+			 parent(src.parent),
+			 left(src.left),
+			 right(src.right)
 		{}
 
-		~Node(void) {}
+		~Node() {}
 
-		Node&	operator=(Node const & rhs)
+		Node&	operator=(Node const& rhs)
 		{
-			if (*this == rhs)
+			if (this == &rhs)
 				return *this;
 
 			val = rhs.val;
@@ -77,7 +77,7 @@ struct Node
 			return *this;
 		}
 
-		bool	operator==(Node const & rhs) { return val == rhs.val; }
+		bool	operator==(Node const& rhs) { return val == rhs.val; }
 	
 	public:
 		value_type	val;
@@ -90,7 +90,7 @@ struct Node
 
 
 template <class T,
-		  class Compare = ft::less<T>,
+		  class Compare,
 		  class Node = Node<T>,
 		  class Allocator = std::allocator<Node> >
 class RedBlackTree
@@ -107,9 +107,6 @@ class RedBlackTree
 		typedef typename allocator_type::const_pointer      const_pointer;
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename allocator_type::size_type          size_type;
-		
-		typedef typename ft::tree_iterator<node_type>       iterator;
-		typedef typename ft::tree_iterator<node_type>       const_iterator;
 
 
 	public:
@@ -120,13 +117,6 @@ class RedBlackTree
 			allocator_type().construct(_last, node_type());
 			_root = _last;
 		}
-
-		// RedBlackTree(RedBlackTree const& u)
-		// {
-		// 	_cmp = u._cmp;
-		// 	_last = u._last;
-		// 	_root = u._root;
-		// }
 
 		~RedBlackTree() {}
 
@@ -371,7 +361,6 @@ class RedBlackTree
 				else
 				{
 					u = k->parent->parent->right;
-
 					if (u->color == RED_NODE)
 					{
 						u->color = BLACK_NODE;
@@ -459,7 +448,7 @@ class RedBlackTree
 							s->color = RED_NODE;
 							_left_rotate(s);
 							s = x->parent->left;
-						} 
+						}
 						s->color = x->parent->color;
 						x->parent->color = BLACK_NODE;
 						s->left->color = BLACK_NODE;

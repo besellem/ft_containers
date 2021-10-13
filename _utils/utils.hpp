@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/08 12:07:51 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 /* namespace `ft' declaration */
 #define _BEGIN_NAMESPACE_FT  namespace ft {
 #define _END_NAMESPACE_FT    }
+
+
+// include or define __unused attribute
+#if __has_include(<sys/cdefs.h>)
+# include <sys/cdefs.h>
+#elif !defined(__unused)
+# define __unused            __attribute__((unused))
+#endif /* __has_include(<sys/cdefs.h>) */
 
 
 _BEGIN_NAMESPACE_FT
@@ -50,6 +58,7 @@ struct nullptr_t
 template <class T1, class T2>
 struct pair
 {
+	
 	/* -- Types -- */
 	typedef T1		first_type;
 	typedef T2		second_type;
@@ -67,6 +76,9 @@ struct pair
 	/* -- Operators -- */
 	pair&	operator=(const pair& pr)
 	{
+		if (this == &pr)
+			return *this;
+		
 		first = pr.first;
 		second = pr.second;
 		return *this;
@@ -75,46 +87,38 @@ struct pair
 	/* -- Public Variables -- */
 	first_type		first;
 	second_type		second;
+	
 }; /* struct pair */
 
 /* -- pair non-member functions -- */
 template <class T1, class T2>
-bool	operator==(const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator==(const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return x.first == y.first && x.second == y.second; }
 
 template <class T1, class T2>
-bool	operator!=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator!=(const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return !(x == y); }
 
 template <class T1, class T2>
-bool	operator< (const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator< (const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return x.first < y.first || (!(y.first < x.first) && x.second < y.second); }
 
 template <class T1, class T2>
-bool	operator<=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator<=(const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return !(y < x); }
 
 template <class T1, class T2>
-bool	operator> (const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator> (const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return y < x; }
 
 template <class T1, class T2>
-bool	operator>=(const pair<T1,T2>& x, const pair<T1,T2>& y)
+bool	operator>=(const ft::pair<T1,T2>& x, const ft::pair<T1,T2>& y)
 { return !(x < y); }
-
-// Used to print the key from a pair (TO REMOVE)
-template <class T1, class T2>
-std::ostream &	operator<<(std::ostream &out, const pair<T1,T2>& x)
-{
-	out << x.first;
-	return out;
-}
-/* -- [END] pair non-member functions -- */
 
 
 /* make_pair */
 template <class T1, class T2>
-pair<T1, T2>	make_pair(T1 x, T2 y) { return pair<T1, T2>(x, y); }
+ft::pair<T1, T2>	make_pair(T1 x, T2 y) { return ft::pair<T1, T2>(x, y); }
 
 
 /* Binary Functions */

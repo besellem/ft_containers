@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:33 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/03 22:11:07 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,65 +23,69 @@ class stack
 {
 	
 	public:
-		typedef Container							container_type;
-		typedef typename Container::value_type		value_type;
-		typedef typename Container::size_type		size_type;
-		typedef typename Container::reference		reference;
-		typedef typename Container::const_reference	const_reference;
+		typedef Container                                       container_type;
+		typedef typename Container::value_type                  value_type;
+		typedef typename Container::size_type                   size_type;
+		typedef typename Container::reference                   reference;
+		typedef typename Container::const_reference             const_reference;
 
 
 	public:
-		explicit stack(container_type const &cont = Container()) : _c(cont)
+		explicit stack(container_type const &cont = Container()) : c(cont)
 		{}
 		
 		~stack() {}
 
-		bool			empty() const               { return _c.empty(); }
-		size_type		size() const                { return _c.size(); }
-		reference		top()                       { return _c.back(); }
-		const_reference	top() const                 { return _c.back(); }
-		void			push(const value_type& val) { return _c.push_back(val); }
-		void			pop()                       { return _c.pop_back(); }
+		bool			empty()               const { return c.empty(); }
+		size_type		size()                const { return c.size(); }
+		reference		top()                       { return c.back(); }
+		const_reference	top()                 const { return c.back(); }
+		
+		void			push(const value_type& val) { return c.push_back(val); }
+		void			pop()                       { return c.pop_back(); }
 	
 		stack &			operator=(stack const &x)
 		{
-			this->_c = x._c;
+			if (this == &x)
+				return *this;
+			
+			c = x.c;
 			return *this;
 		}
 
 		template <class _Tp, class _Cont>
 		friend bool		operator==(const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c == rhs._c; }
+		{ return lhs.c == rhs.c; }
 		
 		template <class _Tp, class _Cont>
 		friend bool		operator!=(const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c != rhs._c; }
+		{ return lhs.c != rhs.c; }
 		
 		template <class _Tp, class _Cont>
 		friend bool		operator< (const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c <  rhs._c; }
+		{ return lhs.c <  rhs.c; }
 		
 		template <class _Tp, class _Cont>
 		friend bool		operator<=(const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c <= rhs._c; }
+		{ return lhs.c <= rhs.c; }
 		
 		template <class _Tp, class _Cont>
 		friend bool		operator> (const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c >  rhs._c; }
+		{ return lhs.c >  rhs.c; }
 		
 		template <class _Tp, class _Cont>
 		friend bool		operator>=(const stack<_Tp,_Cont>& lhs,
 								   const stack<_Tp,_Cont>& rhs)
-		{ return lhs._c >= rhs._c; }
+		{ return lhs.c >= rhs.c; }
 	
 	
 	protected:
-		container_type	_c;
+		container_type		c;
 	
 }; /* class stack */
 

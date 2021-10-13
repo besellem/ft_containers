@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:30 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/08 11:55:16 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ class vector
 		
 		vector &				operator=(const vector &x)
 		{
-			if (*this == x)
+			if (this == &x)
 				return *this;
 			
 			clear();
@@ -125,22 +125,22 @@ class vector
 		/*
 		** -- Iterators --
 		*/
-		iterator				begin()        { return iterator(_begin); }
-		const_iterator			begin() const  { return const_iterator(_begin); }
-		iterator				end()          { return iterator(_end); }
-		const_iterator			end() const    { return const_iterator(_end); }
-		reverse_iterator		rbegin()       { return reverse_iterator(end()); }
+		iterator				begin()        { return       iterator(_begin); }
+		const_iterator			begin()  const { return const_iterator(_begin); }
+		iterator				end()          { return       iterator(_end); }
+		const_iterator			end()    const { return const_iterator(_end); }
+		reverse_iterator		rbegin()       { return       reverse_iterator(end()); }
 		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
-		reverse_iterator		rend()         { return reverse_iterator(begin()); }
-		const_reverse_iterator	rend() const   { return const_reverse_iterator(begin()); }
+		reverse_iterator		rend()         { return       reverse_iterator(begin()); }
+		const_reverse_iterator	rend()   const { return const_reverse_iterator(begin()); }
 
 		/*
 		** -- Capacity --
 		*/
-		size_type		size() const     { return static_cast<size_type>(_end - _begin); }
+		size_type		size()     const { return static_cast<size_type>(_end - _begin); }
 		size_type		max_size() const { return allocator_type().max_size(); }
 		size_type		capacity() const { return static_cast<size_type>(_end_cap - _begin); }
-		bool			empty() const    { return size() == 0; }
+		bool			empty()    const { return size() == 0; }
 
 		void			resize(size_type n, value_type val = value_type())
 		{
@@ -195,9 +195,9 @@ class vector
 		** -- Element access --
 		*/
 		reference 		front()                        { return *_begin; }
-		const_reference	front() const                  { return *_begin; }
+		const_reference	front()                  const { return *_begin; }
 		reference		back()                         { return *(_end - 1); }
-		const_reference	back() const                   { return *(_end - 1); }
+		const_reference	back()                   const { return *(_end - 1); }
 		reference		operator[] (size_type n)       { return *(_begin + n); }
 		const_reference	operator[] (size_type n) const { return *(_begin + n); }
 		
@@ -318,7 +318,7 @@ class vector
 		
 		void			swap(vector &x)
 		{
-			if (*this == x)
+			if (this == &x)
 				return ;
 			
 			allocator_type	tmp_alloc = _alloc;
@@ -366,21 +366,8 @@ class vector
 ** -- Non-member --
 */
 template <class T, class Alloc>
-bool	operator==(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
-{
-	typename ft::vector<T>::const_iterator	left = lhs.begin();
-	typename ft::vector<T>::const_iterator	right = rhs.begin();
-
-	if (lhs.size() != rhs.size())
-		return false;
-
-	for ( ; left != lhs.end(); ++left, ++right)
-	{
-		if (right == rhs.end() || *left != *right)
-			return false;
-	}
-	return true;
-}
+bool	operator==(const vector<T,Alloc> &x, const vector<T,Alloc> &y)
+{ return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
 
 template <class T, class Alloc>
 bool	operator!=(const vector<T,Alloc> &x, const vector<T,Alloc> &y)

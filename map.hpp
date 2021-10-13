@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:19:21 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/12 16:14:43 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <memory>
 # include <algorithm>
 # include <cstddef>
-# include <tgmath.h>
 
 # include "_utils/RedBlackTree.hpp"
 # include "_utils/tree_iterator.hpp"
@@ -61,12 +60,10 @@ class map
 				{ return comp(x.first, y.first); }
 		};
 		
-		// typedef typename ft::tree_iterator<value_type, ft::RedBlackTree<value_type> >  iterator;
-		// typedef typename ft::tree_iterator<value_type, ft::RedBlackTree<value_type> >  const_iterator;
-		typedef typename RedBlackTree<value_type, value_compare>::iterator       iterator;
-		typedef typename RedBlackTree<value_type, value_compare>::const_iterator const_iterator;
-		typedef typename ft::reverse_iterator<iterator>                          reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
+		typedef ft::tree_iterator<value_type, ft::Node<value_type> >        iterator;
+		typedef ft::tree_iterator<const value_type, ft::Node<value_type> >  const_iterator;
+		typedef ft::reverse_iterator<iterator>                              reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
 
 
 	public:
@@ -170,8 +167,11 @@ class map
 
 		void		erase(iterator first, iterator last)
 		{
-			for ( ; first != last; ++first)
-				erase(first);
+			while (first != last)
+			{
+				first = find(first->first);
+				erase(first++);
+			}
 		}
 		
 		void		swap(map& m) { _rbt.swap(m._rbt); }
@@ -210,36 +210,36 @@ class map
 		iterator		lower_bound(const key_type& k)
 		{
 			return iterator(_rbt.get_root(),
-							_rbt.lower_bound(ft::make_pair(k, mapped_type())),
-							_rbt.get_last());
+							_rbt.get_last(),
+							_rbt.lower_bound(ft::make_pair(k, mapped_type())));
 		}
 		
 		const_iterator	lower_bound(const key_type& k) const
 		{
 			return const_iterator(_rbt.get_root(),
-								  _rbt.lower_bound(ft::make_pair(k, mapped_type())),
-								  _rbt.get_last());
+								  _rbt.get_last(),
+								  _rbt.lower_bound(ft::make_pair(k, mapped_type())));
 		}
 		
 		iterator		upper_bound(const key_type& k)
 		{
 			return iterator(_rbt.get_root(),
-							_rbt.upper_bound(ft::make_pair(k, mapped_type())),
-							_rbt.get_last());
+							_rbt.get_last(),
+							_rbt.upper_bound(ft::make_pair(k, mapped_type())));
 		}
 		
 		const_iterator	upper_bound(const key_type& k) const
 		{
 			return const_iterator(_rbt.get_root(),
-								  _rbt.upper_bound(ft::make_pair(k, mapped_type())),
-								  _rbt.get_last());
+								  _rbt.get_last(),
+								  _rbt.upper_bound(ft::make_pair(k, mapped_type())));
 		}
 
 		pair<iterator, iterator>				equal_range(const key_type& k)
-		{ return (ft::make_pair(lower_bound(k), upper_bound(k))); }
+		{ return ft::make_pair(lower_bound(k), upper_bound(k)); }
 		
 		pair<const_iterator, const_iterator>	equal_range(const key_type& k) const
-		{ return (ft::make_pair(lower_bound(k), upper_bound(k))); }
+		{ return ft::make_pair(lower_bound(k), upper_bound(k)); }
 		
 		
 		/*

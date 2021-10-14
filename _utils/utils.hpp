@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 16:23:38 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 15:49:54 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/14 12:53:11 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 #define _END_NAMESPACE_FT    }
 
 
-// include or define __unused attribute
+/* include or define __unused attribute */
 #if __has_include(<sys/cdefs.h>)
 # include <sys/cdefs.h>
-#elif !defined(__unused)
-# define __unused            __attribute__((unused))
 #endif /* __has_include(<sys/cdefs.h>) */
+
+#if !defined(__unused)
+# define __unused            __attribute__((unused))
+#endif /* !defined(__unused) */
 
 
 _BEGIN_NAMESPACE_FT

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:16:46 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 23:20:08 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/14 13:55:25 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,36 +173,6 @@ class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 		}
 
 		/* -- Non-member functions -- */
-		template <class IteratorL, class IteratorR>
-		friend bool		operator==(const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() == rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator!=(const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() != rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator< (const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() < rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator<=(const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() <= rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator> (const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() > rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator>=(const random_access_iterator<IteratorL>& lhs,
-								   const random_access_iterator<IteratorR>& rhs)
-		{ return lhs.base() >= rhs.base(); }
-
 		template <class Iterator>
 		friend random_access_iterator<Iterator>	operator+(
 						difference_type n,
@@ -219,6 +189,36 @@ class random_access_iterator : public iterator<random_access_iterator_tag, Ite>
 			pointer		_cur;
 		
 }; /* random_access_iterator */
+
+template <class IteratorL, class IteratorR>
+bool	operator==(const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() == rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator!=(const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() != rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator< (const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() < rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator<=(const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() <= rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator> (const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() > rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator>=(const random_access_iterator<IteratorL>& lhs,
+				   const random_access_iterator<IteratorR>& rhs)
+{ return lhs.base() >= rhs.base(); }
 
 /* Reverse Iterator */
 template <class Ite>
@@ -331,36 +331,6 @@ class reverse_iterator
 		}
 
 		/* -- Non-member functions -- */
-		template <class IteratorL, class IteratorR>
-		friend bool		operator==(const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() == rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator!=(const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() != rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator< (const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() > rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator<=(const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() >= rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator> (const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() < rhs.base(); }
-
-		template <class IteratorL, class IteratorR>
-		friend bool		operator>=(const reverse_iterator<IteratorL>& lhs,
-								   const reverse_iterator<IteratorR>& rhs)
-		{ return lhs.base() <= rhs.base(); }
-
 		template <class _Ite>
 		friend reverse_iterator<_Ite>	operator+(
 						difference_type n,
@@ -374,6 +344,36 @@ class reverse_iterator
 		{ return rhs.base() - lhs.base(); }
 		
 }; /* reverse_iterator */
+
+template <class IteratorL, class IteratorR>
+bool	operator==(const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() == rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator!=(const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() != rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator< (const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() > rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator<=(const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() >= rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator> (const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() < rhs.base(); }
+
+template <class IteratorL, class IteratorR>
+bool	operator>=(const reverse_iterator<IteratorL>& lhs,
+				   const reverse_iterator<IteratorR>& rhs)
+{ return lhs.base() <= rhs.base(); }
 
 /* Lexicographical Compare */
 template <class InputIte1, class InputIte2>

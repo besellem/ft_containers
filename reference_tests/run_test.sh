@@ -17,12 +17,12 @@ PATH_TO_HEADERS="../"
 PATH_TO_TESTS="."
 
 CC="clang++"
-FLAGS="-Wall -Wextra -Werror"
+FLAGS="-Wall -Wextra -Werror -std=c++98"
 
 # Internal paths
 _TMP_FOLDER_="$PATH_TO_TESTS/.__tester_tmp__"
 REAL_EXEC="$_TMP_FOLDER_/real"
-YOUR_EXEC="$_TMP_FOLDER_/mine"
+YOUR_EXEC="$_TMP_FOLDER_/yours"
 REAL_DIFF="$_TMP_FOLDER_/real_diff.txt"
 YOUR_DIFF="$_TMP_FOLDER_/your_diff.txt"
 
@@ -60,8 +60,7 @@ print_header()
 clear
 print_header
 
-if [ $# -lt 1 ]
-then
+if [ $# -lt 1 ]; then
 	CONTAINERS="vector stack map set"
 else
 	CONTAINERS=$*
@@ -74,13 +73,11 @@ if [ ! -d "$_TMP_FOLDER_" ]; then
 fi
 
 
-for _container in $CONTAINERS
-do
+for _container in $CONTAINERS; do
 
 	printf "\n"
 
-	if [ ! -d "$PATH_TO_TESTS/$_container" ]
-	then
+	if [ ! -d "$PATH_TO_TESTS/$_container" ]; then
 		echo "${RED}'$_container' tests don't exist !${CLR_COLOR}";
 		continue
 	fi
@@ -91,18 +88,16 @@ do
 	# print tab labels
 	printf "${GRAY}%37s %s | %s | %s${CLR_COLOR}\n" "" "Status" "Your time" "Real time"
 
-	for _file in $PATH_TO_TESTS/$_container/*.cpp
-	do
+	for _file in $PATH_TO_TESTS/$_container/*.cpp; do
 
 		_current_test_name=$(basename $_file | cut -d '.' -f 2)
 		printf "${GRAY}%-40s${CLR_COLOR}" "    $_current_test_name"
 		
-		# compile with my container
+		# compile with your container
 		$CC $FLAGS $_file -I $PATH_TO_HEADERS -o "$YOUR_EXEC" 2>/dev/null
 		
 		# if cannot compile
-		if [ $? -eq 1 ]
-		then
+		if [ $? -eq 1 ]; then
 			echo "💀"
 			continue
 		fi
@@ -110,7 +105,7 @@ do
 		# compile the real one (no check needed - shall compile normally)
 		$CC $FLAGS $_file -I $PATH_TO_HEADERS -DSTD -o "$REAL_EXEC"
 
-		# execute test with my container
+		# execute test with your container
 		your_start=$(python -c "import time; print(int(time.time()*1000))")
 		./"$YOUR_EXEC" > "$YOUR_DIFF"
 		your_end=$(python -c "import time; print(int(time.time()*1000))")
@@ -124,8 +119,7 @@ do
 		diff "$REAL_DIFF" "$YOUR_DIFF" >/dev/null
 
 		# print results
-		if [ $? -eq 1 ]
-		then
+		if [ $? -eq 1 ]; then
 			printf "❌"
 		else
 			printf "✅"
@@ -136,8 +130,7 @@ do
 		real_time=$(echo "$real_end - $real_start" | bc -l)
 
 		# print execution time
-		if [ $your_time -lt $real_time ]
-		then
+		if [ $your_time -lt $real_time ]; then
 			printf "${GREEN}%11d${CLR_COLOR} ms"  "$your_time"
 			printf          "%9d ms\n"            "$real_time"
 		else

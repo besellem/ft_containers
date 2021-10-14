@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 17:46:43 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 23:32:39 by besellem         ###   ########.fr       */
+/*   Updated: 2021/10/14 11:43:37 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 #  include <stack>
 #  include <vector>
 #  include <set>
-#  define __NAMESPACE__      std
+#  define __NAMESPACE__       std
 #  define __NAMESPACE_NAME__ "std"
 # else
 #  include "map.hpp"
 #  include "stack.hpp"
 #  include "vector.hpp"
 #  include "set.hpp"
-#  define __NAMESPACE__     ft
-#  define __NAMESPACE_NAME_ "ft"
+#  define __NAMESPACE__       ft
+#  define __NAMESPACE_NAME__ "ft"
 # endif /* defined(STD) */
 
 

@@ -65,6 +65,11 @@ class tree_iterator : public iterator<bidirectional_iterator_tag, T>
 		
 		~tree_iterator() {}
 
+		node_pointer		get_current(void) const
+		{
+			return _cur;
+		}
+
 		reference			operator*() const
 		{
 			return _cur->val;
@@ -121,16 +126,6 @@ class tree_iterator : public iterator<bidirectional_iterator_tag, T>
 		{
 			return tree_iterator<const T, Node>(_begin, _end, _cur);
 		}
-		
-		template <class IteratorL, class IteratorR, class _Node>
-		friend bool		operator==(tree_iterator<IteratorL, _Node> const& x,
-								   tree_iterator<IteratorR, _Node> const& y)
-		{ return x._cur == y._cur; }
-
-		template <class IteratorL, class IteratorR, class _Node>
-		friend bool		operator!=(tree_iterator<IteratorL, _Node> const& x,
-								   tree_iterator<IteratorR, _Node> const& y)
-		{ return x._cur != y._cur; }
 
 
 	private:
@@ -181,6 +176,16 @@ class tree_iterator : public iterator<bidirectional_iterator_tag, T>
 		node_pointer	_cur;
 
 }; /* tree_iterator */
+
+template <class IteratorL, class IteratorR, class _Node>
+bool	operator==(tree_iterator<IteratorL, _Node> const& x,
+				   tree_iterator<IteratorR, _Node> const& y)
+{ return x.get_current() == y.get_current(); }
+
+template <class IteratorL, class IteratorR, class _Node>
+bool	operator!=(tree_iterator<IteratorL, _Node> const& x,
+				   tree_iterator<IteratorR, _Node> const& y)
+{ return x.get_current() != y.get_current(); }
 
 
 _END_NAMESPACE_FT

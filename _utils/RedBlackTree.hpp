@@ -31,8 +31,14 @@ struct Node
 {
 	public:
 		typedef T              value_type;
+
+#if defined(__APPLE__) && defined(__MACH__)
 		typedef bool           size_type;
+#else
+		typedef size_t         size_type;
+#endif /* defined(__APPLE__) && defined(__MACH__) */
 	
+
 	public:
 		Node(void) :
 			val(),

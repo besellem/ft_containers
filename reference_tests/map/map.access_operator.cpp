@@ -1,0 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.access_operator.cpp                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/14 09:59:09 by besellem          #+#    #+#             */
+/*   Updated: 2021/10/14 10:07:04 by besellem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../common.hpp"
+
+int main ()
+{
+	__NAMESPACE__::map<char,std::string> mymap;
+
+	mymap['a']="an element";
+	mymap['b']="another element";
+	mymap['c']=mymap['b'];
+
+	std::cout << "mymap['a'] is " << mymap['a'] << '\n';
+	std::cout << "mymap['b'] is " << mymap['b'] << '\n';
+	std::cout << "mymap['c'] is " << mymap['c'] << '\n';
+	std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+
+	std::cout << "mymap now contains " << mymap.size() << " elements.\n";
+
+	return 0;
+}

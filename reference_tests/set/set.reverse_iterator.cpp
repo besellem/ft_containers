@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.push.cpp                                     :+:      :+:    :+:   */
+/*   set.reverse_iterator.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 23:27:51 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 23:31:23 by besellem         ###   ########.fr       */
+/*   Created: 2021/10/14 10:35:14 by besellem          #+#    #+#             */
+/*   Updated: 2021/10/14 10:43:09 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 int main ()
 {
-	__NAMESPACE__::stack<int> mystack;
+	int myints[] = {21,64,17,78,49};
+	__NAMESPACE__::set<int> myset (myints,myints+5);
 
-	for (int i=0; i<5; ++i) mystack.push(i);
+	__NAMESPACE__::set<int>::reverse_iterator rit;
 
-	std::cout << "Popping out elements...";
-	while (!mystack.empty())
-	{
-		std::cout << ' ' << mystack.top();
-		mystack.pop();
-	}
+	std::cout << "myset contains:";
+	for (rit=myset.rbegin(); rit != myset.rend(); ++rit)
+		std::cout << ' ' << *rit;
+
 	std::cout << '\n';
 
 	return 0;

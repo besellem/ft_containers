@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.rend.cpp                                    :+:      :+:    :+:   */
+/*   map.assign_operator.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 18:04:07 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 18:12:52 by besellem         ###   ########.fr       */
+/*   Created: 2021/10/14 09:59:11 by besellem          #+#    #+#             */
+/*   Updated: 2021/10/14 10:07:04 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 
 int main ()
 {
-	__NAMESPACE__::vector<int> myvector (5);  // 5 default-constructed ints
+	__NAMESPACE__::map<char,int> first;
+	__NAMESPACE__::map<char,int> second;
 
-	__NAMESPACE__::vector<int>::reverse_iterator rit = myvector.rbegin();
+	first['x']=8;
+	first['y']=16;
+	first['z']=32;
 
-	int i=0;
-	for (rit = myvector.rbegin(); rit!= myvector.rend(); ++rit)
-	*rit = ++i;
+	second=first;                // second now contains 3 ints
+	first=__NAMESPACE__::map<char,int>();  // and first is now empty
 
-	std::cout << "myvector contains:";
-	for (__NAMESPACE__::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
-	std::cout << ' ' << *it;
-	std::cout << '\n';
-
+	std::cout << "Size of first: " << first.size() << '\n';
+	std::cout << "Size of second: " << second.size() << '\n';
 	return 0;
 }

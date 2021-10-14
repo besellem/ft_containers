@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.end.cpp                                     :+:      :+:    :+:   */
+/*   map.value_comp.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 18:03:44 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 18:12:52 by besellem         ###   ########.fr       */
+/*   Created: 2021/10/14 09:59:56 by besellem          #+#    #+#             */
+/*   Updated: 2021/10/14 10:07:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,20 @@
 
 int main ()
 {
-	__NAMESPACE__::vector<int> myvector;
-	for (int i=1; i<=5; i++) myvector.push_back(i);
+	__NAMESPACE__::map<char,int> mymap;
 
-	std::cout << "myvector contains:";
-	for (__NAMESPACE__::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-	std::cout << ' ' << *it;
-	std::cout << '\n';
+	mymap['x']=1001;
+	mymap['y']=2002;
+	mymap['z']=3003;
+
+	std::cout << "mymap contains:\n";
+
+	__NAMESPACE__::pair<char,int> highest = *mymap.rbegin();          // last element
+
+	__NAMESPACE__::map<char,int>::iterator it = mymap.begin();
+	do {
+		std::cout << it->first << " => " << it->second << '\n';
+	} while ( mymap.value_comp()(*it++, highest) );
 
 	return 0;
 }

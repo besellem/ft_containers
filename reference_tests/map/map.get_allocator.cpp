@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.rbegin.cpp                                  :+:      :+:    :+:   */
+/*   map.get_allocator.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 18:03:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/10/13 18:12:52 by besellem         ###   ########.fr       */
+/*   Created: 2021/10/14 09:59:31 by besellem          #+#    #+#             */
+/*   Updated: 2021/10/14 10:07:54 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 int main ()
 {
-	__NAMESPACE__::vector<int> myvector (5);  // 5 default-constructed ints
+	int psize;
+	__NAMESPACE__::map<char,int> mymap;
+	__NAMESPACE__::pair<const char,int>* p;
 
-	int i=0;
+	// allocate an array of 5 elements using mymap's allocator:
+	p=mymap.get_allocator().allocate(5);
 
-	__NAMESPACE__::vector<int>::reverse_iterator rit = myvector.rbegin();
-	for (; rit!= myvector.rend(); ++rit)
-	*rit = ++i;
+	// assign some values to array
+	psize = sizeof(__NAMESPACE__::map<char,int>::value_type)*5;
 
-	std::cout << "myvector contains:";
-	for (__NAMESPACE__::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
-	std::cout << ' ' << *it;
-	std::cout << '\n';
+	std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+
+	mymap.get_allocator().deallocate(p,5);
 
 	return 0;
 }
